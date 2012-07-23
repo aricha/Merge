@@ -1,0 +1,329 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0DA1604415BCD1D1002A4315 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1604315BCD1D1002A4315 /* Foundation.framework */; };
+		0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1604E15BCD1D1002A4315 /* Merge.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0DA1604015BCD1D0002A4315 /* Merge.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Merge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DA1604315BCD1D1002A4315 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0DA1604815BCD1D1002A4315 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
+		0DA1604915BCD1D1002A4315 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
+		0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
+		0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */ = {isa = PBXFileReference; path = "Merge-Prefix.pch"; sourceTree = "<group>"; };
+		0DA1604D15BCD1D1002A4315 /* Merge.xm */ = {isa = PBXFileReference; lastKnownFileType = text; path = Merge.xm; sourceTree = "<group>"; };
+		0DA1604E15BCD1D1002A4315 /* Merge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.mm; sourceTree = "<group>"; };
+		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0DA1603C15BCD1D0002A4315 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DA1604415BCD1D1002A4315 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0DA1603315BCD1D0002A4315 = {
+			isa = PBXGroup;
+			children = (
+				0DA1604515BCD1D1002A4315 /* Merge */,
+				0DA1604215BCD1D0002A4315 /* Frameworks */,
+				0DA1604115BCD1D0002A4315 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0DA1604115BCD1D0002A4315 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604015BCD1D0002A4315 /* Merge.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0DA1604215BCD1D0002A4315 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604315BCD1D1002A4315 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0DA1604515BCD1D1002A4315 /* Merge */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604D15BCD1D1002A4315 /* Merge.xm */,
+				0DA1604E15BCD1D1002A4315 /* Merge.mm */,
+				0DA1604615BCD1D1002A4315 /* Package */,
+				0DA1604A15BCD1D1002A4315 /* Supporting Files */,
+			);
+			path = Merge;
+			sourceTree = "<group>";
+		};
+		0DA1604615BCD1D1002A4315 /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604715BCD1D1002A4315 /* DEBIAN */,
+				0DA1605015BCD1D1002A4315 /* Library */,
+			);
+			name = Package;
+			sourceTree = "<group>";
+		};
+		0DA1604715BCD1D1002A4315 /* DEBIAN */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604815BCD1D1002A4315 /* control.txt */,
+				0DA1604915BCD1D1002A4315 /* control */,
+			);
+			name = DEBIAN;
+			sourceTree = "<group>";
+		};
+		0DA1604A15BCD1D1002A4315 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */,
+				0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0DA1605015BCD1D1002A4315 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1605115BCD1D1002A4315 /* MobileSubstrate */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		0DA1605115BCD1D1002A4315 /* MobileSubstrate */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1605215BCD1D1002A4315 /* DynamicLibraries */,
+			);
+			name = MobileSubstrate;
+			sourceTree = "<group>";
+		};
+		0DA1605215BCD1D1002A4315 /* DynamicLibraries */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1605315BCD1D1002A4315 /* Merge.plist */,
+			);
+			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		0DA1603D15BCD1D0002A4315 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0DA1603F15BCD1D0002A4315 /* Merge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DA1605615BCD1D1002A4315 /* Build configuration list for PBXNativeTarget "Merge" */;
+			buildPhases = (
+				0DA1603A15BCD1D0002A4315 /* ShellScript */,
+				0DA1603B15BCD1D0002A4315 /* Sources */,
+				0DA1603C15BCD1D0002A4315 /* Frameworks */,
+				0DA1603D15BCD1D0002A4315 /* Headers */,
+				0DA1603E15BCD1D0002A4315 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Merge;
+			productName = Merge;
+			productReference = 0DA1604015BCD1D0002A4315 /* Merge.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0DA1603515BCD1D0002A4315 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+			};
+			buildConfigurationList = 0DA1603815BCD1D0002A4315 /* Build configuration list for PBXProject "Merge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0DA1603315BCD1D0002A4315;
+			productRefGroup = 0DA1604115BCD1D0002A4315 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0DA1603F15BCD1D0002A4315 /* Merge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DA1603A15BCD1D0002A4315 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp-logos";
+		};
+		0DA1603E15BCD1D0002A4315 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/opt/iOSOpenDev/bin/iosod --xcbp";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0DA1603B15BCD1D0002A4315 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0DA1605415BCD1D1002A4315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Release;
+		};
+		0DA1605515BCD1D1002A4315 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = Debug;
+		};
+		0DA1605715BCD1D1002A4315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = NO;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Release;
+		};
+		0DA1605815BCD1D1002A4315 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = "";
+				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = NO;
+				iOSOpenDevUsePackageVersionPList = YES;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0DA1603815BCD1D0002A4315 /* Build configuration list for PBXProject "Merge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0DA1605415BCD1D1002A4315 /* Release */,
+				0DA1605515BCD1D1002A4315 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0DA1605615BCD1D1002A4315 /* Build configuration list for PBXNativeTarget "Merge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0DA1605715BCD1D1002A4315 /* Release */,
+				0DA1605815BCD1D1002A4315 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0DA1603515BCD1D0002A4315 /* Project object */;
+}
