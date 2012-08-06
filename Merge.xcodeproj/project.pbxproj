@@ -7,20 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D19EF3F15C62FA500B5D4D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */; };
+		0D19EF4215C62FA900B5D4D6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */; };
+		0D19EF4415C631F600B5D4D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */; };
+		0D19EF4715C7780F00B5D4D6 /* MGTranscriptHeaderContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */; };
+		0D19EF4815C7780F00B5D4D6 /* MGTranscriptHeaderContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */; };
 		0DA1604415BCD1D1002A4315 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1604315BCD1D1002A4315 /* Foundation.framework */; };
 		0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1604E15BCD1D1002A4315 /* Merge.mm */; };
+		0DA1606015BCD414002A4315 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1605F15BCD414002A4315 /* libsubstrate.dylib */; };
+		0DA1606215BCD473002A4315 /* ChatKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1606115BCD473002A4315 /* ChatKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGTranscriptHeaderContext.h; sourceTree = "<group>"; };
+		0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGTranscriptHeaderContext.m; sourceTree = "<group>"; };
 		0DA1604015BCD1D0002A4315 /* Merge.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Merge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA1604315BCD1D1002A4315 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0DA1604815BCD1D1002A4315 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
 		0DA1604915BCD1D1002A4315 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
-		0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */ = {isa = PBXFileReference; path = "Merge-Prefix.pch"; sourceTree = "<group>"; };
-		0DA1604D15BCD1D1002A4315 /* Merge.xm */ = {isa = PBXFileReference; lastKnownFileType = text; path = Merge.xm; sourceTree = "<group>"; };
+		0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Merge-Prefix.pch"; sourceTree = "<group>"; };
+		0DA1604D15BCD1D1002A4315 /* Merge.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0DA1604E15BCD1D1002A4315 /* Merge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.mm; sourceTree = "<group>"; };
 		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
+		0DA1605F15BCD414002A4315 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = /opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<absolute>"; };
+		0DA1606115BCD473002A4315 /* ChatKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChatKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +42,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D19EF4415C631F600B5D4D6 /* CoreGraphics.framework in Frameworks */,
+				0D19EF4215C62FA900B5D4D6 /* QuartzCore.framework in Frameworks */,
+				0D19EF3F15C62FA500B5D4D6 /* UIKit.framework in Frameworks */,
+				0DA1606215BCD473002A4315 /* ChatKit.framework in Frameworks */,
+				0DA1606015BCD414002A4315 /* libsubstrate.dylib in Frameworks */,
 				0DA1604415BCD1D1002A4315 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +74,11 @@
 		0DA1604215BCD1D0002A4315 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */,
+				0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */,
+				0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */,
+				0DA1606115BCD473002A4315 /* ChatKit.framework */,
+				0DA1605F15BCD414002A4315 /* libsubstrate.dylib */,
 				0DA1604315BCD1D1002A4315 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -65,6 +89,8 @@
 			children = (
 				0DA1604D15BCD1D1002A4315 /* Merge.xm */,
 				0DA1604E15BCD1D1002A4315 /* Merge.mm */,
+				0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */,
+				0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */,
 				0DA1604615BCD1D1002A4315 /* Package */,
 				0DA1604A15BCD1D1002A4315 /* Supporting Files */,
 			);
@@ -129,6 +155,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D19EF4715C7780F00B5D4D6 /* MGTranscriptHeaderContext.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */,
+				0D19EF4815C7780F00B5D4D6 /* MGTranscriptHeaderContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +259,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -258,7 +286,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -272,16 +300,27 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
 				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					/opt/iOSOpenDev/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.1;
 				iOSOpenDevCopyOnBuild = NO;
 				iOSOpenDevDevice = "";
-				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = NO;
 				iOSOpenDevRespringOnInstall = NO;
-				iOSOpenDevUsePackageVersionPList = YES;
+				iOSOpenDevUsePackageVersionPList = NO;
 			};
 			name = Release;
 		};
@@ -290,18 +329,134 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
 				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					/opt/iOSOpenDev/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.1;
 				iOSOpenDevCopyOnBuild = NO;
 				iOSOpenDevDevice = "";
-				iOSOpenDevInstallOnAnyBuild = NO;
+				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = NO;
 				iOSOpenDevRespringOnInstall = NO;
-				iOSOpenDevUsePackageVersionPList = YES;
+				iOSOpenDevUsePackageVersionPList = NO;
 			};
 			name = Debug;
+		};
+		0DA1605B15BCD3B8002A4315 /* Debug - iPad */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = "Debug - iPad";
+		};
+		0DA1605C15BCD3B8002A4315 /* Debug - iPad */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					/opt/iOSOpenDev/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.1;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = 192.168.1.127;
+				iOSOpenDevInstallOnAnyBuild = YES;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = NO;
+				iOSOpenDevUsePackageVersionPList = NO;
+			};
+			name = "Debug - iPad";
+		};
+		0DA1605D15BCD3C1002A4315 /* Release - iPad */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = "Release - iPad";
+		};
+		0DA1605E15BCD3C1002A4315 /* Release - iPad */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					/opt/iOSOpenDev/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.1;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = 192.168.1.127;
+				iOSOpenDevInstallOnAnyBuild = YES;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = NO;
+				iOSOpenDevUsePackageVersionPList = NO;
+			};
+			name = "Release - iPad";
 		};
 /* End XCBuildConfiguration section */
 
@@ -310,7 +465,9 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0DA1605415BCD1D1002A4315 /* Release */,
+				0DA1605D15BCD3C1002A4315 /* Release - iPad */,
 				0DA1605515BCD1D1002A4315 /* Debug */,
+				0DA1605B15BCD3B8002A4315 /* Debug - iPad */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -319,9 +476,12 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0DA1605715BCD1D1002A4315 /* Release */,
+				0DA1605E15BCD3C1002A4315 /* Release - iPad */,
 				0DA1605815BCD1D1002A4315 /* Debug */,
+				0DA1605C15BCD3B8002A4315 /* Debug - iPad */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
