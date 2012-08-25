@@ -1,0 +1,3 @@
+[submodule "Merge/ARSharedHelpers"]
+	path = Merge/ARSharedHelpers
+	url = https://aricha@github.com/aricha/ARSharedHelpers.git

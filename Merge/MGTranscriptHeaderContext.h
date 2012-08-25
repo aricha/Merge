@@ -32,6 +32,8 @@ extern NSString *const CKContentEntryViewDidEndEditingNotification;
 
 @property (nonatomic) CGFloat rotatingHeaderOffset;
 
+@property (nonatomic) CGFloat headerOffset;
+
 // the direction in which scroll view deceleration initially begins
 @property (nonatomic) UIScrollViewDirection decelerationDirection;
 
@@ -40,8 +42,10 @@ extern NSString *const CKContentEntryViewDidEndEditingNotification;
 
 @property (nonatomic, retain) CKTranscriptHeaderView *headerView;
 @property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, retain) UIView *tableHeaderView;
 
 @property (nonatomic) BOOL ignoringContentOffsetChangesDueToKeyboard;
+@property (nonatomic) BOOL keyboardVisible;
 
 //@property (nonatomic, readonly) BOOL headerVisible;
 
@@ -53,6 +57,7 @@ extern NSString *const CKContentEntryViewDidEndEditingNotification;
 - (void)cancelDelayedHideRequests;
 
 - (void)setHeaderVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setHeaderVisible:(BOOL)visible animated:(BOOL)animated force:(BOOL)force completion:(void (^)(BOOL finished))completion;
 
 - (CGFloat)updateVisibleOffsetForNewContentOffset:(CGFloat)newOffset force:(BOOL)force;
 - (void)updateHeaderOffsetForContentOffset:(CGFloat)newOffset force:(BOOL)force;

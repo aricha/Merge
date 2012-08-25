@@ -7,11 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D04F84F15D0AC1D0068C91E /* DebugTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D04F84915D0AC1D0068C91E /* DebugTools.h */; };
+		0D04F85015D0AC1D0068C91E /* DebugTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D04F84A15D0AC1D0068C91E /* DebugTools.m */; };
+		0D04F85115D0AC1D0068C91E /* SubstrateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */; };
+		0D04F85215D0AC1D0068C91E /* SubstrateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D04F84C15D0AC1D0068C91E /* SubstrateAdditions.m */; };
+		0D04F85315D0AC1D0068C91E /* UIView+LTKAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D04F84D15D0AC1D0068C91E /* UIView+LTKAdditions.h */; };
+		0D04F85415D0AC1D0068C91E /* UIView+LTKAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D04F84E15D0AC1D0068C91E /* UIView+LTKAdditions.m */; };
 		0D19EF3F15C62FA500B5D4D6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */; };
 		0D19EF4215C62FA900B5D4D6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */; };
 		0D19EF4415C631F600B5D4D6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */; };
 		0D19EF4715C7780F00B5D4D6 /* MGTranscriptHeaderContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */; };
 		0D19EF4815C7780F00B5D4D6 /* MGTranscriptHeaderContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */; };
+		0D9C2E6315DB7A2B0009AB0A /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9C2E6215DB7A2B0009AB0A /* AddressBook.framework */; };
 		0DA1604415BCD1D1002A4315 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1604315BCD1D1002A4315 /* Foundation.framework */; };
 		0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1604E15BCD1D1002A4315 /* Merge.mm */; };
 		0DA1606015BCD414002A4315 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1605F15BCD414002A4315 /* libsubstrate.dylib */; };
@@ -19,11 +26,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D04F84915D0AC1D0068C91E /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugTools.h; path = ARSharedHelpers/DebugTools.h; sourceTree = "<group>"; };
+		0D04F84A15D0AC1D0068C91E /* DebugTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DebugTools.m; path = ARSharedHelpers/DebugTools.m; sourceTree = "<group>"; };
+		0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubstrateAdditions.h; path = ARSharedHelpers/SubstrateAdditions.h; sourceTree = "<group>"; };
+		0D04F84C15D0AC1D0068C91E /* SubstrateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SubstrateAdditions.m; path = ARSharedHelpers/SubstrateAdditions.m; sourceTree = "<group>"; };
+		0D04F84D15D0AC1D0068C91E /* UIView+LTKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+LTKAdditions.h"; path = "ARSharedHelpers/UIView+LTKAdditions.h"; sourceTree = "<group>"; };
+		0D04F84E15D0AC1D0068C91E /* UIView+LTKAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+LTKAdditions.m"; path = "ARSharedHelpers/UIView+LTKAdditions.m"; sourceTree = "<group>"; };
 		0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGTranscriptHeaderContext.h; sourceTree = "<group>"; };
 		0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGTranscriptHeaderContext.m; sourceTree = "<group>"; };
+		0D9C2E6215DB7A2B0009AB0A /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		0DA1604015BCD1D0002A4315 /* Merge.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Merge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA1604315BCD1D1002A4315 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0DA1604815BCD1D1002A4315 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
@@ -34,7 +48,7 @@
 		0DA1604E15BCD1D1002A4315 /* Merge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.mm; sourceTree = "<group>"; };
 		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
 		0DA1605F15BCD414002A4315 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = /opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<absolute>"; };
-		0DA1606115BCD473002A4315 /* ChatKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChatKit.framework; path = /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework; sourceTree = "<absolute>"; };
+		0DA1606115BCD473002A4315 /* ChatKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChatKit.framework; path = "/Applications/Xcode45-DP4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D9C2E6315DB7A2B0009AB0A /* AddressBook.framework in Frameworks */,
 				0D19EF4415C631F600B5D4D6 /* CoreGraphics.framework in Frameworks */,
 				0D19EF4215C62FA900B5D4D6 /* QuartzCore.framework in Frameworks */,
 				0D19EF3F15C62FA500B5D4D6 /* UIKit.framework in Frameworks */,
@@ -74,6 +89,7 @@
 		0DA1604215BCD1D0002A4315 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D9C2E6215DB7A2B0009AB0A /* AddressBook.framework */,
 				0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */,
 				0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */,
 				0D19EF3E15C62FA500B5D4D6 /* UIKit.framework */,
@@ -118,6 +134,12 @@
 		0DA1604A15BCD1D1002A4315 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0D04F84915D0AC1D0068C91E /* DebugTools.h */,
+				0D04F84A15D0AC1D0068C91E /* DebugTools.m */,
+				0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */,
+				0D04F84C15D0AC1D0068C91E /* SubstrateAdditions.m */,
+				0D04F84D15D0AC1D0068C91E /* UIView+LTKAdditions.h */,
+				0D04F84E15D0AC1D0068C91E /* UIView+LTKAdditions.m */,
 				0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */,
 				0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */,
 			);
@@ -156,6 +178,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D19EF4715C7780F00B5D4D6 /* MGTranscriptHeaderContext.h in Headers */,
+				0D04F84F15D0AC1D0068C91E /* DebugTools.h in Headers */,
+				0D04F85115D0AC1D0068C91E /* SubstrateAdditions.h in Headers */,
+				0D04F85315D0AC1D0068C91E /* UIView+LTKAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +265,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D04F85015D0AC1D0068C91E /* DebugTools.m in Sources */,
 				0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */,
 				0D19EF4815C7780F00B5D4D6 /* MGTranscriptHeaderContext.m in Sources */,
+				0D04F85215D0AC1D0068C91E /* SubstrateAdditions.m in Sources */,
+				0D04F85415D0AC1D0068C91E /* UIView+LTKAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,7 +281,10 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${SDKROOT}/System/Library/PrivateFrameworks",
+					/opt/iOSOpenDev/frameworks,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -261,7 +292,7 @@
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				iOSOpenDevPath = /opt/iOSOpenDev;
@@ -272,8 +303,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				"COPY_PHASE_STRIP[sdk=*]" = NO;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${SDKROOT}/System/Library/PrivateFrameworks",
+					/opt/iOSOpenDev/frameworks,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -288,7 +323,7 @@
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = NO;
 				iOSOpenDevPath = /opt/iOSOpenDev;
@@ -302,7 +337,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -310,7 +345,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks/ChatKit.framework",
 					/opt/iOSOpenDev/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -331,7 +366,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -339,7 +374,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks/ChatKit.framework",
 					/opt/iOSOpenDev/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -358,7 +393,10 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${SDKROOT}/System/Library/PrivateFrameworks",
+					/opt/iOSOpenDev/frameworks,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -373,7 +411,7 @@
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = NO;
 				iOSOpenDevPath = /opt/iOSOpenDev;
@@ -387,7 +425,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -395,7 +433,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks/ChatKit.framework",
 					/opt/iOSOpenDev/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -414,7 +452,10 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = "$(iOSOpenDevPath)/frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${SDKROOT}/System/Library/PrivateFrameworks",
+					/opt/iOSOpenDev/frameworks,
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -422,7 +463,7 @@
 				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos5.1;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				iOSOpenDevPath = /opt/iOSOpenDev;
@@ -436,7 +477,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -444,7 +485,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework\"",
+					"${SDKROOT}/System/Library/PrivateFrameworks/ChatKit.framework",
 					/opt/iOSOpenDev/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";

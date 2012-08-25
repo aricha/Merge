@@ -9,6 +9,16 @@
 #import "MGTranscriptHeaderContext.h"
 #import <ChatKit/CKTranscriptHeaderView.h>
 #import <QuartzCore/QuartzCore.h>
+#import <substrate.h>
+
+extern BOOL _CKSMSShouldLogForType(int type);
+
+static BOOL replacedCKShouldLog(int type)
+{
+//    if (type == 18)
+//        return YES;
+    return NO;
+}
 
 static const NSTimeInterval MGTranscriptHeaderViewAutoHideDelay = 3.0;
 
@@ -27,6 +37,15 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
 @end
 
 @implementation MGTranscriptHeaderContext
+
++ (void)initialize
+{
+    InstallUncaughtExceptionHandler();
+    
+    executeDebugBlock(^{
+        MSHookFunction(_CKSMSShouldLogForType, replacedCKShouldLog, NULL);
+    });
+}
 
 + (BOOL)shouldOverrideHeader
 {
@@ -49,15 +68,8 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
 {
     if (self = [super init])
     {
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center addObserver:self
-                   selector:@selector(textViewDidBeginEditing:)
-                       name:CKContentEntryViewDidBeginEditingNotification
-                     object:nil];
-        [center addObserver:self
-                   selector:@selector(textViewDidEndEditing:)
-                       name:CKContentEntryViewDidEndEditingNotification
-                     object:nil];
+        // show header on initial load
+        _headerVisible = YES;
     }
     return self;
 }
@@ -77,16 +89,22 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
     [self hideHeaderAnimated];
 }
 
-- (void)textViewDidBeginEditing:(NSNotification *)note
+- (void)setKeyboardVisible:(BOOL)keyboardVisible
 {
-    [self hideHeaderAnimated];
-    self.ignoringContentOffsetChangesDueToKeyboard = YES;
-}
-
-- (void)textViewDidEndEditing:(NSNotification *)note
-{
-    [self showHeaderAnimated];
-    self.ignoringContentOffsetChangesDueToKeyboard = NO;
+    if (_keyboardVisible != keyboardVisible) {
+        _keyboardVisible = keyboardVisible;
+        DLog(@"keyboardVisible: %d", keyboardVisible);
+        if (keyboardVisible)
+        {
+            [self hideHeaderAnimated];
+            [self beginIgnoringContentOffsetChanges];
+        }
+        else
+        {
+            [self showHeaderAnimated];
+            [self endIgnoringContentOffsetChanges];
+        }
+    }
 }
 
 - (void)setHeaderView:(CKTranscriptHeaderView *)headerView
@@ -96,6 +114,10 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
         _headerView = [headerView retain];
         
         [_headerView addGestureRecognizer:self.swipeUpHeaderGesture];
+        
+        // use previous header offset with new header
+        self.headerOffset = (self.headerVisible ? 0.0 : -[self effectiveHeaderHeight]);
+//        [self _applyHeaderOffsetToHeaderView];
     }
 }
 
@@ -120,9 +142,7 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
 
 - (void)hideHeaderAnimated
 {
-//    if (self.scrollView.contentOffset.y >= 2*[self effectiveHeaderHeight]) {
-        [self setHeaderVisible:NO animated:YES];
-//    }
+    [self setHeaderVisible:NO animated:YES];
 }
 
 - (void)showHeaderAnimated
@@ -130,20 +150,20 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
     [self setHeaderVisible:YES animated:YES];
 }
 
-- (void)setHeaderVisible:(BOOL)visible
-{
-    [self setHeaderVisible:visible animated:NO];
-}
-
 - (void)setHeaderVisible:(BOOL)visible animated:(BOOL)animated
 {
+    [self setHeaderVisible:visible animated:animated force:NO completion:nil];
+}
+
+- (void)setHeaderVisible:(BOOL)visible animated:(BOOL)animated force:(BOOL)force completion:(void (^)(BOOL finished))completion
+{
     [self cancelDelayedHideRequests];
-    _headerVisible = visible;
+//    _headerVisible = visible;
     
 //    if (visible)
 //        self.headerView.hidden = NO;
     
-    if (!visible) {
+    if (!visible && !force) {
         // don't hide if header is in always-visible area
         BOOL shouldHide = (self.scrollView.contentOffset.y >= 2*[self effectiveHeaderHeight]);
         if (!shouldHide)
@@ -153,28 +173,28 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
     CGFloat newY = (visible ? 0.0f : -[self effectiveHeaderHeight]);
     
     BOOL animationsEnabled = [UIView areAnimationsEnabled];
-    NSLog(@"visible: %d, animationsEnabled: %d, old offset: %f, new offset: %f", visible, animationsEnabled, self.headerView.frame.origin.y, newY);
+    DLog(@"visible: %d, animationsEnabled: %d, old offset: %f, new offset: %f", visible, animationsEnabled, self.headerView.frame.origin.y, newY);
     
     [UIView setAnimationsEnabled:YES];
     [UIView animateWithDuration:(animated ? 0.25 : 0.0)
                           delay:0.0
                         options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionOverrideInheritedDuration
                      animations:^{
-                         CGRect frame = self.headerView.frame;
-                         frame.origin.y = newY;
-                         self.headerView.frame = frame;
-                         
+                         self.headerOffset = newY;
                      } completion:^(BOOL finished) {
 //                         if (finished) {
 //                             self.headerView.hidden = !visible;
 //                         }
-                         NSLog(@"completed animation, visible: %d", visible);
+                         DLog(@"completed animation, visible: %d", visible);
                          [self updateVisibleOffsetForActiveHeaderOffset];
                          if (visible) {
                              [self hideHeaderAfterDelay:MGTranscriptHeaderViewAutoHideDelay];
                          }
+                         if (completion) {
+                             completion(finished);
+                         }
                      }];
-//    [UIView setAnimationsEnabled:animationsEnabled];
+    [UIView setAnimationsEnabled:animationsEnabled];
 }
 
 - (void)cancelDelayedHideRequests
@@ -245,6 +265,9 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
         force = YES;
     }
     
+//    CGFloat prevHeaderOffset = self.headerOffset;
+//    DLog(@"newContentOffset: %f, force: %d, headerOffset: %f, ignoreCount: %d", newOffset, force, self.headerOffset, contentOffsetIgnoreCount);
+    
     if (!force && contentOffsetIgnoreCount > 0)
         return;
         
@@ -280,14 +303,37 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
     if (force || directionValid)
     {
         CGFloat newHeaderOffset = MIN(MAX(self.visibleOffset - newOffset, -[self effectiveHeaderHeight]), 0.0);
-                
-        CGRect frame = self.headerView.frame;
-        frame.origin.y = newHeaderOffset;
-        self.headerView.frame = frame;
+        self.headerOffset = newHeaderOffset;
     }
+    
+//    DLog(@"set headerOffset to %f for newContentOffset: %f, force: %d, prev headerOffset: %f, ignoreCount: %d", self.headerOffset, newOffset, force, prevHeaderOffset, contentOffsetIgnoreCount);
     
     if (newOffset > [self effectiveHeaderHeight])
         [self hideHeaderAfterDelay:MGTranscriptHeaderViewAutoHideDelay];
+}
+
+//- (CGFloat)headerOffset
+//{
+//    return self.headerView.frame.origin.y;
+//}
+
+- (void)setHeaderOffset:(CGFloat)offset
+{
+    _headerOffset = offset;
+    
+    [self _applyHeaderOffsetToHeaderView];
+}
+
+- (void)_applyHeaderOffsetToHeaderView
+{
+    if (self.headerView)
+    {
+        CGRect frame = self.headerView.frame;
+        frame.origin.y = self.headerOffset;
+        self.headerView.frame = frame;
+        
+        _headerVisible = (self.headerOffset > -[self effectiveHeaderHeight]);
+    }
 }
 
 - (void)beginIgnoringContentOffsetChanges
