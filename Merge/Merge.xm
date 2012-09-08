@@ -1,25 +1,89 @@
 // Logos by Dustin Howett
 // See http://iphonedevwiki.net/index.php/Logos
 
-#import <ChatKit/CKTranscriptController.h>
-#import <ChatKit/CKTranscriptHeaderView.h>
 #import <substrate.h>
 #import <QuartzCore/QuartzCore.h>
-#import <ChatKit/CKTranscriptTableView.h>
-#import <ChatKit/UIPlacardButton.h>
 #import <objc/runtime.h>
-#import "MGTranscriptHeaderContext.h"
+
+#import <ChatKit/CKTranscriptController.h>
+#import <ChatKit/CKTranscriptHeaderView.h>
+#import <ChatKit/CKTranscriptTableView.h>
 #import <ChatKit/CKContentEntryView.h>
 #import <ChatKit/CKAggregateConversation.h>
 #import <ChatKit/CKSubConversation.h>
 #import <ChatKit/CKEntity.h>
 #import <ChatKit/_CKConversation.h>
-#import <AddressBook/AddressBook.h>
 #import <ChatKit/CKTranscriptBubbleData.h>
 #import <ChatKit/CKServiceView.h>
 #import <ChatKit/CKMessage.h>
 #import <ChatKit/CKService.h>
 #import <ChatKit/CKMessageStandaloneComposition.h>
+#import <ChatKit/CKConversationList.h>
+#import <ChatKit/CKTranscriptToolbarView.h>
+#import <ChatKit/CKRecipientSelectionView.h>
+
+#import <UIKit/UIPlacardButton_Dumped.h>
+#import <AddressBook/ABPhoneFormatting_Dumped.h>
+#import <MessageUI/MFComposeRecipientAtom_Dumped.h>
+#import <MessageUI/MFComposeRecipient_Dumped.h>
+
+#import "MGTranscriptHeaderContext.h"
+#import "MGAddressManager.h"
+#import "ABContactHelper/ABContactsHelper.h"
+
+@interface UIScrollView ()
+- (NSTimeInterval)_contentOffsetAnimationDuration;
+@end
+
+@interface CKTranscriptTableView (FloatingHeader)
+@property (nonatomic, copy) void (^updateBlock)(CKTranscriptTableView *);
+@end
+
+@interface CKTranscriptController (FloatingHeader)
+- (void)updateHeaderView;
+- (void)didSelectContactButton:(UIGestureRecognizer *)gesture;
+- (MGTranscriptHeaderContext *)headerContext;
+- (void)updateTranscriptHeaderInset;
+- (UIView *)backPlacardView;
+@end
+
+@interface CKAggregateConversation ()
+@property (nonatomic, retain) CKEntity *selectedRecipient;
+//@property (nonatomic, copy) void (^didAddMessageBlock)(CKMessage *message, CKAggregateConversation *conversation);
+@property (nonatomic, retain) CKMessage * pendingMessage;
+- (CKSubConversation *)_bestExistingConversationWithService:(CKService *)service;
+- (NSArray *)allAddresses;
+@end
+
+@interface CKTranscriptController ()
+- (CKRecipientListView *)recipientListView;
+- (CKTranscriptToolbarView *)transcriptToolbarView;
+- (void)selectAddressForCurrentRecipientFromView:(UIView *)view asPopover:(BOOL)popover;
+- (void)showPendingDividerIfNecessaryForRecipient:(CKEntity *)recipient;
+@end
+
+@interface CKTranscriptToolbarView ()
+- (UIButton *)contactButton;
+@end
+
+@interface CKTranscriptBubbleData ()
+@property (nonatomic) BOOL sendingMessage;
+@end
+
+@interface CKServiceView ()
+@property (nonatomic, retain) CKEntity *entity;
+- (void)updateTitleLabel;
+- (CKService *)service;
+- (UILabel *)textLabel;
+@end
+
+@interface NSObject (MFComposeRecipientAtomDelegate)
+- (void)recipientSelectionView:(CKRecipientSelectionView *)selectionView selectAddressForAtom:(MFComposeRecipientAtom *)atom;
+@end
+
+//@interface MFAddressAtom ()
+//@property (nonatomic, retain) UILongPressGestureRecognizer *longPressGesture;
+//@end
 
 %group FloatingHeader
 %hook CKTranscriptHeaderView
@@ -50,14 +114,6 @@
     return self;
 }
 
-//- (void)setFrame:(CGRect)frame
-//{
-//    if (frame.origin.y == 0 && self.frame.origin.y != 0)
-//        LOG_BACKTRACE;
-//    
-//    %orig;
-//}
-
 - (void)layoutSubviews
 {
     %orig;
@@ -71,27 +127,32 @@
 
 %end
 
-static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
-
 %hook CKTranscriptTableView
+
+static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTableViewLayoutBlockKey";
+
+%new(@@:)
+- (void (^)(CKTranscriptTableView *))updateBlock
+{
+    return objc_getAssociatedObject(self, MGTranscriptTableViewLayoutBlockKey);
+}
+
+%new(v@:@)
+- (void)setUpdateBlock:(void (^)(CKTranscriptTableView *))updateBlock
+{
+    objc_setAssociatedObject(self, MGTranscriptTableViewLayoutBlockKey, updateBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
 
 - (void)layoutSubviews
 {
     %orig;
     
-    void (^updateBlock)(CKTranscriptTableView *) = objc_getAssociatedObject(self, CKTranscriptTableViewLayoutBlockKey);
+    void (^updateBlock)(CKTranscriptTableView *) = self.updateBlock;
     if (updateBlock)
         updateBlock(self);
 }
 
 %end
-
-@interface CKTranscriptController ()
-- (void)updateHeaderView;
-- (MGTranscriptHeaderContext *)headerContext;
-- (void)updateTranscriptHeaderInset;
-- (UIView *)backPlacardView;
-@end
 
 %hook CKTranscriptController
 
@@ -149,7 +210,7 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
     void (^updateBlock)(CKTranscriptTableView *) = ^(CKTranscriptTableView *tableView) {
         [blockSelf updateHeaderView];
     };
-    objc_setAssociatedObject(self.transcriptTable, CKTranscriptTableViewLayoutBlockKey, updateBlock, OBJC_ASSOCIATION_COPY);
+    self.transcriptTable.updateBlock = updateBlock;
     
     [[self headerContext] setScrollView:self.transcriptTable];
     
@@ -171,13 +232,13 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 //        [navController.navigationBar addGestureRecognizer:swipeUp];
 //    }
 //}
-
-%new(v@:@)
-- (void)didSwipeUpOnNavBar:(UISwipeGestureRecognizer *)gesture
-{
-    %log;
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
+//
+//%new(v@:@)
+//- (void)didSwipeUpOnNavBar:(UISwipeGestureRecognizer *)gesture
+//{
+//    %log;
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
+//}
 
 - (void)viewWillUnload
 {
@@ -207,10 +268,10 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
     DLog(@"viewDidAppear, visibleOffset: %f, contentOffset: %f", [[self headerContext] visibleOffset], self.transcriptTable.contentOffset.y);
 }
 
-- (void)_setupTranscriptHeader {
-    %log;
-    %orig;
-}
+//- (void)_setupTranscriptHeader {
+//    %log;
+//   %orig;
+//}
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -224,7 +285,9 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     %orig;
+	
     [[self headerContext] endIgnoringContentOffsetChanges];
+	
     MGTranscriptHeaderContext *context = [self headerContext];
     context.headerOffset = context.rotatingHeaderOffset;
     [context updateVisibleOffsetForActiveHeaderOffset];
@@ -232,15 +295,23 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-//    [[self headerContext] updateHeaderOffsetForContentOffset:self.transcriptTable.contentOffset.y force:YES];
+	%orig;
+	
     MGTranscriptHeaderContext *context = [self headerContext];
     context.headerOffset = context.rotatingHeaderOffset;
     [context updateVisibleOffsetForActiveHeaderOffset];
 }
 
+%new(v@:@)
+- (void)didSelectContactButton:(UIGestureRecognizer *)gesture
+{
+	if (gesture.state == UIGestureRecognizerStateBegan) {
+		[self selectAddressForCurrentRecipientFromView:self.view asPopover:NO];
+	}
+}
+
 - (void)_showTranscriptHeaderView {
     %orig;
-    %log;
     
     CKTranscriptHeaderView *header = MSHookIvar<id>(self, "_transcriptHeaderView");
     if (header) {
@@ -270,6 +341,13 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
             center.x = self.transcriptTable.frame.size.width / 2;
             button.center = center;
         }
+		
+		UIPlacardButton *contactButton = MSHookIvar<id>(header, "_contactsButton");
+		if (contactButton)
+		{
+			UILongPressGestureRecognizer *gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectContactButton:)] autorelease];
+			[contactButton addGestureRecognizer:gesture];
+		}
         
         context.tableHeaderView = tableHeaderView;
         
@@ -282,8 +360,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 }
 
 - (void)_hideTranscriptHeaderView {
-    %log;
-    
     CKTranscriptHeaderView *header = [self headerContext].headerView;
     if (header) {
         UIPlacardButton *button = MSHookIvar<id>(header, "_loadMoreButton");
@@ -303,7 +379,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 
 - (void)_updateTranscriptHeaderView
 {
-    %log;
     %orig;
     
     [self.view addSubview:[self headerContext].headerView];
@@ -317,7 +392,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
     
     BOOL prevEditing = [self.transcriptTable isEditing];
     
-    %log;
     %orig;
     
     if (header) {
@@ -354,7 +428,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 
 - (void)_updateBackPlacardSubviews
 {
-    %log;
     %orig;
     
     CKTranscriptHeaderView *header = [self headerContext].headerView;
@@ -364,7 +437,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 - (void)reload:(BOOL)reload
 {
     %orig;
-    %log;
     
     [[self headerContext] updateVisibleOffsetForActiveHeaderOffset];
 }
@@ -440,24 +512,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 %end
 %end
 
-@interface CKTranscriptBubbleData ()
-
-//@property (nonatomic, retain) CKMessage *pendingMessage;
-@property (nonatomic) BOOL sendingMessage;
--(NSMutableArray *)_bubbleDataArray;
-
-@end
-
-@interface CKAggregateConversation ()
-
-@property (nonatomic, retain) CKEntity *selectedRecipient;
-@property (nonatomic, copy) void (^didAddMessageBlock)(CKMessage *message, CKAggregateConversation *conversation);
-@property (nonatomic, retain) CKMessage * pendingMessage;
-
--(CKSubConversation *)_bestExistingConversationWithService:(CKService *)service;
-
-@end
-
 %hook CKEntity
 
 - (NSUInteger)addressHash
@@ -496,19 +550,11 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 //
 //%end
 
-//@interface MGAddressView ()
-@interface CKServiceView ()
-
-- (void)updateTitleLabel;
-- (CKService *)service;
-- (UILabel *)textLabel;
-- (CKEntity *)entity;
-- (void)setEntity:(CKEntity *)entity;
-
-@end
-
-//%subclass MGAddressView : CKServiceView
 %hook CKServiceView
+
+//extern CFStringRef PNCopyFormattedStringWithCountry(CFStringRef pnString, CFStringRef countryCode);
+//extern CFStringRef CPPhoneNumberCopyHomeCountryCode(void);
+//extern "C" CFStringRef CPPhoneNumberCopyFormattedStringForTextMessage(CFStringRef pnString);
 
 %new(v@:)
 - (void)updateTitleLabel
@@ -534,7 +580,15 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
         if (service) {
             [labelText appendString:@" with "];
         }
-        [labelText appendString:entity.normalizedRawAddress];
+		
+		if (entity.propertyType == kABPersonPhoneProperty) {
+			NSString *formattedAddress = [ABPhoneFormatting abNormalizedPhoneNumberFromString:entity.rawAddress];
+			
+			[labelText appendString:formattedAddress];
+		}
+		else {
+			[labelText appendString:entity.normalizedRawAddress];
+		}
     }
     
     if (![labelText isEqualToString:[[self textLabel] text]] && labelText.length > 0) {
@@ -560,9 +614,6 @@ static NSString *const CKTranscriptTableViewLayoutBlockKey = @"layoutBlock";
 - (void)setService:(CKService *)service
 {
     if ([self service] != service) {
-//        [[self service] release];
-//#warning may be hacky
-//        MSHookIvar<id>(self, "_service") = service;
         if (!service || [service isKindOfClass:%c(CKService)]) {
             %orig;
         }
@@ -590,11 +641,58 @@ static NSString *const MGAddressViewEntityKey = @"MGAddressViewEntityKey";
 
 %end
 
+%hook CKTranscriptToolbarView
+
+%new(@@:)
+- (UIButton *)contactButton
+{
+	UIButton *button = MSHookIvar<id>(self, "_contactButton");
+	return (button ? button : nil);
+}
+
+%end
+
 extern NSString *const CKBubbleDataMessage;
 
 #define FLAG_NEW_RECIPIENT (1 << 5)
 
 %hook CKTranscriptController
+
+%new(@@:)
+-(CKRecipientListView *)recipientListView
+{
+	id view = MSHookIvar<id>(self, "_recipientListView");
+	return (view ? view : nil);
+}
+
+%new(@@:)
+-(CKTranscriptToolbarView *)transcriptToolbarView
+{
+	CKTranscriptToolbarView *view = MSHookIvar<id>(self, "_transcriptToolbarView");
+	return (view ? view : nil);
+}
+
+%new(v@:@)
+-(void)didSelectContactButtonPad:(UIGestureRecognizer *)gesture
+{
+	if (gesture.state == UIGestureRecognizerStateBegan) {
+		NSLog(@"hit!");
+		[self selectAddressForCurrentRecipientFromView:gesture.view asPopover:YES];
+	}
+}
+
+-(void)updateActionItem
+{
+	%orig;
+	
+	CKTranscriptToolbarView *toolbar = [self transcriptToolbarView];
+	if (toolbar) {
+		// add tap-and-hold gesture for top-right Contact button (on iPad)
+		UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectContactButtonPad:)] autorelease];
+		UIButton *contactButton = [toolbar contactButton];
+		[contactButton addGestureRecognizer:longPressGesture];
+	}
+}
 
 //-(void)sendMessage:(id)message
 //{
@@ -614,31 +712,148 @@ extern NSString *const CKBubbleDataMessage;
 //    %orig;
 //}
 
+%new(v@:@)
+-(void)showPendingDividerIfNecessaryForRecipient:(CKEntity *)recipient
+{
+	CKTranscriptBubbleData *data = [self bubbleData];
+	CKTranscriptTableView *tableView = [self transcriptTable];
+	
+	// _lastIndexExcludingTypingIndicator is actually an insertion index, so subtract 1 to get
+	// actual last index
+	NSUInteger lastIndex = [data _lastIndexExcludingTypingIndicator] - 1;
+	CKService *lastService = [data serviceAtIndex:lastIndex];
+	
+//	NSLog(@"last index: %d, lastService: %@", lastIndex, lastService);
+	
+	NSIndexPath *scrollIndex = nil;
+	
+	if (!lastService)
+	{
+		// add pending divider to indicate new address
+		[tableView beginUpdates];
+		[data _appendService:recipient.service];
+		
+		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
+//		NSLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
+		[tableView insertRowsAtIndexPaths:@[newIndex]
+						 withRowAnimation:UITableViewRowAnimationAutomatic];
+		[tableView endUpdates];
+		
+		scrollIndex = newIndex;
+	}
+	else
+	{
+		NSIndexPath *lastServiceIndex = [NSIndexPath indexPathForRow:lastIndex inSection:0];
+		CKServiceView *lastCell = (CKServiceView *)[tableView cellForRowAtIndexPath:lastServiceIndex];
+		
+		if (lastCell) {
+			// pending divider already showing, update information if needed
+			[lastCell setEntity:recipient];
+			[lastCell setService:recipient.service];
+		}
+		else {
+			scrollIndex = lastServiceIndex;
+		}
+	}
+	
+	if (scrollIndex) {
+		[tableView scrollToRowAtIndexPath:scrollIndex atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		NSTimeInterval animationDuration = [tableView _contentOffsetAnimationDuration];
+		
+		// add extra 0.1 padding to ensure animation always completes (method seems to disable
+		// UIView animations for a bit and so messes with scrolling animation)
+		[self performSelector:@selector(_makeContentEntryViewActive) withObject:nil afterDelay:(animationDuration + 0.1)];
+	}
+	else {
+		// no need to wait for animation if pending divider is already visible
+		[self _makeContentEntryViewActive];
+	}
+}
+
+%new(v@:)
+-(void)selectAddressForCurrentRecipientFromView:(UIView *)view asPopover:(BOOL)popover
+{
+    CKSubConversation *conversation = [self.conversation _bestExistingConversation];
+    CKEntity *entity = [conversation recipient];
+	if (!entity) {
+		entity = [self.conversation recipient];
+	}
+	
+	ABRecordRef record = entity.abRecord;
+	if (!record) {
+		NSLog(@"Error: could not find record for entity %@ in aggregate %@", entity, self.conversation);
+		return;
+	}
+    ABContact *contact = [ABContact contactWithRecord:record];
+    NSArray *addresses = [self.conversation allAddresses];
+    
+    [[MGAddressManager sharedAddressManager] presentDifferentiationSheetForContact:contact
+                                                                            inView:view
+																		 asPopover:popover
+                                                                availableAddresses:addresses
+                                                                        completion:^(NSString *selectedAddress) {
+                                                                            CKSubConversation *subConversation = [[CKConversationList sharedConversationList] existingConversationForAddresses:@[selectedAddress]];
+                                                                            if (subConversation) {
+																				CKEntity *selectedRecipient = [subConversation.recipients objectAtIndex:0];
+                                                                                self.conversation.selectedRecipient = selectedRecipient;
+																				
+																				[self showPendingDividerIfNecessaryForRecipient:selectedRecipient];
+                                                                            }
+                                                                        }];
+}
+
+%new(v@:@@)
+-(void)recipientSelectionView:(CKRecipientSelectionView *)view selectAddressForAtom:(MFComposeRecipientAtom *)atom
+{
+	ABRecordRef record = atom.recipient.record;
+	if (record) {
+		ABContact *contact = [ABContact contactWithRecord:record];
+		
+		[[MGAddressManager sharedAddressManager] presentDifferentiationSheetForContact:contact
+																				inView:atom
+																			 asPopover:YES
+																	availableAddresses:nil
+																			completion:^(NSString *selectedAddress) {
+																				
+																			}];
+	}
+}
+
 -(void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     %orig;
-    if ([cell isKindOfClass:%c(CKServiceView)]) {
-        CKTranscriptBubbleData *data = [self bubbleData];
-        CKMessage *message = nil;
-        
-        NSUInteger index = indexPath.row + 1;
-        NSUInteger count = [data count];
-        while (index < count) {
-            message = [[data bubbleDataForIndex:index] objectForKey:CKBubbleDataMessage];
-            if (message) {
-                break;
-            }
-            index++;
-        }
-        
-//        NSLog(@"recipients: %@ for index %@, message: %@", [message.conversation recipients], indexPath, [message text]);
-        CKEntity *entity = [message.conversation recipient];
+    if ([cell isKindOfClass:[CKServiceView class]]) {
+		CKEntity *entity = nil;
+		
+		NSUInteger numRows = [[self transcriptTable] numberOfRowsInSection:indexPath.section];
+		if (indexPath.row == numRows - 1)
+		{
+			// last row is service / address divider, treat as pending message
+			entity = [self.conversation selectedRecipient];
+		}
+        else
+		{
+			CKTranscriptBubbleData *data = [self bubbleData];
+			CKMessage *message = nil;
+			
+			NSUInteger index = indexPath.row + 1;
+			NSUInteger count = [data count];
+			while (index < count) {
+				message = [data messageAtIndex:index];
+				if (message) {
+					break;
+				}
+				index++;
+			}
+			
+			entity = [message.conversation recipient];
+		}
+		
         if (!entity) {
             NSLog(@"error: could not find entity for CKServiceView at indexPath %@", indexPath);
         }
         
         [(CKServiceView *)cell setEntity:entity];
-//        [(CKServiceView *)cell setService:message.service];
     }
 }
 
@@ -681,11 +896,8 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 %new(@@:)
 - (BOOL)sendingMessage
 {
-    NSNumber *sending = objc_getAssociatedObject(self, MGBubbleDataSendingMessageKey);\
-    if (sending)
-        return [sending boolValue];
-    else
-        return NO;
+    NSNumber *sending = objc_getAssociatedObject(self, MGBubbleDataSendingMessageKey);
+    return (sending ? [sending boolValue] : NO);
 }
 
 %new(v@:@)
@@ -706,13 +918,6 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 //{
 //    return objc_getAssociatedObject(self, MGBubbleDataPendingMessageKey);
 //}
-
-%new(@@:)
--(NSMutableArray *)_bubbleDataArray
-{
-    NSMutableArray *array = MSHookIvar<id>(self, "_bubbleDataArray");
-    return (array ? array : nil);
-}
 
 -(int)_appendServiceForMessageIfNeeded:(CKMessage *)message
 {
@@ -746,26 +951,6 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 
 %end
 
-%hook NSObject
-
-- (void)doesNotRecognizeSelector:(SEL)sel
-{
-    LOG_BACKTRACE;
-    %orig;
-}
-
-%end
-
-//%hook CKMadridService
-//
-//-(void)sendMessage:(CKMessage *)message
-//{
-//    NSLog(@"sending message %@ with conversation %@ and recipients %@ and aggregate %@", message, message.conversation, message.conversation.recipients, message.conversation.aggregateConversation);
-//    %orig;
-//}
-//
-//%end
-
 %hook CKConversationList
 
 //-(id)existingAggregateConversationForAddresses:(id)addresses
@@ -791,7 +976,7 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 {
     CKSubConversation *conversation = %orig;
     if (conversation && conversation.recipients.count == 1) {
-        NSLog(@"conversation: %@, aggregate: %@", conversation, conversation.aggregateConversation);
+//        NSLog(@"conversation: %@, aggregate: %@", conversation, conversation.aggregateConversation);
         conversation.aggregateConversation.selectedRecipient = [conversation.recipients objectAtIndex:0];
     }
     return conversation;
@@ -801,27 +986,21 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 
 %hook CKAggregateConversation
 
-//-(id)recipients
-//{
-//    id recipients = %orig;
-//    NSLog(@"recipients: %@ for convo: %@", recipients, self);
-//    return recipients;
-//}
-
-static NSString *const MGDidAddMessageBlockKey = @"MGDidAddMessageBlockKey";
+//static NSString *const MGDidAddMessageBlockKey = @"MGDidAddMessageBlockKey";
 static NSString *const MGSelectedRecipientKey = @"MGSelectedRecipientKey";
+static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 
-%new(v@:@)
-- (void)setDidAddMessageBlock:(void (^)(CKMessage *message, CKAggregateConversation *conversation))block
-{
-    objc_setAssociatedObject(self, MGDidAddMessageBlockKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
-
-%new(@@:)
-- (void (^)(CKMessage *, CKAggregateConversation *))didAddMessageBlock
-{
-    return objc_getAssociatedObject(self, MGDidAddMessageBlockKey);
-}
+//%new(v@:@)
+//- (void)setDidAddMessageBlock:(void (^)(CKMessage *message, CKAggregateConversation *conversation))block
+//{
+//    objc_setAssociatedObject(self, MGDidAddMessageBlockKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+//}
+//
+//%new(@@:)
+//- (void (^)(CKMessage *, CKAggregateConversation *))didAddMessageBlock
+//{
+//    return objc_getAssociatedObject(self, MGDidAddMessageBlockKey);
+//}
 
 %new(v@:@)
 - (void)setSelectedRecipient:(CKEntity *)recipient
@@ -844,8 +1023,6 @@ static NSString *const MGSelectedRecipientKey = @"MGSelectedRecipientKey";
     return objc_getAssociatedObject(self, MGSelectedRecipientKey);
 }
 
-static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
-
 %new(@@:)
 - (CKMessage *)pendingMessage
 {
@@ -856,6 +1033,28 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 - (void)setPendingMessage:(CKMessage *)pendingMessage
 {
     objc_setAssociatedObject(self, MGPendingMessageKey, pendingMessage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+%new(@@:)
+- (NSArray *)allAddresses
+{
+	NSMutableArray *addresses = [NSMutableArray array];
+    for (CKSubConversation *conversation in self.subConversations)
+    {
+        for (CKEntity *entity in conversation.recipients)
+        {
+            NSString *address = entity.normalizedRawAddress;
+			if (address && entity.propertyType == kABPersonPhoneProperty) {
+				address = [ABPhoneFormatting abNormalizedPhoneNumberFromString:address];
+			}
+			
+            if (address) {
+                [addresses addObject:address];
+            }
+        }
+    }
+    
+    return [NSArray arrayWithArray:addresses];
 }
 
 -(id)_subConversationForService:(id)service create:(BOOL)create
@@ -970,9 +1169,9 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
     if ([message isOutgoing] && [message conversation].recipients.count == 1) {
         self.selectedRecipient = [[message conversation].recipients objectAtIndex:0];
         
-        if ([self didAddMessageBlock]) {
-            [self didAddMessageBlock](message, self);
-        }
+//        if ([self didAddMessageBlock]) {
+//            [self didAddMessageBlock](message, self);
+//        }
     }
 //    NSLog(@"result: %d for message %@ with conversation %@", result, message, message.conversation);
     return result;
@@ -995,11 +1194,10 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 
 %end
 
-%hook CKMadridService
+%hook CKSMSService
 
 -(id)newMessageWithComposition:(id)composition forConversation:(CKSubConversation *)conversation
 {
-    %log;
     CKMessage *message = %orig;
     if ([conversation aggregateConversation]) {
         [[conversation aggregateConversation] addMessage:message incrementUnreadCount:NO];
@@ -1009,15 +1207,74 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 
 %end
 
-%hook SMSApplication
+%hook CKMadridService
 
-- (void)handleURL:(NSURL *)url
+-(id)newMessageWithComposition:(id)composition forConversation:(CKSubConversation *)conversation
 {
-    %log;
-    %orig;
+    CKMessage *message = %orig;
+    if ([conversation aggregateConversation]) {
+        [[conversation aggregateConversation] addMessage:message incrementUnreadCount:NO];
+    }
+    return message;
 }
 
 %end
+
+//%hook SMSApplication
+//
+//- (void)handleURL:(NSURL *)url
+//{
+//    %log;
+//    %orig;
+//}
+//
+//%end
+
+%hook CKRecipientSelectionView
+
+%new(v@:@@)
+- (void)composeRecipientView:(id)view showPersonCardForAtom:(MFComposeRecipientAtom *)atom
+{
+	if (self.delegate && [self.delegate respondsToSelector:@selector(recipientSelectionView:selectAddressForAtom:)]) {
+		[self.delegate recipientSelectionView:self selectAddressForAtom:atom];
+	}
+}
+
+%end
+
+//// CKRecipientSelectionView->_toField (CKComposeRecipientView)
+//// CKComposeRecipientView->_atoms
+//
+//#warning TODO: look at MFComposeRecipientAtom - (void)handleTouchAndHold
+//
+//// may want to use these for MFAddressAtom (ie. group message list atoms) too,
+//// in which case use common superclass MFAtomView
+//%hook MFComposeRecipientAtom
+//
+//static NSString *const MGAtomViewGestureKey = @"MGAtomViewGestureKey";
+//
+//%new(@@:)
+//- (UILongPressGestureRecognizer *)longPressGesture
+//{
+//    return objc_getAssociatedObject(self, MGAtomViewGestureKey);
+//}
+//
+//%new(v@:@)
+//- (void)setLongPressGesture:(UILongPressGestureRecognizer *)longPressGesture
+//{
+//	UILongPressGestureRecognizer *prevGesture = [self longPressGesture];
+//	if (prevGesture != longPressGesture) {
+//		if (prevGesture) {
+//			[self removeGestureRecognizer:prevGesture];
+//		}
+//		if (longPressGesture) {
+//			[self addGestureRecognizer:longPressGesture];
+//		}
+//		objc_setAssociatedObject(self, MGAtomViewGestureKey, longPressGesture, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//	}
+//}
+//
+//%end
 
 %ctor {
     %init;

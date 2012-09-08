@@ -1,3 +1,6 @@
 [submodule "Merge/ARSharedHelpers"]
 	path = Merge/ARSharedHelpers
 	url = https://aricha@github.com/aricha/ARSharedHelpers.git
+[submodule "Merge/ABContactHelper"]
+	path = Merge/ABContactHelper
+	url = https://github.com/erica/ABContactHelper.git

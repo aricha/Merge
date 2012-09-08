@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D031D4D15F5788100B24F3C /* ABContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D031D4715F5788100B24F3C /* ABContact.h */; };
+		0D031D4E15F5788100B24F3C /* ABContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D031D4815F5788100B24F3C /* ABContact.m */; };
+		0D031D4F15F5788100B24F3C /* ABContactsHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D031D4915F5788100B24F3C /* ABContactsHelper.h */; };
+		0D031D5015F5788100B24F3C /* ABContactsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D031D4A15F5788100B24F3C /* ABContactsHelper.m */; };
+		0D031D5115F5788100B24F3C /* ABGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D031D4B15F5788100B24F3C /* ABGroup.h */; };
+		0D031D5215F5788100B24F3C /* ABGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D031D4C15F5788100B24F3C /* ABGroup.m */; };
 		0D04F84F15D0AC1D0068C91E /* DebugTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D04F84915D0AC1D0068C91E /* DebugTools.h */; };
 		0D04F85015D0AC1D0068C91E /* DebugTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D04F84A15D0AC1D0068C91E /* DebugTools.m */; };
 		0D04F85115D0AC1D0068C91E /* SubstrateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */; };
@@ -23,9 +29,19 @@
 		0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1604E15BCD1D1002A4315 /* Merge.mm */; };
 		0DA1606015BCD414002A4315 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1605F15BCD414002A4315 /* libsubstrate.dylib */; };
 		0DA1606215BCD473002A4315 /* ChatKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1606115BCD473002A4315 /* ChatKit.framework */; };
+		0DD6F09615F6A713000B9998 /* MGAddressManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD6F09415F6A713000B9998 /* MGAddressManager.h */; };
+		0DD6F09715F6A713000B9998 /* MGAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6F09515F6A713000B9998 /* MGAddressManager.m */; };
+		0DDCB76215F6FEB10051D085 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */; };
+		0DDCB76515F709850051D085 /* AppSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDCB76415F709850051D085 /* AppSupport.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D031D4715F5788100B24F3C /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABContact.h; path = ABContactHelper/ABContact.h; sourceTree = "<group>"; };
+		0D031D4815F5788100B24F3C /* ABContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABContact.m; path = ABContactHelper/ABContact.m; sourceTree = "<group>"; };
+		0D031D4915F5788100B24F3C /* ABContactsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABContactsHelper.h; path = ABContactHelper/ABContactsHelper.h; sourceTree = "<group>"; };
+		0D031D4A15F5788100B24F3C /* ABContactsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABContactsHelper.m; path = ABContactHelper/ABContactsHelper.m; sourceTree = "<group>"; };
+		0D031D4B15F5788100B24F3C /* ABGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABGroup.h; path = ABContactHelper/ABGroup.h; sourceTree = "<group>"; };
+		0D031D4C15F5788100B24F3C /* ABGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABGroup.m; path = ABContactHelper/ABGroup.m; sourceTree = "<group>"; };
 		0D04F84915D0AC1D0068C91E /* DebugTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugTools.h; path = ARSharedHelpers/DebugTools.h; sourceTree = "<group>"; };
 		0D04F84A15D0AC1D0068C91E /* DebugTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DebugTools.m; path = ARSharedHelpers/DebugTools.m; sourceTree = "<group>"; };
 		0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SubstrateAdditions.h; path = ARSharedHelpers/SubstrateAdditions.h; sourceTree = "<group>"; };
@@ -49,6 +65,10 @@
 		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
 		0DA1605F15BCD414002A4315 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = /opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<absolute>"; };
 		0DA1606115BCD473002A4315 /* ChatKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChatKit.framework; path = "/Applications/Xcode45-DP4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework"; sourceTree = "<absolute>"; };
+		0DD6F09415F6A713000B9998 /* MGAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGAddressManager.h; sourceTree = "<group>"; };
+		0DD6F09515F6A713000B9998 /* MGAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGAddressManager.m; sourceTree = "<group>"; };
+		0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		0DDCB76415F709850051D085 /* AppSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppSupport.framework; path = System/Library/PrivateFrameworks/AppSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +76,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DDCB76515F709850051D085 /* AppSupport.framework in Frameworks */,
+				0DDCB76215F6FEB10051D085 /* AddressBookUI.framework in Frameworks */,
 				0D9C2E6315DB7A2B0009AB0A /* AddressBook.framework in Frameworks */,
 				0D19EF4415C631F600B5D4D6 /* CoreGraphics.framework in Frameworks */,
 				0D19EF4215C62FA900B5D4D6 /* QuartzCore.framework in Frameworks */,
@@ -69,6 +91,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D031D5415F5788A00B24F3C /* ABContactsHelper */ = {
+			isa = PBXGroup;
+			children = (
+				0D031D4715F5788100B24F3C /* ABContact.h */,
+				0D031D4815F5788100B24F3C /* ABContact.m */,
+				0D031D4915F5788100B24F3C /* ABContactsHelper.h */,
+				0D031D4A15F5788100B24F3C /* ABContactsHelper.m */,
+				0D031D4B15F5788100B24F3C /* ABGroup.h */,
+				0D031D4C15F5788100B24F3C /* ABGroup.m */,
+			);
+			name = ABContactsHelper;
+			sourceTree = "<group>";
+		};
 		0DA1603315BCD1D0002A4315 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +124,8 @@
 		0DA1604215BCD1D0002A4315 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DDCB76415F709850051D085 /* AppSupport.framework */,
+				0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */,
 				0D9C2E6215DB7A2B0009AB0A /* AddressBook.framework */,
 				0D19EF4315C631F600B5D4D6 /* CoreGraphics.framework */,
 				0D19EF4115C62FA900B5D4D6 /* QuartzCore.framework */,
@@ -104,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				0DA1604D15BCD1D1002A4315 /* Merge.xm */,
+				0DD6F09415F6A713000B9998 /* MGAddressManager.h */,
+				0DD6F09515F6A713000B9998 /* MGAddressManager.m */,
 				0DA1604E15BCD1D1002A4315 /* Merge.mm */,
 				0D19EF4515C7780F00B5D4D6 /* MGTranscriptHeaderContext.h */,
 				0D19EF4615C7780F00B5D4D6 /* MGTranscriptHeaderContext.m */,
@@ -134,6 +173,7 @@
 		0DA1604A15BCD1D1002A4315 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0D031D5415F5788A00B24F3C /* ABContactsHelper */,
 				0D04F84915D0AC1D0068C91E /* DebugTools.h */,
 				0D04F84A15D0AC1D0068C91E /* DebugTools.m */,
 				0D04F84B15D0AC1D0068C91E /* SubstrateAdditions.h */,
@@ -181,6 +221,10 @@
 				0D04F84F15D0AC1D0068C91E /* DebugTools.h in Headers */,
 				0D04F85115D0AC1D0068C91E /* SubstrateAdditions.h in Headers */,
 				0D04F85315D0AC1D0068C91E /* UIView+LTKAdditions.h in Headers */,
+				0D031D4D15F5788100B24F3C /* ABContact.h in Headers */,
+				0D031D4F15F5788100B24F3C /* ABContactsHelper.h in Headers */,
+				0D031D5115F5788100B24F3C /* ABGroup.h in Headers */,
+				0DD6F09615F6A713000B9998 /* MGAddressManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,21 +314,80 @@
 				0D19EF4815C7780F00B5D4D6 /* MGTranscriptHeaderContext.m in Sources */,
 				0D04F85215D0AC1D0068C91E /* SubstrateAdditions.m in Sources */,
 				0D04F85415D0AC1D0068C91E /* UIView+LTKAdditions.m in Sources */,
+				0D031D4E15F5788100B24F3C /* ABContact.m in Sources */,
+				0D031D5015F5788100B24F3C /* ABContactsHelper.m in Sources */,
+				0D031D5215F5788100B24F3C /* ABGroup.m in Sources */,
+				0DD6F09715F6A713000B9998 /* MGAddressManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		0D94C8DB15F929A300B2D2A5 /* Debug - UBC iPhone */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				"COPY_PHASE_STRIP[sdk=*]" = NO;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
+				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/System/Library/PrivateFrameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(iOSOpenDevPath)/include/**";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = "$(iOSOpenDevPath)/lib/**";
+				SDKROOT = iphoneos5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = NO;
+				iOSOpenDevPath = /opt/iOSOpenDev;
+			};
+			name = "Debug - UBC iPhone";
+		};
+		0D94C8DC15F929A300B2D2A5 /* Debug - UBC iPhone */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SDKROOT}/System/Library/PrivateFrameworks",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
+				INSTALL_PATH = /Library/MobileSubstrate/DynamicLibraries;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"${SDKROOT}/System/Library/PrivateFrameworks/ChatKit.framework",
+					/opt/iOSOpenDev/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.1;
+				iOSOpenDevCopyOnBuild = NO;
+				iOSOpenDevDevice = 128.189.197.156;
+				iOSOpenDevInstallOnAnyBuild = YES;
+				iOSOpenDevInstallOnProfiling = NO;
+				iOSOpenDevRespringOnInstall = NO;
+				iOSOpenDevUsePackageVersionPList = NO;
+			};
+			name = "Debug - UBC iPhone";
+		};
 		0DA1605415BCD1D1002A4315 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = (
-					"${SDKROOT}/System/Library/PrivateFrameworks",
-					/opt/iOSOpenDev/frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/System/Library/PrivateFrameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -305,10 +408,7 @@
 				COPY_PHASE_STRIP = NO;
 				"COPY_PHASE_STRIP[sdk=*]" = NO;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = (
-					"${SDKROOT}/System/Library/PrivateFrameworks",
-					/opt/iOSOpenDev/frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/System/Library/PrivateFrameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -338,6 +438,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SDKROOT}/System/Library/PrivateFrameworks",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -367,6 +468,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SDKROOT}/System/Library/PrivateFrameworks",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -393,10 +495,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = (
-					"${SDKROOT}/System/Library/PrivateFrameworks",
-					/opt/iOSOpenDev/frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/System/Library/PrivateFrameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -426,6 +525,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SDKROOT}/System/Library/PrivateFrameworks",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -452,10 +552,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.gch (*) .DS_Store CVS .svn .git .hg *.xcodeproj *.xcode *.pbproj *.pbxproj";
-				FRAMEWORK_SEARCH_PATHS = (
-					"${SDKROOT}/System/Library/PrivateFrameworks",
-					/opt/iOSOpenDev/frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = "${SDKROOT}/System/Library/PrivateFrameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -478,6 +575,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"${SDKROOT}/System/Library/PrivateFrameworks",
+					"\"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Merge/Merge-Prefix.pch";
@@ -508,10 +606,11 @@
 				0DA1605415BCD1D1002A4315 /* Release */,
 				0DA1605D15BCD3C1002A4315 /* Release - iPad */,
 				0DA1605515BCD1D1002A4315 /* Debug */,
+				0D94C8DB15F929A300B2D2A5 /* Debug - UBC iPhone */,
 				0DA1605B15BCD3B8002A4315 /* Debug - iPad */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		0DA1605615BCD1D1002A4315 /* Build configuration list for PBXNativeTarget "Merge" */ = {
 			isa = XCConfigurationList;
@@ -519,10 +618,11 @@
 				0DA1605715BCD1D1002A4315 /* Release */,
 				0DA1605E15BCD3C1002A4315 /* Release - iPad */,
 				0DA1605815BCD1D1002A4315 /* Debug */,
+				0D94C8DC15F929A300B2D2A5 /* Debug - UBC iPhone */,
 				0DA1605C15BCD3B8002A4315 /* Debug - iPad */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
