@@ -21,6 +21,8 @@
 #import <ChatKit/CKConversationList.h>
 #import <ChatKit/CKTranscriptToolbarView.h>
 #import <ChatKit/CKRecipientSelectionView.h>
+#import <ChatKit/CKRecipientGenerator.h>
+#import <ChatKit/CKComposeRecipientView.h>
 
 #import <UIKit/UIPlacardButton_Dumped.h>
 #import <AddressBook/ABPhoneFormatting_Dumped.h>
@@ -67,7 +69,9 @@
 @end
 
 @interface CKTranscriptBubbleData ()
-@property (nonatomic) BOOL sendingMessage;
+@property (nonatomic, retain) CKService *pendingService;
+- (CKMessage *)lastMessageFromIndex:(NSUInteger)index;
+- (CKMessage *)nextMessageFromIndex:(NSUInteger)index;
 @end
 
 @interface CKServiceView ()
@@ -220,26 +224,6 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
                                                object:nil];
 }
 
-//- (void)viewDidLoad
-//{
-//    %orig;
-//    
-//#warning Testing code
-//    UINavigationController *navController = MSHookIvar<id>(self, "_navigationController");
-//    if (navController) {
-//        UISwipeGestureRecognizer *swipeUp = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(didSwipeUpOnNavBar:)] autorelease];
-//        swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
-//        [navController.navigationBar addGestureRecognizer:swipeUp];
-//    }
-//}
-//
-//%new(v@:@)
-//- (void)didSwipeUpOnNavBar:(UISwipeGestureRecognizer *)gesture
-//{
-//    %log;
-//    [self.navigationController setNavigationBarHidden:YES animated:YES];
-//}
-
 - (void)viewWillUnload
 {
     %orig;
@@ -267,11 +251,6 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
     [[self headerContext] updateVisibleOffsetForActiveHeaderOffset];
     DLog(@"viewDidAppear, visibleOffset: %f, contentOffset: %f", [[self headerContext] visibleOffset], self.transcriptTable.contentOffset.y);
 }
-
-//- (void)_setupTranscriptHeader {
-//    %log;
-//   %orig;
-//}
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
@@ -533,23 +512,6 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
 
 %end
 
-//%hook _CKConversation
-//
-//-(NSUInteger)recipientsHash
-//{
-//    NSUInteger hash = MSHookIvar<NSUInteger>(self, "_recipientHash");
-//    if (hash == 0) {
-//        for (CKEntity *entity in [self recipients]) {
-//            hash = hash ^ entity.addressBookUID;
-//        }
-//        NSLog(@"calculated hash %u for recipients %@", hash, [self recipients]);
-//    }
-//
-//    return hash;
-//}
-//
-//%end
-
 %hook CKServiceView
 
 //extern CFStringRef PNCopyFormattedStringWithCountry(CFStringRef pnString, CFStringRef countryCode);
@@ -562,16 +524,6 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
     NSMutableString *labelText = [NSMutableString string];
     CKEntity *entity = [self entity];
     CKService *service = [self service];
-    
-//    if (entity) {
-//        labelText = entity.normalizedRawAddress;
-//    }
-//    if (service) {
-//        NSString *serviceText = (entity ? @" - " : @"");
-//        serviceText = [serviceText stringByAppendingString:[service displayName]];
-//        
-//        labelText = [labelText stringByAppendingString:serviceText];
-//    }
     
     if (service) {
         [labelText appendString:[service displayName]];
@@ -694,23 +646,29 @@ extern NSString *const CKBubbleDataMessage;
 	}
 }
 
-//-(void)sendMessage:(id)message
-//{
-//    NSMutableArray *recipients = MSHookIvar<id>(self, "_newCompositionRecipients");
-//    if (!recipients) {recipients = nil;}
-////    [recipients addObject:@""];
-//    unsigned flags = MSHookIvar<unsigned>(self, "_newRecipient");
-//    NSLog(@"sending message to recipients: %@, message: %@, _newRecipient: %u, isNewRecipient: %d, attempted: %u", recipients, message, flags, [self isNewRecipient], (flags & FLAG_NEW_RECIPIENT));
-//    BOOL isNewRecipient = [self isNewRecipient];
-//    
-//    // enable new recipients temporarily
-//    flags |= FLAG_NEW_RECIPIENT;
-//    if (recipients.count == 0) {
-//        recipients
-//    }
-//    
-//    %orig;
-//}
+-(void)_computeBubbleData:(BOOL)force
+{
+	%log;
+	%orig;
+	
+	CKTranscriptBubbleData *data = [self bubbleData];
+	CKService *lastService = [data serviceAtIndex:[data _lastIndexExcludingTypingIndicator]-1];
+	
+	if (!lastService && [data count] > 0) {
+		CKService *pendingService = data.pendingService;
+		if (pendingService) {
+			[data _appendService:pendingService];
+		}
+		else {
+			CKEntity *selectedRecipient = self.conversation.selectedRecipient;
+			CKMessage *lastMessage = [data lastMessageFromIndex:[data count]];
+			
+			if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
+				[data _appendService:selectedRecipient.service];
+			}
+		}
+	}
+}
 
 %new(v@:@)
 -(void)showPendingDividerIfNecessaryForRecipient:(CKEntity *)recipient
@@ -731,7 +689,8 @@ extern NSString *const CKBubbleDataMessage;
 	{
 		// add pending divider to indicate new address
 		[tableView beginUpdates];
-		[data _appendService:recipient.service];
+//		[data _appendService:recipient.service];
+		data.pendingService = recipient.service;
 		
 		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
 //		NSLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
@@ -814,7 +773,15 @@ extern NSString *const CKBubbleDataMessage;
 																			 asPopover:YES
 																	availableAddresses:nil
 																			completion:^(NSString *selectedAddress) {
-																				
+																				if (selectedAddress) {
+																					CKRecipientGenerator *generator = [self _recipientGenerator];
+																					MFComposeRecipient *recipient = [generator recipientWithAddress:selectedAddress];
+																					CKComposeRecipientView *recipientsView = view.toField;
+																					MFComposeRecipient *prevRecipient = atom.recipient;
+																					if (recipient && recipientsView && ![recipient isEqual:prevRecipient]) {
+																						[recipientsView replaceRecipient:prevRecipient withRecipient:recipient];
+																					}
+																				}
 																			}];
 	}
 }
@@ -834,17 +801,18 @@ extern NSString *const CKBubbleDataMessage;
         else
 		{
 			CKTranscriptBubbleData *data = [self bubbleData];
-			CKMessage *message = nil;
-			
 			NSUInteger index = indexPath.row + 1;
-			NSUInteger count = [data count];
-			while (index < count) {
-				message = [data messageAtIndex:index];
-				if (message) {
-					break;
-				}
-				index++;
-			}
+			
+			CKMessage *message = [data nextMessageFromIndex:index];
+			
+//			NSUInteger count = [data count];
+//			while (index < count) {
+//				message = [data messageAtIndex:index];
+//				if (message) {
+//					break;
+//				}
+//				index++;
+//			}
 			
 			entity = [message.conversation recipient];
 		}
@@ -857,84 +825,86 @@ extern NSString *const CKBubbleDataMessage;
     }
 }
 
-//-(void)_startCreatingNewMessageForSending:(CKMessageStandaloneComposition *)composition
-//{
-//    NSLog(@"creating composition %@", composition);
-//    
-////    CKTranscriptBubbleData *data = [self bubbleData];
-////    data.pendingMessage = message;
-////    data.sendingMessage = YES;
-////    CKAggregateConversation *aggregateConversation = [self conversation];
-////    aggregateConversation.didAddMessageBlock = ^(CKMessage *message, CKAggregateConversation *conversation) {
-////        NSLog(@"added new message, message conversation: %@, selected recipient: %@", message.conversation, conversation.selectedRecipient);
-////#warning TODO: insert address divider as a new cell if necessary
-////        
-////        [[self transcriptTable] beginUpdates];
-////        int index = [[self bubbleData] _appendServiceForMessageIfNeeded:message];
-////        NSLog(@"message index: %d, insert index: %d", [[self bubbleData] indexForMessage:message], index);
-////        if (index != NSNotFound) {
-////            [[self transcriptTable] insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-////        }
-////        [[self transcriptTable] endUpdates];
-//////        if (index != NSNotFound) {
-//////            [[self transcriptTable] reloadData];
-//////        }
-////    };
-//    
-//    %orig;
-//    
-////    data.sendingMessage = NO;
-//}
-
 %end
 
 %hook CKTranscriptBubbleData
 
-//static NSString *const MGBubbleDataPendingMessageKey = @"MGBubbleDataPendingMessageKey";
-static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMessageKey";
+static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServiceKey";
 
 %new(@@:)
-- (BOOL)sendingMessage
+- (CKService *)pendingService
 {
-    NSNumber *sending = objc_getAssociatedObject(self, MGBubbleDataSendingMessageKey);
-    return (sending ? [sending boolValue] : NO);
+    return objc_getAssociatedObject(self, MGBubbleDataPendingServiceKey);
 }
 
 %new(v@:@)
-- (void)setSendingMessage:(BOOL)sendingMessage
+- (void)setPendingService:(CKService *)pendingService
 {
-    NSNumber *sending = [NSNumber numberWithBool:sendingMessage];
-    objc_setAssociatedObject(self, MGBubbleDataSendingMessageKey, sending, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	CKService *prevPendingService = [[[self pendingService] retain] autorelease];
+    objc_setAssociatedObject(self, MGBubbleDataPendingServiceKey, pendingService,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	if (pendingService) {
+		if (!prevPendingService) {
+			[self _appendService:pendingService];
+		}
+		else {
+			ULog(@"Error: changed existing pending service! Prev service: %@, new service: %@", prevPendingService, pendingService);
+		}
+	}
 }
 
-//%new(v@:@)
-//- (void)setPendingMessage:(CKMessage *)message
-//{
-//    objc_setAssociatedObject(self, MGBubbleDataPendingMessageKey, message, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//}
-//
-//%new(@@:)
-//- (CKEntity *)pendingMessage
-//{
-//    return objc_getAssociatedObject(self, MGBubbleDataPendingMessageKey);
-//}
+%new(@@:d)
+-(CKMessage *)lastMessageFromIndex:(NSUInteger)index
+{
+	%log;
+	
+	CKMessage *prevMessage = nil;
+	
+	int count = [self count];
+	if (index >= count) {
+		index = count-1;
+	}
+	
+	while (index > 0) {
+		prevMessage = [self messageAtIndex:index];
+		if (prevMessage) {
+			break;
+		}
+		index--;
+	}
+	
+	return prevMessage;
+}
+
+%new(@@:d)
+-(CKMessage *)nextMessageFromIndex:(NSUInteger)index
+{
+	%log;
+	
+	CKMessage *message = nil;
+	
+	int count = [self count];
+	while (index < count) {
+		message = [self messageAtIndex:index];
+		if (message) {
+			break;
+		}
+		index++;
+	}
+	
+	return message;
+}
 
 -(int)_appendServiceForMessageIfNeeded:(CKMessage *)message
 {
     NSInteger response = %orig;
-    if (response == NSNotFound && [message conversation]) { //![self sendingMessage]) {
+    if (response == NSNotFound && [message conversation]) {
         NSUInteger index = [self indexForMessage:message];
         if (index == NSNotFound) {
             index = [self count];
         }
-        CKMessage *prevMessage = nil;
-        while (index > 0) {
-            prevMessage = [self messageAtIndex:index-1];
-            if (prevMessage) {
-                break;
-            }
-            index--;
-        }
+		
+		CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
         
 //        NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
         
@@ -986,41 +956,19 @@ static NSString *const MGBubbleDataSendingMessageKey = @"MGBubbleDataSendingMess
 
 %hook CKAggregateConversation
 
-//static NSString *const MGDidAddMessageBlockKey = @"MGDidAddMessageBlockKey";
 static NSString *const MGSelectedRecipientKey = @"MGSelectedRecipientKey";
 static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
-
-//%new(v@:@)
-//- (void)setDidAddMessageBlock:(void (^)(CKMessage *message, CKAggregateConversation *conversation))block
-//{
-//    objc_setAssociatedObject(self, MGDidAddMessageBlockKey, block, OBJC_ASSOCIATION_COPY_NONATOMIC);
-//}
-//
-//%new(@@:)
-//- (void (^)(CKMessage *, CKAggregateConversation *))didAddMessageBlock
-//{
-//    return objc_getAssociatedObject(self, MGDidAddMessageBlockKey);
-//}
-
-%new(v@:@)
-- (void)setSelectedRecipient:(CKEntity *)recipient
-{
-//    void (^selectedRecipientChangedBlock)(CKMessage *, CKAggregateConversation *) = [self selectedRecipientChangedBlock];
-//    BOOL didChange = (recipient != [self selectedRecipient]);
-    
-//    NSLog(@"old selected: %@, new selected: %@", [self selectedRecipient], recipient);
-    
-    objc_setAssociatedObject(self, MGSelectedRecipientKey, recipient, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-//    if (didChange && selectedRecipientChangedBlock) {
-//        selectedRecipientChangedBlock([self pendingMessage], self);
-//    }
-}
 
 %new(@@:)
 - (CKEntity *)selectedRecipient
 {
     return objc_getAssociatedObject(self, MGSelectedRecipientKey);
+}
+
+%new(v@:@)
+- (void)setSelectedRecipient:(CKEntity *)recipient
+{
+    objc_setAssociatedObject(self, MGSelectedRecipientKey, recipient, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 %new(@@:)
@@ -1176,21 +1124,6 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 //    NSLog(@"result: %d for message %@ with conversation %@", result, message, message.conversation);
     return result;
 }
-
-//-(NSUInteger)recipientsHash
-//{
-//    NSUInteger hash = MSHookIvar<NSUInteger>(self, "_recipientHash");
-//    if (hash == 0) {
-//        for (CKSubConversation *convo in self.subConversations) {
-//            for (CKEntity *recipient in convo.recipients) {
-//                hash = hash ^ recipient.addressHash;
-//            }
-//        }
-//        NSLog(@"calculated hash %u", hash);
-//    }
-//
-//    return hash;
-//}
 
 %end
 
