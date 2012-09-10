@@ -91,8 +91,8 @@
 
 
 #include <substrate.h>
-@class CKServiceView; @class CKTranscriptToolbarView; @class CKEntity; @class CKSMSService; @class CKTranscriptTableView; @class CKConversationList; @class CKTranscriptHeaderView; @class CKMadridService; @class CKTranscriptBubbleData; @class CKTranscriptController; @class CKService; @class CKAggregateConversation; @class CKRecipientSelectionView; 
-static NSUInteger (*_logos_orig$_ungrouped$CKEntity$addressHash)(CKEntity*, SEL); static NSUInteger _logos_method$_ungrouped$CKEntity$addressHash(CKEntity*, SEL); static void _logos_method$_ungrouped$CKServiceView$updateTitleLabel(CKServiceView*, SEL); static CKService * _logos_method$_ungrouped$CKServiceView$service(CKServiceView*, SEL); static UILabel * _logos_method$_ungrouped$CKServiceView$textLabel(CKServiceView*, SEL); static void (*_logos_orig$_ungrouped$CKServiceView$setService$)(CKServiceView*, SEL, CKService *); static void _logos_method$_ungrouped$CKServiceView$setService$(CKServiceView*, SEL, CKService *); static CKEntity * _logos_method$_ungrouped$CKServiceView$entity(CKServiceView*, SEL); static void _logos_method$_ungrouped$CKServiceView$setEntity$(CKServiceView*, SEL, CKEntity *); static UIButton * _logos_method$_ungrouped$CKTranscriptToolbarView$contactButton(CKTranscriptToolbarView*, SEL); static CKRecipientListView * _logos_method$_ungrouped$CKTranscriptController$recipientListView(CKTranscriptController*, SEL); static CKTranscriptToolbarView * _logos_method$_ungrouped$CKTranscriptController$transcriptToolbarView(CKTranscriptController*, SEL); static void _logos_method$_ungrouped$CKTranscriptController$didSelectContactButtonPad$(CKTranscriptController*, SEL, UIGestureRecognizer *); static void (*_logos_orig$_ungrouped$CKTranscriptController$updateActionItem)(CKTranscriptController*, SEL); static void _logos_method$_ungrouped$CKTranscriptController$updateActionItem(CKTranscriptController*, SEL); static void (*_logos_orig$_ungrouped$CKTranscriptController$_computeBubbleData$)(CKTranscriptController*, SEL, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$_computeBubbleData$(CKTranscriptController*, SEL, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$showPendingDividerIfNecessaryForRecipient$(CKTranscriptController*, SEL, CKEntity *); static void _logos_method$_ungrouped$CKTranscriptController$selectAddressForCurrentRecipientFromView$asPopover$(CKTranscriptController*, SEL, UIView *, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$recipientSelectionView$selectAddressForAtom$(CKTranscriptController*, SEL, CKRecipientSelectionView *, MFComposeRecipientAtom *); static void (*_logos_orig$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$)(CKTranscriptController*, SEL, id, id, NSIndexPath *); static void _logos_method$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$(CKTranscriptController*, SEL, id, id, NSIndexPath *); static CKService * _logos_method$_ungrouped$CKTranscriptBubbleData$pendingService(CKTranscriptBubbleData*, SEL); static void _logos_method$_ungrouped$CKTranscriptBubbleData$setPendingService$(CKTranscriptBubbleData*, SEL, CKService *); static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFromIndex$(CKTranscriptBubbleData*, SEL, NSUInteger); static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$nextMessageFromIndex$(CKTranscriptBubbleData*, SEL, NSUInteger); static int (*_logos_orig$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$)(CKTranscriptBubbleData*, SEL, CKMessage *); static int _logos_method$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$(CKTranscriptBubbleData*, SEL, CKMessage *); static CKAggregateConversation * (*_logos_orig$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$)(CKConversationList*, SEL, NSArray *, BOOL); static CKAggregateConversation * _logos_method$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$(CKConversationList*, SEL, NSArray *, BOOL); static id (*_logos_orig$_ungrouped$CKConversationList$existingConversationForAddresses$)(CKConversationList*, SEL, NSArray *); static id _logos_method$_ungrouped$CKConversationList$existingConversationForAddresses$(CKConversationList*, SEL, NSArray *); static void _logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$(CKAggregateConversation*, SEL, CKEntity *); static CKEntity * _logos_method$_ungrouped$CKAggregateConversation$selectedRecipient(CKAggregateConversation*, SEL); static CKMessage * _logos_method$_ungrouped$CKAggregateConversation$pendingMessage(CKAggregateConversation*, SEL); static void _logos_method$_ungrouped$CKAggregateConversation$setPendingMessage$(CKAggregateConversation*, SEL, CKMessage *); static NSArray * _logos_method$_ungrouped$CKAggregateConversation$allAddresses(CKAggregateConversation*, SEL); static id (*_logos_orig$_ungrouped$CKAggregateConversation$_subConversationForService$create$)(CKAggregateConversation*, SEL, id, BOOL); static id _logos_method$_ungrouped$CKAggregateConversation$_subConversationForService$create$(CKAggregateConversation*, SEL, id, BOOL); static id (*_logos_orig$_ungrouped$CKAggregateConversation$_bestExistingConversation)(CKAggregateConversation*, SEL); static id _logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversation(CKAggregateConversation*, SEL); static CKSubConversation * _logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversationWithService$(CKAggregateConversation*, SEL, CKService *); static BOOL (*_logos_orig$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$)(CKAggregateConversation*, SEL, CKSubConversation *); static BOOL _logos_method$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$(CKAggregateConversation*, SEL, CKSubConversation *); static int (*_logos_orig$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$)(CKAggregateConversation*, SEL, CKMessage *, BOOL); static int _logos_method$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$(CKAggregateConversation*, SEL, CKMessage *, BOOL); static id (*_logos_orig$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$)(CKSMSService*, SEL, id, CKSubConversation *); static id _logos_method$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$(CKSMSService*, SEL, id, CKSubConversation *); static id (*_logos_orig$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$)(CKMadridService*, SEL, id, CKSubConversation *); static id _logos_method$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$(CKMadridService*, SEL, id, CKSubConversation *); static void _logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientView$showPersonCardForAtom$(CKRecipientSelectionView*, SEL, id, MFComposeRecipientAtom *); 
+@class MFComposeRecipientAtom; @class CKServiceView; @class CKComposeRecipientView; @class CKTranscriptToolbarView; @class CKEntity; @class CKSMSService; @class CKTranscriptTableView; @class CKConversationList; @class CKTranscriptHeaderView; @class CKMadridService; @class CKTranscriptBubbleData; @class CKTranscriptController; @class CKService; @class CKAggregateConversation; @class CKRecipientSelectionView; 
+static NSUInteger (*_logos_orig$_ungrouped$CKEntity$addressHash)(CKEntity*, SEL); static NSUInteger _logos_method$_ungrouped$CKEntity$addressHash(CKEntity*, SEL); static void _logos_method$_ungrouped$CKServiceView$updateTitleLabel(CKServiceView*, SEL); static CKService * _logos_method$_ungrouped$CKServiceView$service(CKServiceView*, SEL); static UILabel * _logos_method$_ungrouped$CKServiceView$textLabel(CKServiceView*, SEL); static void (*_logos_orig$_ungrouped$CKServiceView$setService$)(CKServiceView*, SEL, CKService *); static void _logos_method$_ungrouped$CKServiceView$setService$(CKServiceView*, SEL, CKService *); static CKEntity * _logos_method$_ungrouped$CKServiceView$entity(CKServiceView*, SEL); static void _logos_method$_ungrouped$CKServiceView$setEntity$(CKServiceView*, SEL, CKEntity *); static UIButton * _logos_method$_ungrouped$CKTranscriptToolbarView$contactButton(CKTranscriptToolbarView*, SEL); static CKRecipientListView * _logos_method$_ungrouped$CKTranscriptController$recipientListView(CKTranscriptController*, SEL); static CKTranscriptToolbarView * _logos_method$_ungrouped$CKTranscriptController$transcriptToolbarView(CKTranscriptController*, SEL); static void _logos_method$_ungrouped$CKTranscriptController$didSelectContactButtonPad$(CKTranscriptController*, SEL, UIGestureRecognizer *); static void (*_logos_orig$_ungrouped$CKTranscriptController$updateActionItem)(CKTranscriptController*, SEL); static void _logos_method$_ungrouped$CKTranscriptController$updateActionItem(CKTranscriptController*, SEL); static void (*_logos_orig$_ungrouped$CKTranscriptController$_computeBubbleData$)(CKTranscriptController*, SEL, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$_computeBubbleData$(CKTranscriptController*, SEL, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$showPendingDividerIfNecessaryForRecipient$(CKTranscriptController*, SEL, CKEntity *); static void _logos_method$_ungrouped$CKTranscriptController$selectAddressForCurrentRecipientFromView$asPopover$(CKTranscriptController*, SEL, UIView *, BOOL); static void _logos_method$_ungrouped$CKTranscriptController$recipientSelectionView$selectAddressForAtom$(CKTranscriptController*, SEL, CKRecipientSelectionView *, MFComposeRecipientAtom *); static void (*_logos_orig$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$)(CKTranscriptController*, SEL, id, id, NSIndexPath *); static void _logos_method$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$(CKTranscriptController*, SEL, id, id, NSIndexPath *); static CKService * _logos_method$_ungrouped$CKTranscriptBubbleData$pendingService(CKTranscriptBubbleData*, SEL); static void _logos_method$_ungrouped$CKTranscriptBubbleData$setPendingService$(CKTranscriptBubbleData*, SEL, CKService *); static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFromIndex$(CKTranscriptBubbleData*, SEL, NSUInteger); static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$nextMessageFromIndex$(CKTranscriptBubbleData*, SEL, NSUInteger); static int (*_logos_orig$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$)(CKTranscriptBubbleData*, SEL, CKMessage *); static int _logos_method$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$(CKTranscriptBubbleData*, SEL, CKMessage *); static CKAggregateConversation * (*_logos_orig$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$)(CKConversationList*, SEL, NSArray *, BOOL); static CKAggregateConversation * _logos_method$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$(CKConversationList*, SEL, NSArray *, BOOL); static id (*_logos_orig$_ungrouped$CKConversationList$existingConversationForAddresses$)(CKConversationList*, SEL, NSArray *); static id _logos_method$_ungrouped$CKConversationList$existingConversationForAddresses$(CKConversationList*, SEL, NSArray *); static CKEntity * _logos_method$_ungrouped$CKAggregateConversation$selectedRecipient(CKAggregateConversation*, SEL); static void _logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$(CKAggregateConversation*, SEL, CKEntity *); static CKMessage * _logos_method$_ungrouped$CKAggregateConversation$pendingMessage(CKAggregateConversation*, SEL); static void _logos_method$_ungrouped$CKAggregateConversation$setPendingMessage$(CKAggregateConversation*, SEL, CKMessage *); static NSArray * _logos_method$_ungrouped$CKAggregateConversation$allAddresses(CKAggregateConversation*, SEL); static id (*_logos_orig$_ungrouped$CKAggregateConversation$_subConversationForService$create$)(CKAggregateConversation*, SEL, id, BOOL); static id _logos_method$_ungrouped$CKAggregateConversation$_subConversationForService$create$(CKAggregateConversation*, SEL, id, BOOL); static id (*_logos_orig$_ungrouped$CKAggregateConversation$_bestExistingConversation)(CKAggregateConversation*, SEL); static id _logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversation(CKAggregateConversation*, SEL); static CKSubConversation * _logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversationWithService$(CKAggregateConversation*, SEL, CKService *); static BOOL (*_logos_orig$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$)(CKAggregateConversation*, SEL, CKSubConversation *); static BOOL _logos_method$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$(CKAggregateConversation*, SEL, CKSubConversation *); static int (*_logos_orig$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$)(CKAggregateConversation*, SEL, CKMessage *, BOOL); static int _logos_method$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$(CKAggregateConversation*, SEL, CKMessage *, BOOL); static id (*_logos_orig$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$)(CKSMSService*, SEL, id, CKSubConversation *); static id _logos_method$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$(CKSMSService*, SEL, id, CKSubConversation *); static id (*_logos_orig$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$)(CKMadridService*, SEL, id, CKSubConversation *); static id _logos_method$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$(CKMadridService*, SEL, id, CKSubConversation *); static void (*_logos_orig$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$)(CKComposeRecipientView*, SEL, id, BOOL); static void _logos_method$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$(CKComposeRecipientView*, SEL, id, BOOL); static void _logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientView$showPersonCardForAtom$(CKRecipientSelectionView*, SEL, id, MFComposeRecipientAtom *); static id (*_logos_orig$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$)(MFComposeRecipientAtom*, SEL, CGRect, id, int); static id _logos_method$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$(MFComposeRecipientAtom*, SEL, CGRect, id, int); static void _logos_method$_ungrouped$MFComposeRecipientAtom$handleLongPressGesture$(MFComposeRecipientAtom*, SEL, UILongPressGestureRecognizer *); 
 static Class _logos_static_class$CKService; static Class _logos_static_class$CKEntity; 
 #line 92 "/Users/andrewr/Dropbox/Development/Merge/Merge/Merge.xm"
 static id (*_logos_orig$FloatingHeader$CKTranscriptHeaderView$initWithFrame$isPhoneTranscript$displayLoadPrevious$isGroupMessage$)(CKTranscriptHeaderView*, SEL, CGRect, BOOL, BOOL, BOOL); static id _logos_method$FloatingHeader$CKTranscriptHeaderView$initWithFrame$isPhoneTranscript$displayLoadPrevious$isGroupMessage$(CKTranscriptHeaderView*, SEL, CGRect, BOOL, BOOL, BOOL); static void (*_logos_orig$FloatingHeader$CKTranscriptHeaderView$layoutSubviews)(CKTranscriptHeaderView*, SEL); static void _logos_method$FloatingHeader$CKTranscriptHeaderView$layoutSubviews(CKTranscriptHeaderView*, SEL); static void (^_logos_method$FloatingHeader$CKTranscriptTableView$updateBlock(CKTranscriptTableView*, SEL))(CKTranscriptTableView *); static void _logos_method$FloatingHeader$CKTranscriptTableView$setUpdateBlock$(CKTranscriptTableView*, SEL, void (^)(CKTranscriptTableView *)); static void (*_logos_orig$FloatingHeader$CKTranscriptTableView$layoutSubviews)(CKTranscriptTableView*, SEL); static void _logos_method$FloatingHeader$CKTranscriptTableView$layoutSubviews(CKTranscriptTableView*, SEL); static MGTranscriptHeaderContext * _logos_method$FloatingHeader$CKTranscriptController$headerContext(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$updateTranscriptHeaderInset(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$updateHeaderView(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$loadView)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$loadView(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$viewWillUnload)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$viewWillUnload(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$viewWillAppear$)(CKTranscriptController*, SEL, BOOL); static void _logos_method$FloatingHeader$CKTranscriptController$viewWillAppear$(CKTranscriptController*, SEL, BOOL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$viewDidAppear$)(CKTranscriptController*, SEL, BOOL); static void _logos_method$FloatingHeader$CKTranscriptController$viewDidAppear$(CKTranscriptController*, SEL, BOOL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$willRotateToInterfaceOrientation$duration$)(CKTranscriptController*, SEL, UIInterfaceOrientation, NSTimeInterval); static void _logos_method$FloatingHeader$CKTranscriptController$willRotateToInterfaceOrientation$duration$(CKTranscriptController*, SEL, UIInterfaceOrientation, NSTimeInterval); static void (*_logos_orig$FloatingHeader$CKTranscriptController$didRotateFromInterfaceOrientation$)(CKTranscriptController*, SEL, UIInterfaceOrientation); static void _logos_method$FloatingHeader$CKTranscriptController$didRotateFromInterfaceOrientation$(CKTranscriptController*, SEL, UIInterfaceOrientation); static void (*_logos_orig$FloatingHeader$CKTranscriptController$willAnimateRotationToInterfaceOrientation$duration$)(CKTranscriptController*, SEL, UIInterfaceOrientation, NSTimeInterval); static void _logos_method$FloatingHeader$CKTranscriptController$willAnimateRotationToInterfaceOrientation$duration$(CKTranscriptController*, SEL, UIInterfaceOrientation, NSTimeInterval); static void _logos_method$FloatingHeader$CKTranscriptController$didSelectContactButton$(CKTranscriptController*, SEL, UIGestureRecognizer *); static void (*_logos_orig$FloatingHeader$CKTranscriptController$_showTranscriptHeaderView)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$_showTranscriptHeaderView(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$_hideTranscriptHeaderView)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$_hideTranscriptHeaderView(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$_updateTranscriptHeaderView)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$_updateTranscriptHeaderView(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$setEditing$animated$)(CKTranscriptController*, SEL, BOOL, BOOL); static void _logos_method$FloatingHeader$CKTranscriptController$setEditing$animated$(CKTranscriptController*, SEL, BOOL, BOOL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$_updateBackPlacardSubviews)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$_updateBackPlacardSubviews(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$reload$)(CKTranscriptController*, SEL, BOOL); static void _logos_method$FloatingHeader$CKTranscriptController$reload$(CKTranscriptController*, SEL, BOOL); static UIView * _logos_method$FloatingHeader$CKTranscriptController$backPlacardView(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$scrollViewDidScroll$(CKTranscriptController*, SEL, UIScrollView *); static void _logos_method$FloatingHeader$CKTranscriptController$scrollViewDidEndDecelerating$(CKTranscriptController*, SEL, UIScrollView *); static void _logos_method$FloatingHeader$CKTranscriptController$scrollViewWillEndDragging$withVelocity$targetContentOffset$(CKTranscriptController*, SEL, UIScrollView *, CGPoint, CGPoint *); static void _logos_method$FloatingHeader$CKTranscriptController$keyboardFrameWillChange$(CKTranscriptController*, SEL, NSNotification *); static BOOL _logos_method$FloatingHeader$CKTranscriptController$keyboardIsReallyOnScreen(CKTranscriptController*, SEL); static void (*_logos_orig$FloatingHeader$CKTranscriptController$_resetTranscriptInsets)(CKTranscriptController*, SEL); static void _logos_method$FloatingHeader$CKTranscriptController$_resetTranscriptInsets(CKTranscriptController*, SEL); 
@@ -231,26 +231,6 @@ static void _logos_method$FloatingHeader$CKTranscriptController$loadView(CKTrans
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static void _logos_method$FloatingHeader$CKTranscriptController$viewWillUnload(CKTranscriptController* self, SEL _cmd) {
     _logos_orig$FloatingHeader$CKTranscriptController$viewWillUnload(self, _cmd);
     
@@ -277,11 +257,6 @@ static void _logos_method$FloatingHeader$CKTranscriptController$viewDidAppear$(C
     [[self headerContext] updateVisibleOffsetForActiveHeaderOffset];
     DLog(@"viewDidAppear, visibleOffset: %f, contentOffset: %f", [[self headerContext] visibleOffset], self.transcriptTable.contentOffset.y);
 }
-
-
-
-
-
 
 
 static void _logos_method$FloatingHeader$CKTranscriptController$willRotateToInterfaceOrientation$duration$(CKTranscriptController* self, SEL _cmd, UIInterfaceOrientation toInterfaceOrientation, NSTimeInterval duration) {
@@ -551,37 +526,10 @@ static NSUInteger _logos_method$_ungrouped$CKEntity$addressHash(CKEntity* self, 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static void _logos_method$_ungrouped$CKServiceView$updateTitleLabel(CKServiceView* self, SEL _cmd) {
     NSMutableString *labelText = [NSMutableString string];
     CKEntity *entity = [self entity];
     CKService *service = [self service];
-    
-
-
-
-
-
-
-
-
-
     
     if (service) {
         [labelText appendString:[service displayName]];
@@ -686,7 +634,6 @@ static CKTranscriptToolbarView * _logos_method$_ungrouped$CKTranscriptController
 
 static void _logos_method$_ungrouped$CKTranscriptController$didSelectContactButtonPad$(CKTranscriptController* self, SEL _cmd, UIGestureRecognizer * gesture) {
 	if (gesture.state == UIGestureRecognizerStateBegan) {
-		NSLog(@"hit!");
 		[self selectAddressForCurrentRecipientFromView:gesture.view asPopover:YES];
 	}
 }
@@ -705,39 +652,22 @@ static void _logos_method$_ungrouped$CKTranscriptController$updateActionItem(CKT
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static void _logos_method$_ungrouped$CKTranscriptController$_computeBubbleData$(CKTranscriptController* self, SEL _cmd, BOOL force) {
 	NSLog(@"-[<CKTranscriptController: %p> _computeBubbleData:%d]", self, force);
 	_logos_orig$_ungrouped$CKTranscriptController$_computeBubbleData$(self, _cmd, force);
 	
 	CKTranscriptBubbleData *data = [self bubbleData];
 	CKService *lastService = [data serviceAtIndex:[data _lastIndexExcludingTypingIndicator]-1];
+	NSUInteger count = [data count];
 	
-	if (!lastService && [data count] > 0) {
+	if (!lastService && count > 0) {
 		CKService *pendingService = data.pendingService;
 		if (pendingService) {
 			[data _appendService:pendingService];
 		}
 		else {
 			CKEntity *selectedRecipient = self.conversation.selectedRecipient;
-			CKMessage *lastMessage = [data lastMessageFromIndex:[data count]];
+			CKMessage *lastMessage = [data lastMessageFromIndex:count];
 			
 			if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
 				[data _appendService:selectedRecipient.service];
@@ -905,35 +835,6 @@ static void _logos_method$_ungrouped$CKTranscriptController$tableView$willDispla
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServiceKey";
 
 
@@ -961,8 +862,6 @@ static void _logos_method$_ungrouped$CKTranscriptBubbleData$setPendingService$(C
 
 
 static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFromIndex$(CKTranscriptBubbleData* self, SEL _cmd, NSUInteger index) {
-	NSLog(@"-[<CKTranscriptBubbleData: %p> lastMessageFromIndex:%u]", self, index);
-	
 	CKMessage *prevMessage = nil;
 	
 	int count = [self count];
@@ -984,8 +883,6 @@ static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFr
 
 
 static CKMessage * _logos_method$_ungrouped$CKTranscriptBubbleData$nextMessageFromIndex$(CKTranscriptBubbleData* self, SEL _cmd, NSUInteger index) {
-	NSLog(@"-[<CKTranscriptBubbleData: %p> nextMessageFromIndex:%u]", self, index);
-	
 	CKMessage *message = nil;
 	
 	int count = [self count];
@@ -1009,25 +906,19 @@ static int _logos_method$_ungrouped$CKTranscriptBubbleData$_appendServiceForMess
             index = [self count];
         }
 		
-		CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
+		if (index > 0) {
+			CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
+			
 
-
-
-
-
-
-
-
-        
-
-        
-        if ([prevMessage conversation]) {
-            BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
-            
-            if (!sameAddress) {
-                response = [self _appendService:message.service];
-            }
-        }
+			
+			if ([prevMessage conversation]) {
+				BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
+				
+				if (!sameAddress) {
+					response = [self _appendService:message.service];
+				}
+			}
+		}
     }
     return response;
 }
@@ -1069,41 +960,19 @@ static id _logos_method$_ungrouped$CKConversationList$existingConversationForAdd
 
 
 
-
 static NSString *const MGSelectedRecipientKey = @"MGSelectedRecipientKey";
 static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-static void _logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$(CKAggregateConversation* self, SEL _cmd, CKEntity * recipient) {
-
-
-    
-
-    
-    objc_setAssociatedObject(self, MGSelectedRecipientKey, recipient, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-
-
-
+static CKEntity * _logos_method$_ungrouped$CKAggregateConversation$selectedRecipient(CKAggregateConversation* self, SEL _cmd) {
+    return objc_getAssociatedObject(self, MGSelectedRecipientKey);
 }
 
 
 
-static CKEntity * _logos_method$_ungrouped$CKAggregateConversation$selectedRecipient(CKAggregateConversation* self, SEL _cmd) {
-    return objc_getAssociatedObject(self, MGSelectedRecipientKey);
+static void _logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$(CKAggregateConversation* self, SEL _cmd, CKEntity * recipient) {
+    objc_setAssociatedObject(self, MGSelectedRecipientKey, recipient, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -1265,21 +1134,6 @@ static int _logos_method$_ungrouped$CKAggregateConversation$addMessage$increment
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 static id _logos_method$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$(CKSMSService* self, SEL _cmd, id composition, CKSubConversation * conversation) {
     CKMessage *message = _logos_orig$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$(self, _cmd, composition, conversation);
     if ([conversation aggregateConversation]) {
@@ -1316,6 +1170,16 @@ static id _logos_method$_ungrouped$CKMadridService$newMessageWithComposition$for
 
 
 
+static void _logos_method$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$(CKComposeRecipientView* self, SEL _cmd, id atom, BOOL animated) {
+	NSLog(@"-[<CKComposeRecipientView: %p> _showActionSheetForAtom:%@ animated:%d]", self, atom, animated);
+	_logos_orig$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$(self, _cmd, atom, animated);
+}
+
+
+
+
+
+
 
 static void _logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientView$showPersonCardForAtom$(CKRecipientSelectionView* self, SEL _cmd, id view, MFComposeRecipientAtom * atom) {
 	if (self.delegate && [self.delegate respondsToSelector:@selector(recipientSelectionView:selectAddressForAtom:)]) {
@@ -1327,40 +1191,50 @@ static void _logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientVi
 
 
 
+typedef enum {
+	MFComposeRecipientAtomStyleBlue = 0,
+	MFComposeRecipientAtomStyleBlueDisclosure = 1,
+	MFComposeRecipientAtomStyleBlueVerified = 2,
+	MFComposeRecipientAtomStyleBlueSecure = 3,
+	MFComposeRecipientAtomStyleBlueInsecure = 4,
+	MFComposeRecipientAtomStyleBlueVerifiedSecure = 5,
+	MFComposeRecipientAtomStyleBlueUnknown = 6,
+	MFComposeRecipientAtomStyleGreen = 7,
+	MFComposeRecipientAtomStyleGreenDisclosure = 8,
+	MFComposeRecipientAtomStyleGray = 9,
+	MFComposeRecipientAtomStyleError = 10,
+} MFComposeRecipientAtomStyle;
+
+
+static id _logos_method$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$(MFComposeRecipientAtom* self, SEL _cmd, CGRect frame, id recipient, int style) {
+	id _self = _logos_orig$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$(self, _cmd, frame, recipient, style);
+	if (_self) {
+		
+		
+		UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)] autorelease];
+		[self addGestureRecognizer:longPressGesture];
+	}
+	
+	return _self;
+}
 
 
 
+static void _logos_method$_ungrouped$MFComposeRecipientAtom$handleLongPressGesture$(MFComposeRecipientAtom* self, SEL _cmd, UILongPressGestureRecognizer * gesture) {
+	if (gesture.state == UIGestureRecognizerStateBegan) {
+		if (self.style != MFComposeRecipientAtomStyleError) {
+			[self handleTouchAndHold];
+		}
+		else {
+			[self.delegate selectComposeRecipientAtom:self];
+		}
+	}
+}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-static __attribute__((constructor)) void _logosLocalCtor_e5a4aa05() {
-    {{Class _logos_class$_ungrouped$CKEntity = objc_getClass("CKEntity"); MSHookMessageEx(_logos_class$_ungrouped$CKEntity, @selector(addressHash), (IMP)&_logos_method$_ungrouped$CKEntity$addressHash, (IMP*)&_logos_orig$_ungrouped$CKEntity$addressHash);Class _logos_class$_ungrouped$CKServiceView = objc_getClass("CKServiceView"); { const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(updateTitleLabel), (IMP)&_logos_method$_ungrouped$CKServiceView$updateTitleLabel, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(service), (IMP)&_logos_method$_ungrouped$CKServiceView$service, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(textLabel), (IMP)&_logos_method$_ungrouped$CKServiceView$textLabel, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKServiceView, @selector(setService:), (IMP)&_logos_method$_ungrouped$CKServiceView$setService$, (IMP*)&_logos_orig$_ungrouped$CKServiceView$setService$);{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(entity), (IMP)&_logos_method$_ungrouped$CKServiceView$entity, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(setEntity:), (IMP)&_logos_method$_ungrouped$CKServiceView$setEntity$, _typeEncoding); }Class _logos_class$_ungrouped$CKTranscriptToolbarView = objc_getClass("CKTranscriptToolbarView"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptToolbarView, @selector(contactButton), (IMP)&_logos_method$_ungrouped$CKTranscriptToolbarView$contactButton, _typeEncoding); }Class _logos_class$_ungrouped$CKTranscriptController = objc_getClass("CKTranscriptController"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(recipientListView), (IMP)&_logos_method$_ungrouped$CKTranscriptController$recipientListView, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(transcriptToolbarView), (IMP)&_logos_method$_ungrouped$CKTranscriptController$transcriptToolbarView, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(didSelectContactButtonPad:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$didSelectContactButtonPad$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(updateActionItem), (IMP)&_logos_method$_ungrouped$CKTranscriptController$updateActionItem, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$updateActionItem);MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(_computeBubbleData:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$_computeBubbleData$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$_computeBubbleData$);{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(showPendingDividerIfNecessaryForRecipient:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$showPendingDividerIfNecessaryForRecipient$, _typeEncoding); }{ const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(selectAddressForCurrentRecipientFromView:asPopover:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$selectAddressForCurrentRecipientFromView$asPopover$, _typeEncoding); }{ const char *_typeEncoding = "v@:@@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(recipientSelectionView:selectAddressForAtom:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$recipientSelectionView$selectAddressForAtom$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(tableView:willDisplayCell:forRowAtIndexPath:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$);Class _logos_class$_ungrouped$CKTranscriptBubbleData = objc_getClass("CKTranscriptBubbleData"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(pendingService), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$pendingService, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(setPendingService:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$setPendingService$, _typeEncoding); }{ const char *_typeEncoding = "@@:d"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(lastMessageFromIndex:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFromIndex$, _typeEncoding); }{ const char *_typeEncoding = "@@:d"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(nextMessageFromIndex:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$nextMessageFromIndex$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(_appendServiceForMessageIfNeeded:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$);Class _logos_class$_ungrouped$CKConversationList = objc_getClass("CKConversationList"); MSHookMessageEx(_logos_class$_ungrouped$CKConversationList, @selector(aggregateConversationForRecipients:create:), (IMP)&_logos_method$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$, (IMP*)&_logos_orig$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$);MSHookMessageEx(_logos_class$_ungrouped$CKConversationList, @selector(existingConversationForAddresses:), (IMP)&_logos_method$_ungrouped$CKConversationList$existingConversationForAddresses$, (IMP*)&_logos_orig$_ungrouped$CKConversationList$existingConversationForAddresses$);Class _logos_class$_ungrouped$CKAggregateConversation = objc_getClass("CKAggregateConversation"); { const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(setSelectedRecipient:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(selectedRecipient), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$selectedRecipient, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(pendingMessage), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$pendingMessage, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(setPendingMessage:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$setPendingMessage$, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(allAddresses), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$allAddresses, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(_subConversationForService:create:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_subConversationForService$create$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$_subConversationForService$create$);MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(_bestExistingConversation), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversation, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$_bestExistingConversation);{ const char *_typeEncoding = "@@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(_bestExistingConversationWithService:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversationWithService$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(isAggregatableWithConversation:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$);MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(addMessage:incrementUnreadCount:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$);Class _logos_class$_ungrouped$CKSMSService = objc_getClass("CKSMSService"); MSHookMessageEx(_logos_class$_ungrouped$CKSMSService, @selector(newMessageWithComposition:forConversation:), (IMP)&_logos_method$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$, (IMP*)&_logos_orig$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$);Class _logos_class$_ungrouped$CKMadridService = objc_getClass("CKMadridService"); MSHookMessageEx(_logos_class$_ungrouped$CKMadridService, @selector(newMessageWithComposition:forConversation:), (IMP)&_logos_method$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$, (IMP*)&_logos_orig$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$);Class _logos_class$_ungrouped$CKRecipientSelectionView = objc_getClass("CKRecipientSelectionView"); { const char *_typeEncoding = "v@:@@"; class_addMethod(_logos_class$_ungrouped$CKRecipientSelectionView, @selector(composeRecipientView:showPersonCardForAtom:), (IMP)&_logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientView$showPersonCardForAtom$, _typeEncoding); }}{_logos_static_class$CKService = objc_getClass("CKService"); _logos_static_class$CKEntity = objc_getClass("CKEntity"); }}
+static __attribute__((constructor)) void _logosLocalCtor_009a404e() {
+    {{Class _logos_class$_ungrouped$CKEntity = objc_getClass("CKEntity"); MSHookMessageEx(_logos_class$_ungrouped$CKEntity, @selector(addressHash), (IMP)&_logos_method$_ungrouped$CKEntity$addressHash, (IMP*)&_logos_orig$_ungrouped$CKEntity$addressHash);Class _logos_class$_ungrouped$CKServiceView = objc_getClass("CKServiceView"); { const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(updateTitleLabel), (IMP)&_logos_method$_ungrouped$CKServiceView$updateTitleLabel, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(service), (IMP)&_logos_method$_ungrouped$CKServiceView$service, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(textLabel), (IMP)&_logos_method$_ungrouped$CKServiceView$textLabel, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKServiceView, @selector(setService:), (IMP)&_logos_method$_ungrouped$CKServiceView$setService$, (IMP*)&_logos_orig$_ungrouped$CKServiceView$setService$);{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(entity), (IMP)&_logos_method$_ungrouped$CKServiceView$entity, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKServiceView, @selector(setEntity:), (IMP)&_logos_method$_ungrouped$CKServiceView$setEntity$, _typeEncoding); }Class _logos_class$_ungrouped$CKTranscriptToolbarView = objc_getClass("CKTranscriptToolbarView"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptToolbarView, @selector(contactButton), (IMP)&_logos_method$_ungrouped$CKTranscriptToolbarView$contactButton, _typeEncoding); }Class _logos_class$_ungrouped$CKTranscriptController = objc_getClass("CKTranscriptController"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(recipientListView), (IMP)&_logos_method$_ungrouped$CKTranscriptController$recipientListView, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(transcriptToolbarView), (IMP)&_logos_method$_ungrouped$CKTranscriptController$transcriptToolbarView, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(didSelectContactButtonPad:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$didSelectContactButtonPad$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(updateActionItem), (IMP)&_logos_method$_ungrouped$CKTranscriptController$updateActionItem, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$updateActionItem);MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(_computeBubbleData:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$_computeBubbleData$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$_computeBubbleData$);{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(showPendingDividerIfNecessaryForRecipient:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$showPendingDividerIfNecessaryForRecipient$, _typeEncoding); }{ const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(selectAddressForCurrentRecipientFromView:asPopover:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$selectAddressForCurrentRecipientFromView$asPopover$, _typeEncoding); }{ const char *_typeEncoding = "v@:@@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptController, @selector(recipientSelectionView:selectAddressForAtom:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$recipientSelectionView$selectAddressForAtom$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptController, @selector(tableView:willDisplayCell:forRowAtIndexPath:), (IMP)&_logos_method$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptController$tableView$willDisplayCell$forRowAtIndexPath$);Class _logos_class$_ungrouped$CKTranscriptBubbleData = objc_getClass("CKTranscriptBubbleData"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(pendingService), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$pendingService, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(setPendingService:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$setPendingService$, _typeEncoding); }{ const char *_typeEncoding = "@@:d"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(lastMessageFromIndex:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$lastMessageFromIndex$, _typeEncoding); }{ const char *_typeEncoding = "@@:d"; class_addMethod(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(nextMessageFromIndex:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$nextMessageFromIndex$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKTranscriptBubbleData, @selector(_appendServiceForMessageIfNeeded:), (IMP)&_logos_method$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$, (IMP*)&_logos_orig$_ungrouped$CKTranscriptBubbleData$_appendServiceForMessageIfNeeded$);Class _logos_class$_ungrouped$CKConversationList = objc_getClass("CKConversationList"); MSHookMessageEx(_logos_class$_ungrouped$CKConversationList, @selector(aggregateConversationForRecipients:create:), (IMP)&_logos_method$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$, (IMP*)&_logos_orig$_ungrouped$CKConversationList$aggregateConversationForRecipients$create$);MSHookMessageEx(_logos_class$_ungrouped$CKConversationList, @selector(existingConversationForAddresses:), (IMP)&_logos_method$_ungrouped$CKConversationList$existingConversationForAddresses$, (IMP*)&_logos_orig$_ungrouped$CKConversationList$existingConversationForAddresses$);Class _logos_class$_ungrouped$CKAggregateConversation = objc_getClass("CKAggregateConversation"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(selectedRecipient), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$selectedRecipient, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(setSelectedRecipient:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$setSelectedRecipient$, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(pendingMessage), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$pendingMessage, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(setPendingMessage:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$setPendingMessage$, _typeEncoding); }{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(allAddresses), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$allAddresses, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(_subConversationForService:create:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_subConversationForService$create$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$_subConversationForService$create$);MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(_bestExistingConversation), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversation, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$_bestExistingConversation);{ const char *_typeEncoding = "@@:@"; class_addMethod(_logos_class$_ungrouped$CKAggregateConversation, @selector(_bestExistingConversationWithService:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$_bestExistingConversationWithService$, _typeEncoding); }MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(isAggregatableWithConversation:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$isAggregatableWithConversation$);MSHookMessageEx(_logos_class$_ungrouped$CKAggregateConversation, @selector(addMessage:incrementUnreadCount:), (IMP)&_logos_method$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$, (IMP*)&_logos_orig$_ungrouped$CKAggregateConversation$addMessage$incrementUnreadCount$);Class _logos_class$_ungrouped$CKSMSService = objc_getClass("CKSMSService"); MSHookMessageEx(_logos_class$_ungrouped$CKSMSService, @selector(newMessageWithComposition:forConversation:), (IMP)&_logos_method$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$, (IMP*)&_logos_orig$_ungrouped$CKSMSService$newMessageWithComposition$forConversation$);Class _logos_class$_ungrouped$CKMadridService = objc_getClass("CKMadridService"); MSHookMessageEx(_logos_class$_ungrouped$CKMadridService, @selector(newMessageWithComposition:forConversation:), (IMP)&_logos_method$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$, (IMP*)&_logos_orig$_ungrouped$CKMadridService$newMessageWithComposition$forConversation$);Class _logos_class$_ungrouped$CKComposeRecipientView = objc_getClass("CKComposeRecipientView"); MSHookMessageEx(_logos_class$_ungrouped$CKComposeRecipientView, @selector(_showActionSheetForAtom:animated:), (IMP)&_logos_method$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$, (IMP*)&_logos_orig$_ungrouped$CKComposeRecipientView$_showActionSheetForAtom$animated$);Class _logos_class$_ungrouped$CKRecipientSelectionView = objc_getClass("CKRecipientSelectionView"); { const char *_typeEncoding = "v@:@@"; class_addMethod(_logos_class$_ungrouped$CKRecipientSelectionView, @selector(composeRecipientView:showPersonCardForAtom:), (IMP)&_logos_method$_ungrouped$CKRecipientSelectionView$composeRecipientView$showPersonCardForAtom$, _typeEncoding); }Class _logos_class$_ungrouped$MFComposeRecipientAtom = objc_getClass("MFComposeRecipientAtom"); MSHookMessageEx(_logos_class$_ungrouped$MFComposeRecipientAtom, @selector(initWithFrame:recipient:style:), (IMP)&_logos_method$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$, (IMP*)&_logos_orig$_ungrouped$MFComposeRecipientAtom$initWithFrame$recipient$style$);{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$_ungrouped$MFComposeRecipientAtom, @selector(handleLongPressGesture:), (IMP)&_logos_method$_ungrouped$MFComposeRecipientAtom$handleLongPressGesture$, _typeEncoding); }}{_logos_static_class$CKService = objc_getClass("CKService"); _logos_static_class$CKEntity = objc_getClass("CKEntity"); }}
     if ([MGTranscriptHeaderContext shouldOverrideHeader]) {
         {Class _logos_class$FloatingHeader$CKTranscriptHeaderView = objc_getClass("CKTranscriptHeaderView"); MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptHeaderView, @selector(initWithFrame:isPhoneTranscript:displayLoadPrevious:isGroupMessage:), (IMP)&_logos_method$FloatingHeader$CKTranscriptHeaderView$initWithFrame$isPhoneTranscript$displayLoadPrevious$isGroupMessage$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptHeaderView$initWithFrame$isPhoneTranscript$displayLoadPrevious$isGroupMessage$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptHeaderView, @selector(layoutSubviews), (IMP)&_logos_method$FloatingHeader$CKTranscriptHeaderView$layoutSubviews, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptHeaderView$layoutSubviews);Class _logos_class$FloatingHeader$CKTranscriptTableView = objc_getClass("CKTranscriptTableView"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptTableView, @selector(updateBlock), (IMP)&_logos_method$FloatingHeader$CKTranscriptTableView$updateBlock, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptTableView, @selector(setUpdateBlock:), (IMP)&_logos_method$FloatingHeader$CKTranscriptTableView$setUpdateBlock$, _typeEncoding); }MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptTableView, @selector(layoutSubviews), (IMP)&_logos_method$FloatingHeader$CKTranscriptTableView$layoutSubviews, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptTableView$layoutSubviews);Class _logos_class$FloatingHeader$CKTranscriptController = objc_getClass("CKTranscriptController"); { const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(headerContext), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$headerContext, _typeEncoding); }{ const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(updateTranscriptHeaderInset), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$updateTranscriptHeaderInset, _typeEncoding); }{ const char *_typeEncoding = "v@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(updateHeaderView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$updateHeaderView, _typeEncoding); }MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(loadView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$loadView, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$loadView);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(viewWillUnload), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$viewWillUnload, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$viewWillUnload);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(viewWillAppear:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$viewWillAppear$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$viewWillAppear$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(viewDidAppear:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$viewDidAppear$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$viewDidAppear$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(willRotateToInterfaceOrientation:duration:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$willRotateToInterfaceOrientation$duration$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$willRotateToInterfaceOrientation$duration$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(didRotateFromInterfaceOrientation:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$didRotateFromInterfaceOrientation$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$didRotateFromInterfaceOrientation$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(willAnimateRotationToInterfaceOrientation:duration:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$willAnimateRotationToInterfaceOrientation$duration$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$willAnimateRotationToInterfaceOrientation$duration$);{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(didSelectContactButton:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$didSelectContactButton$, _typeEncoding); }MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(_showTranscriptHeaderView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$_showTranscriptHeaderView, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$_showTranscriptHeaderView);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(_hideTranscriptHeaderView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$_hideTranscriptHeaderView, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$_hideTranscriptHeaderView);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(_updateTranscriptHeaderView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$_updateTranscriptHeaderView, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$_updateTranscriptHeaderView);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(setEditing:animated:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$setEditing$animated$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$setEditing$animated$);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(_updateBackPlacardSubviews), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$_updateBackPlacardSubviews, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$_updateBackPlacardSubviews);MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(reload:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$reload$, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$reload$);{ const char *_typeEncoding = "@@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(backPlacardView), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$backPlacardView, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(scrollViewDidScroll:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$scrollViewDidScroll$, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(scrollViewDidEndDecelerating:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$scrollViewDidEndDecelerating$, _typeEncoding); }{ const char *_typeEncoding = "v@:@{CGPoint=ff}^{CGPoint=ff}"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$scrollViewWillEndDragging$withVelocity$targetContentOffset$, _typeEncoding); }{ const char *_typeEncoding = "v@:@"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(keyboardFrameWillChange:), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$keyboardFrameWillChange$, _typeEncoding); }{ const char *_typeEncoding = "c@:"; class_addMethod(_logos_class$FloatingHeader$CKTranscriptController, @selector(keyboardIsReallyOnScreen), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$keyboardIsReallyOnScreen, _typeEncoding); }MSHookMessageEx(_logos_class$FloatingHeader$CKTranscriptController, @selector(_resetTranscriptInsets), (IMP)&_logos_method$FloatingHeader$CKTranscriptController$_resetTranscriptInsets, (IMP*)&_logos_orig$FloatingHeader$CKTranscriptController$_resetTranscriptInsets);}
     }

@@ -29,6 +29,7 @@
 		0DA1604F15BCD1D1002A4315 /* Merge.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1604E15BCD1D1002A4315 /* Merge.mm */; };
 		0DA1606015BCD414002A4315 /* libsubstrate.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1605F15BCD414002A4315 /* libsubstrate.dylib */; };
 		0DA1606215BCD473002A4315 /* ChatKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA1606115BCD473002A4315 /* ChatKit.framework */; };
+		0DA1CAD215FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */; };
 		0DD6F09615F6A713000B9998 /* MGAddressManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD6F09415F6A713000B9998 /* MGAddressManager.h */; };
 		0DD6F09715F6A713000B9998 /* MGAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6F09515F6A713000B9998 /* MGAddressManager.m */; };
 		0DDCB76215F6FEB10051D085 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */; };
@@ -65,6 +66,7 @@
 		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
 		0DA1605F15BCD414002A4315 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = /opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<absolute>"; };
 		0DA1606115BCD473002A4315 /* ChatKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChatKit.framework; path = "/Applications/Xcode45-DP4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/PrivateFrameworks/ChatKit.framework"; sourceTree = "<absolute>"; };
+		0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFKitImproveRecursiveDescription.m; sourceTree = "<group>"; };
 		0DD6F09415F6A713000B9998 /* MGAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGAddressManager.h; sourceTree = "<group>"; };
 		0DD6F09515F6A713000B9998 /* MGAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGAddressManager.m; sourceTree = "<group>"; };
 		0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -173,6 +175,7 @@
 		0DA1604A15BCD1D1002A4315 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0DA1CAD015FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription */,
 				0D031D5415F5788A00B24F3C /* ABContactsHelper */,
 				0D04F84915D0AC1D0068C91E /* DebugTools.h */,
 				0D04F84A15D0AC1D0068C91E /* DebugTools.m */,
@@ -208,6 +211,14 @@
 				0DA1605315BCD1D1002A4315 /* Merge.plist */,
 			);
 			name = DynamicLibraries;
+			sourceTree = "<group>";
+		};
+		0DA1CAD015FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription */ = {
+			isa = PBXGroup;
+			children = (
+				0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */,
+			);
+			path = PSPDFKitImproveRecursiveDescription;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,6 +329,7 @@
 				0D031D5015F5788100B24F3C /* ABContactsHelper.m in Sources */,
 				0D031D5215F5788100B24F3C /* ABGroup.m in Sources */,
 				0DD6F09715F6A713000B9998 /* MGAddressManager.m in Sources */,
+				0DA1CAD215FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

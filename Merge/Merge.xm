@@ -628,7 +628,6 @@ extern NSString *const CKBubbleDataMessage;
 -(void)didSelectContactButtonPad:(UIGestureRecognizer *)gesture
 {
 	if (gesture.state == UIGestureRecognizerStateBegan) {
-		NSLog(@"hit!");
 		[self selectAddressForCurrentRecipientFromView:gesture.view asPopover:YES];
 	}
 }
@@ -653,15 +652,16 @@ extern NSString *const CKBubbleDataMessage;
 	
 	CKTranscriptBubbleData *data = [self bubbleData];
 	CKService *lastService = [data serviceAtIndex:[data _lastIndexExcludingTypingIndicator]-1];
+	NSUInteger count = [data count];
 	
-	if (!lastService && [data count] > 0) {
+	if (!lastService && count > 0) {
 		CKService *pendingService = data.pendingService;
 		if (pendingService) {
 			[data _appendService:pendingService];
 		}
 		else {
 			CKEntity *selectedRecipient = self.conversation.selectedRecipient;
-			CKMessage *lastMessage = [data lastMessageFromIndex:[data count]];
+			CKMessage *lastMessage = [data lastMessageFromIndex:count];
 			
 			if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
 				[data _appendService:selectedRecipient.service];
@@ -856,8 +856,6 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 %new(@@:d)
 -(CKMessage *)lastMessageFromIndex:(NSUInteger)index
 {
-	%log;
-	
 	CKMessage *prevMessage = nil;
 	
 	int count = [self count];
@@ -879,8 +877,6 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 %new(@@:d)
 -(CKMessage *)nextMessageFromIndex:(NSUInteger)index
 {
-	%log;
-	
 	CKMessage *message = nil;
 	
 	int count = [self count];
@@ -904,17 +900,19 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
             index = [self count];
         }
 		
-		CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
-        
-//        NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
-        
-        if ([prevMessage conversation]) {
-            BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
-            
-            if (!sameAddress) {
-                response = [self _appendService:message.service];
-            }
-        }
+		if (index > 0) {
+			CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
+			
+//			NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
+			
+			if ([prevMessage conversation]) {
+				BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
+				
+				if (!sameAddress) {
+					response = [self _appendService:message.service];
+				}
+			}
+		}
     }
     return response;
 }
@@ -1175,39 +1173,49 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 
 %end
 
-//// CKRecipientSelectionView->_toField (CKComposeRecipientView)
-//// CKComposeRecipientView->_atoms
-//
-//#warning TODO: look at MFComposeRecipientAtom - (void)handleTouchAndHold
-//
-//// may want to use these for MFAddressAtom (ie. group message list atoms) too,
-//// in which case use common superclass MFAtomView
-//%hook MFComposeRecipientAtom
-//
-//static NSString *const MGAtomViewGestureKey = @"MGAtomViewGestureKey";
-//
-//%new(@@:)
-//- (UILongPressGestureRecognizer *)longPressGesture
-//{
-//    return objc_getAssociatedObject(self, MGAtomViewGestureKey);
-//}
-//
-//%new(v@:@)
-//- (void)setLongPressGesture:(UILongPressGestureRecognizer *)longPressGesture
-//{
-//	UILongPressGestureRecognizer *prevGesture = [self longPressGesture];
-//	if (prevGesture != longPressGesture) {
-//		if (prevGesture) {
-//			[self removeGestureRecognizer:prevGesture];
-//		}
-//		if (longPressGesture) {
-//			[self addGestureRecognizer:longPressGesture];
-//		}
-//		objc_setAssociatedObject(self, MGAtomViewGestureKey, longPressGesture, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//	}
-//}
-//
-//%end
+%hook MFComposeRecipientAtom
+
+typedef enum {
+	MFComposeRecipientAtomStyleBlue = 0,
+	MFComposeRecipientAtomStyleBlueDisclosure = 1,
+	MFComposeRecipientAtomStyleBlueVerified = 2,
+	MFComposeRecipientAtomStyleBlueSecure = 3,
+	MFComposeRecipientAtomStyleBlueInsecure = 4,
+	MFComposeRecipientAtomStyleBlueVerifiedSecure = 5,
+	MFComposeRecipientAtomStyleBlueUnknown = 6,
+	MFComposeRecipientAtomStyleGreen = 7,
+	MFComposeRecipientAtomStyleGreenDisclosure = 8,
+	MFComposeRecipientAtomStyleGray = 9,
+	MFComposeRecipientAtomStyleError = 10,
+} MFComposeRecipientAtomStyle;
+
+- (id)initWithFrame:(CGRect)frame recipient:(id)recipient style:(int)style
+{
+	id _self = %orig;
+	if (_self) {
+		// need to use an actual gesture recognizer to force tap-and-hold to be recognized
+		// before touch up
+		UILongPressGestureRecognizer *longPressGesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)] autorelease];
+		[self addGestureRecognizer:longPressGesture];
+	}
+	
+	return _self;
+}
+
+%new(v@:@)
+- (void)handleLongPressGesture:(UILongPressGestureRecognizer *)gesture
+{
+	if (gesture.state == UIGestureRecognizerStateBegan) {
+		if (self.style != MFComposeRecipientAtomStyleError) {
+			[self handleTouchAndHold];
+		}
+		else {
+			[self.delegate selectComposeRecipientAtom:self];
+		}
+	}
+}
+
+%end
 
 %ctor {
     %init;

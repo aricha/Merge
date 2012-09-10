@@ -4,3 +4,6 @@
 [submodule "Merge/ABContactHelper"]
 	path = Merge/ABContactHelper
 	url = https://github.com/erica/ABContactHelper.git
+[submodule "Merge/PSPDFKitImproveRecursiveDescription"]
+	path = Merge/PSPDFKitImproveRecursiveDescription
+	url = git://gist.github.com/3028524.git
