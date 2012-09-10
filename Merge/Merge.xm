@@ -23,7 +23,11 @@
 #import <ChatKit/CKRecipientSelectionView.h>
 #import <ChatKit/CKRecipientGenerator.h>
 #import <ChatKit/CKComposeRecipientView.h>
+#import <ChatKit/CKDashedLineView.h>
+#import <ChatKit/CKUIBehavior.h>
 
+#import <UIKit/UIKit.h>
+#import <UIKit/UIGraphics.h>
 #import <UIKit/UIPlacardButton_Dumped.h>
 #import <AddressBook/ABPhoneFormatting_Dumped.h>
 #import <MessageUI/MFComposeRecipientAtom_Dumped.h>
@@ -51,7 +55,6 @@
 
 @interface CKAggregateConversation ()
 @property (nonatomic, retain) CKEntity *selectedRecipient;
-//@property (nonatomic, copy) void (^didAddMessageBlock)(CKMessage *message, CKAggregateConversation *conversation);
 @property (nonatomic, retain) CKMessage * pendingMessage;
 - (CKSubConversation *)_bestExistingConversationWithService:(CKService *)service;
 - (NSArray *)allAddresses;
@@ -70,12 +73,15 @@
 
 @interface CKTranscriptBubbleData ()
 @property (nonatomic, retain) CKService *pendingService;
-- (CKMessage *)lastMessageFromIndex:(NSUInteger)index;
-- (CKMessage *)nextMessageFromIndex:(NSUInteger)index;
+- (CKMessage *)lastMessageFromIndex:(NSInteger)index;
+- (CKMessage *)nextMessageFromIndex:(NSInteger)index;
 @end
 
 @interface CKServiceView ()
 @property (nonatomic, retain) CKEntity *entity;
+@property (nonatomic, retain) UILabel *dateLabel;
+@property (nonatomic, retain) NSDate *date;
+@property (nonatomic) BOOL shouldShowDashedLine;
 - (void)updateTitleLabel;
 - (CKService *)service;
 - (UILabel *)textLabel;
@@ -85,9 +91,10 @@
 - (void)recipientSelectionView:(CKRecipientSelectionView *)selectionView selectAddressForAtom:(MFComposeRecipientAtom *)atom;
 @end
 
-//@interface MFAddressAtom ()
-//@property (nonatomic, retain) UILongPressGestureRecognizer *longPressGesture;
-//@end
+static BOOL ShouldMergeServiceAndDateLabels()
+{
+	return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
 
 %group FloatingHeader
 %hook CKTranscriptHeaderView
@@ -514,10 +521,6 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
 
 %hook CKServiceView
 
-//extern CFStringRef PNCopyFormattedStringWithCountry(CFStringRef pnString, CFStringRef countryCode);
-//extern CFStringRef CPPhoneNumberCopyHomeCountryCode(void);
-//extern "C" CFStringRef CPPhoneNumberCopyFormattedStringForTextMessage(CFStringRef pnString);
-
 %new(v@:)
 - (void)updateTitleLabel
 {
@@ -576,7 +579,26 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
         [self updateTitleLabel];
     }
 }
+
 static NSString *const MGAddressViewEntityKey = @"MGAddressViewEntityKey";
+static NSString *const MGServiceViewDateLabelKey = @"MGServiceViewDateLabelKey";
+static NSString *const MGServiceViewDateKey = @"MGServiceViewDateKey";
+static NSString *const MGServiceViewShouldShowDashedLineKey = @"MGServiceViewShouldShowDashedLineKey";
+
+%new(d@:)
+- (BOOL)shouldShowDashedLine
+{
+    NSNumber *shouldShowDashedLine = objc_getAssociatedObject(self, MGServiceViewShouldShowDashedLineKey);
+	return (shouldShowDashedLine ? [shouldShowDashedLine boolValue] : YES);
+}
+
+%new(v@:d)
+- (void)setShouldShowDashedLine:(BOOL)shouldShowDashedLine
+{
+    objc_setAssociatedObject(self, MGServiceViewShouldShowDashedLineKey, @(shouldShowDashedLine), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	[self setNeedsLayout];
+}
 
 %new(@@:)
 - (CKEntity *)entity
@@ -589,6 +611,100 @@ static NSString *const MGAddressViewEntityKey = @"MGAddressViewEntityKey";
 {
     objc_setAssociatedObject(self, MGAddressViewEntityKey, entity, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [self updateTitleLabel];
+}
+
+%new(@@:)
+- (UILabel *)dateLabel
+{
+    return objc_getAssociatedObject(self, MGServiceViewDateLabelKey);
+}
+
+%new(v@:@)
+- (void)setDateLabel:(UILabel *)dateLabel
+{
+	[[self dateLabel] removeFromSuperview];
+    objc_setAssociatedObject(self, MGServiceViewDateLabelKey, dateLabel,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	[self.contentView addSubview:dateLabel];
+	[self setNeedsLayout];
+}
+
+%new(@@:)
+- (NSDate *)date
+{
+    return objc_getAssociatedObject(self, MGServiceViewDateKey);
+}
+
+%new(v@:@)
+- (void)setDate:(NSDate *)date
+{
+    objc_setAssociatedObject(self, MGServiceViewDateKey, date,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	NSString *dateString = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
+	UILabel *dateLabel = [self dateLabel];
+	
+	if (dateString && !dateLabel) {
+		dateLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+		
+		CKUIBehavior *behaviors = [CKUIBehavior sharedBehaviors];
+		dateLabel.textColor = [behaviors timestampTextColor];
+		dateLabel.shadowColor = [behaviors timestampTextShadowColor];
+		dateLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+		dateLabel.font = [UIFont boldSystemFontOfSize:[behaviors timestampTextSize]];
+		dateLabel.backgroundColor = [self textLabel].backgroundColor;
+		dateLabel.textAlignment = UITextAlignmentCenter;
+		dateLabel.autoresizingMask = UIViewAutoresizingFlexibleHeight + UIViewAutoresizingFlexibleLeftMargin + UIViewAutoresizingFlexibleRightMargin;
+		dateLabel.opaque = YES;
+		
+		dateLabel.text = dateString;
+		[dateLabel sizeToFit];
+		
+		self.dateLabel = dateLabel;
+	}
+	else if (dateLabel) {
+		NSString *prevText = dateLabel.text;
+		if (prevText && ![dateString isEqualToString:prevText]) {
+			dateLabel.text = dateString;
+			[self setNeedsLayout];
+		}
+	}
+}
+
+- (void)layoutSubviews
+{
+	%orig;
+	
+	UILabel *dateLabel = self.dateLabel;
+	
+	if (dateLabel) {
+		[dateLabel sizeToFit];
+		
+		UILabel *textLabel = [self textLabel];
+		
+		static const CGFloat LabelSpacing = 1.0f;
+		static const CGFloat DashedLineMargins = 3.0f;
+		
+		CGFloat totalLabelWidth = CGRectGetWidth(textLabel.bounds) + LabelSpacing + CGRectGetWidth(dateLabel.bounds);
+		CGFloat labelMargins = ((CGRectGetWidth(self.bounds) - totalLabelWidth) / 2);
+		
+		CGRect textFrame = textLabel.frame;
+		textFrame.origin.x = labelMargins;
+		textLabel.frame = textFrame;
+		
+		CGRect dateFrame = dateLabel.frame;
+		dateFrame.origin.x = CGRectGetWidth(self.bounds) - labelMargins - CGRectGetWidth(dateFrame);
+		dateFrame.origin.y = textFrame.origin.y;
+		dateLabel.frame = dateFrame;
+		
+		CGRect gapRect = (CGRect){CGRectGetMinX(textFrame), 0, totalLabelWidth + DashedLineMargins, CGRectGetHeight(self.bounds)};
+		
+		CKDashedLineView *dashedLine = MSHookIvar<id>(self, "_dashedLineView");
+		if (dashedLine) {
+			[dashedLine setGapRect:gapRect];
+			dashedLine.alpha = (self.isEditing || !self.shouldShowDashedLine ? 0.0 : 1.0);
+		}
+		
+		dateLabel.alpha = (self.isEditing ? 0.0 : 1.0);
+	}
 }
 
 %end
@@ -605,8 +721,6 @@ static NSString *const MGAddressViewEntityKey = @"MGAddressViewEntityKey";
 %end
 
 extern NSString *const CKBubbleDataMessage;
-
-#define FLAG_NEW_RECIPIENT (1 << 5)
 
 %hook CKTranscriptController
 
@@ -652,7 +766,7 @@ extern NSString *const CKBubbleDataMessage;
 	
 	CKTranscriptBubbleData *data = [self bubbleData];
 	CKService *lastService = [data serviceAtIndex:[data _lastIndexExcludingTypingIndicator]-1];
-	NSUInteger count = [data count];
+	NSInteger count = [data count];
 	
 	if (!lastService && count > 0) {
 		CKService *pendingService = data.pendingService;
@@ -689,7 +803,6 @@ extern NSString *const CKBubbleDataMessage;
 	{
 		// add pending divider to indicate new address
 		[tableView beginUpdates];
-//		[data _appendService:recipient.service];
 		data.pendingService = recipient.service;
 		
 		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
@@ -786,11 +899,12 @@ extern NSString *const CKBubbleDataMessage;
 	}
 }
 
--(void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(CKTranscriptTableView *)view willDisplayCell:(CKServiceView *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     %orig;
     if ([cell isKindOfClass:[CKServiceView class]]) {
 		CKEntity *entity = nil;
+		NSDate *messageDate = nil;
 		
 		NSUInteger numRows = [[self transcriptTable] numberOfRowsInSection:indexPath.section];
 		if (indexPath.row == numRows - 1)
@@ -801,27 +915,25 @@ extern NSString *const CKBubbleDataMessage;
         else
 		{
 			CKTranscriptBubbleData *data = [self bubbleData];
-			NSUInteger index = indexPath.row + 1;
+			NSInteger index = indexPath.row + 1;
 			
 			CKMessage *message = [data nextMessageFromIndex:index];
-			
-//			NSUInteger count = [data count];
-//			while (index < count) {
-//				message = [data messageAtIndex:index];
-//				if (message) {
-//					break;
-//				}
-//				index++;
-//			}
-			
 			entity = [message.conversation recipient];
+			
+			if (ShouldMergeServiceAndDateLabels()) {
+				messageDate = [message date];
+				cell.shouldShowDashedLine = (indexPath.row > 0);
+			}
 		}
 		
         if (!entity) {
             NSLog(@"error: could not find entity for CKServiceView at indexPath %@", indexPath);
         }
         
-        [(CKServiceView *)cell setEntity:entity];
+        [cell setEntity:entity];
+		if (messageDate) {
+			[cell setDate:messageDate];
+		}
     }
 }
 
@@ -854,12 +966,12 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 }
 
 %new(@@:d)
--(CKMessage *)lastMessageFromIndex:(NSUInteger)index
+-(CKMessage *)lastMessageFromIndex:(NSInteger)index
 {
 	CKMessage *prevMessage = nil;
 	
 	int count = [self count];
-	if (index >= count) {
+	if (index >= count && count > 0) {
 		index = count-1;
 	}
 	
@@ -875,7 +987,7 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 }
 
 %new(@@:d)
--(CKMessage *)nextMessageFromIndex:(NSUInteger)index
+-(CKMessage *)nextMessageFromIndex:(NSInteger)index
 {
 	CKMessage *message = nil;
 	
@@ -891,27 +1003,46 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 	return message;
 }
 
+- (int)_appendDateForMessageIfNeeded:(CKMessage *)message
+{
+	if (ShouldMergeServiceAndDateLabels()) {
+		NSInteger index = [self indexForMessage:message];
+		if (index == NSNotFound) {
+			index = [self count];
+		}
+		
+		CKService *prevService = [self serviceAtIndex:index-1];
+		if (prevService) {
+			return NSNotFound;
+		}
+	}
+	
+	return %orig;
+}
+
 -(int)_appendServiceForMessageIfNeeded:(CKMessage *)message
 {
     NSInteger response = %orig;
     if (response == NSNotFound && [message conversation]) {
-        NSUInteger index = [self indexForMessage:message];
+        NSInteger index = [self indexForMessage:message];
         if (index == NSNotFound) {
             index = [self count];
         }
 		
-		if (index > 0) {
-			CKMessage *prevMessage = [self lastMessageFromIndex:index-1];
-			
+		NSInteger searchIndex = (index > 0 ? index-1 : 0);
+		CKMessage *prevMessage = [self lastMessageFromIndex:searchIndex];
+		
 //			NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
+		
+		if ([prevMessage conversation]) {
+			BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
 			
-			if ([prevMessage conversation]) {
-				BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
-				
-				if (!sameAddress) {
-					response = [self _appendService:message.service];
-				}
+			if (!sameAddress) {
+				response = [self _appendService:message.service];
 			}
+		}
+		else if (index == 0) {
+			response = [self _appendService:message.service];
 		}
     }
     return response;
@@ -920,13 +1051,6 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 %end
 
 %hook CKConversationList
-
-//-(id)existingAggregateConversationForAddresses:(id)addresses
-//{
-//    id conversation = %orig;
-//    NSLog(@"existingAggregate: %@ for addresses: %@", conversation, addresses);
-//    return conversation;
-//}
 
 -(CKAggregateConversation *)aggregateConversationForRecipients:(NSArray *)recipients create:(BOOL)create
 {
@@ -1217,9 +1341,43 @@ typedef enum {
 
 %end
 
+%group DashedLineFixPad
+%hook CKDashedLineView
+
+- (void)drawRect:(CGRect)rect
+{
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	UIGraphicsPushContext(ctx);
+	CGRect bounds = self.bounds;
+	
+	UIColor *color = MSHookIvar<id>(self, "_color");
+	if (color) {
+		[color set];
+	}
+	
+	CGRect gap = MSHookIvar<CGRect>(self, "_gap");
+	if (!CGRectIsNull(gap)) {
+		CGRect leftClipRect = (CGRect){CGPointZero, CGRectGetMinX(gap), CGRectGetMaxY(bounds)};
+		CGRect rightClipRect = (CGRect){CGRectGetMaxX(gap), 0, CGRectGetMaxX(bounds) - CGRectGetMaxX(gap), CGRectGetMaxY(bounds)};
+		
+		const CGRect rects[] = {leftClipRect, rightClipRect};
+		CGContextClipToRects(ctx, rects, 2);
+	}
+	
+	UIRectFill(bounds);
+	UIGraphicsPopContext();
+}
+
+%end
+%end
+
 %ctor {
     %init;
     if ([MGTranscriptHeaderContext shouldOverrideHeader]) {
         %init(FloatingHeader);
     }
+	
+	if (ShouldMergeServiceAndDateLabels()) {
+		%init(DashedLineFixPad);
+	}
 }
