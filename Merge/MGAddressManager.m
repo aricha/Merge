@@ -30,8 +30,6 @@ typedef enum {
 
 #define nilFromNull(obj) (obj ? obj : nil)
 
-typedef void(^DifferentiationSheetCompletionBlock)(NSString *selectedAddresss);
-
 extern NSBundle *ABAddressBookUIBundle();
 
 @interface MGAddressManager() <UIActionSheetDelegate, ABPersonTableActionDelegate>
@@ -96,18 +94,22 @@ NSBundle *MGBundle(void)
 	ABPropertyID property = [actionSheet ab_tag2AtIndex:buttonIndex];
 	
 	NSString *normalizedAddress = [ABPhoneFormatting abNormalizedPhoneNumberFromString:[propertyGroup propertyValueAtIndex:propertyIndex]];
+	BOOL performOriginalAction = NO;
 	
 	if (self.activeValidAddresses && ![self.activeValidAddresses containsObject:normalizedAddress])
 	{
 		// use default (ie. URL) action
-//		DLog(@"address %@ not in valid addresses, using native action instead of callback block", normalizedAddress);
-		
-		[self.activeAction performWithSender:self person:[propertyGroup.people objectAtIndex:0] property:property identifier:propertyIndex];
+		performOriginalAction = YES;
 	}
 	else
 	{
-		if (self.activeCompletionBlock)
-			self.activeCompletionBlock(normalizedAddress);
+		if (self.activeCompletionBlock) {
+			self.activeCompletionBlock(normalizedAddress, &performOriginalAction);
+		}
+	}
+		
+	if (performOriginalAction) {
+		[self.activeAction performWithSender:self person:[propertyGroup.people objectAtIndex:0] property:property identifier:propertyIndex];
 	}
 }
 
@@ -133,7 +135,7 @@ NSBundle *MGBundle(void)
 			break;
 		}
 	}
-	
+		
 	if (selectedGroup) {
 		[selectedGroup prepareActionsController:actionsController withValueAtIndex:identifier];
 		
@@ -207,7 +209,7 @@ NSBundle *MGBundle(void)
 	NSUInteger cancelIndex = [actionSheet _addButtonWithTitle:cancelTitle];
 	actionSheet.cancelButtonIndex = cancelIndex;
 	
-	if (addresses)
+//	if (addresses)
 	{
 		NSString *title = [abBundle localizedStringForKey:@"PHONE_ACTION_TEXT" value:nil table:@"AB"];
 		NSString *shortTitle = [abBundle localizedStringForKey:@"PHONE_ACTION_TEXT_SHORT" value:nil table:@"AB"];

@@ -25,6 +25,7 @@
 #import <ChatKit/CKComposeRecipientView.h>
 #import <ChatKit/CKDashedLineView.h>
 #import <ChatKit/CKUIBehavior.h>
+#import <ChatKit/CKPreferredServiceManager.h>
 
 #import <UIKit/UIKit.h>
 #import <UIKit/UIGraphics.h>
@@ -761,7 +762,6 @@ extern NSString *const CKBubbleDataMessage;
 
 -(void)_computeBubbleData:(BOOL)force
 {
-	%log;
 	%orig;
 	
 	CKTranscriptBubbleData *data = [self bubbleData];
@@ -769,18 +769,18 @@ extern NSString *const CKBubbleDataMessage;
 	NSInteger count = [data count];
 	
 	if (!lastService && count > 0) {
-		CKService *pendingService = data.pendingService;
-		if (pendingService) {
-			[data _appendService:pendingService];
-		}
-		else {
+//		CKService *pendingService = data.pendingService;
+//		if (pendingService) {
+//			[data _appendService:pendingService];
+//		}
+//		else {
 			CKEntity *selectedRecipient = self.conversation.selectedRecipient;
 			CKMessage *lastMessage = [data lastMessageFromIndex:count];
 			
 			if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
 				[data _appendService:selectedRecipient.service];
 			}
-		}
+//		}
 	}
 }
 
@@ -803,7 +803,8 @@ extern NSString *const CKBubbleDataMessage;
 	{
 		// add pending divider to indicate new address
 		[tableView beginUpdates];
-		data.pendingService = recipient.service;
+//		data.pendingService = recipient.service;
+		[data _appendService:recipient.service];
 		
 		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
 //		NSLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
@@ -842,6 +843,8 @@ extern NSString *const CKBubbleDataMessage;
 	}
 }
 
+extern "C" void CKShowError(NSError *error);
+
 %new(v@:)
 -(void)selectAddressForCurrentRecipientFromView:(UIView *)view asPopover:(BOOL)popover
 {
@@ -857,13 +860,13 @@ extern NSString *const CKBubbleDataMessage;
 		return;
 	}
     ABContact *contact = [ABContact contactWithRecord:record];
-    NSArray *addresses = [self.conversation allAddresses];
+//    NSArray *addresses = [self.conversation allAddresses];
     
     [[MGAddressManager sharedAddressManager] presentDifferentiationSheetForContact:contact
                                                                             inView:view
 																		 asPopover:popover
-                                                                availableAddresses:addresses
-                                                                        completion:^(NSString *selectedAddress) {
+                                                                availableAddresses:nil
+                                                                        completion:^(NSString *selectedAddress, BOOL *performOriginalAction) {
                                                                             CKSubConversation *subConversation = [[CKConversationList sharedConversationList] existingConversationForAddresses:@[selectedAddress]];
                                                                             if (subConversation) {
 																				CKEntity *selectedRecipient = [subConversation.recipients objectAtIndex:0];
@@ -871,6 +874,40 @@ extern NSString *const CKBubbleDataMessage;
 																				
 																				[self showPendingDividerIfNecessaryForRecipient:selectedRecipient];
                                                                             }
+																			else {
+																				CKPreferredServiceManager *manager = [CKPreferredServiceManager sharedPreferredServiceManager];
+																				BOOL canSend = YES;
+																				NSError *error = nil;
+																				CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:NO canSend:&canSend error:&error];
+																				
+																				NSLog(@"canSend?? : %d, error: %@", canSend, error);
+																				
+																				if (canSend) {
+																					CKEntity *recipient = [preferredService copyEntityForAddressString:selectedAddress];
+																					CKSubConversation *convo = [[[[CKConversationList sharedConversationList] conversationForRecipients:@[recipient] create:YES service:preferredService] retain] autorelease];
+																					
+																					NSLog(@"convo: %@ for recipient: %@ with aggregate: %@", convo, recipient, convo.aggregateConversation);
+																					
+																					if ([self.conversation containsConversation:convo]) {
+																						self.conversation.selectedRecipient = recipient;
+																						[self showPendingDividerIfNecessaryForRecipient:recipient];
+																					}
+																					else {
+																						NSLog(@"Error: conversation %@ NOT in current aggregate %@, its aggregate is %@", convo, self.conversation, convo.aggregateConversation);
+																						
+																						[[CKConversationList sharedConversationList] removeConversation:convo];
+																						[convo deleteAllMessagesAndRemoveGroup];
+																						
+																						*performOriginalAction = YES;
+																					}
+																					
+																					[recipient release];
+																				}
+																				else {
+//																					CKShowError(error);
+																					*performOriginalAction = YES;
+																				}
+																			}
                                                                         }];
 }
 
@@ -885,7 +922,7 @@ extern NSString *const CKBubbleDataMessage;
 																				inView:atom
 																			 asPopover:YES
 																	availableAddresses:nil
-																			completion:^(NSString *selectedAddress) {
+																			completion:^(NSString *selectedAddress, BOOL *performOriginalAction) {
 																				if (selectedAddress) {
 																					CKRecipientGenerator *generator = [self _recipientGenerator];
 																					MFComposeRecipient *recipient = [generator recipientWithAddress:selectedAddress];
@@ -911,6 +948,10 @@ extern NSString *const CKBubbleDataMessage;
 		{
 			// last row is service / address divider, treat as pending message
 			entity = [self.conversation selectedRecipient];
+			
+			if (ShouldMergeServiceAndDateLabels()) {
+				messageDate = [NSDate date];
+			}
 		}
         else
 		{
@@ -946,7 +987,8 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 %new(@@:)
 - (CKService *)pendingService
 {
-    return objc_getAssociatedObject(self, MGBubbleDataPendingServiceKey);
+//    return objc_getAssociatedObject(self, MGBubbleDataPendingServiceKey);
+	return [self serviceAtIndex:([self _lastIndexExcludingTypingIndicator] - 1)];
 }
 
 %new(v@:@)
@@ -1013,6 +1055,7 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 		
 		CKService *prevService = [self serviceAtIndex:index-1];
 		if (prevService) {
+			[self _setupNextEligibleTimestamp:[message date]];
 			return NSNotFound;
 		}
 	}
@@ -1030,19 +1073,27 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
         }
 		
 		NSInteger searchIndex = (index > 0 ? index-1 : 0);
-		CKMessage *prevMessage = [self lastMessageFromIndex:searchIndex];
 		
-//			NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
-		
-		if ([prevMessage conversation]) {
-			BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
+		// don't append another service divider if one is already there
+		CKService *prevService = [self serviceAtIndex:searchIndex];
+		if (!prevService) {
+			CKMessage *prevMessage = [self lastMessageFromIndex:searchIndex];
+			BOOL shouldAppendService = NO;
 			
-			if (!sameAddress) {
+//			NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
+			
+			if ([prevMessage conversation]) {
+				BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
+				shouldAppendService = !sameAddress;
+			}
+			else if (index == 0) {
+				// always show service at the top (doesn't happen automatically on iPad)
+				shouldAppendService = YES;
+			}
+			
+			if (shouldAppendService) {
 				response = [self _appendService:message.service];
 			}
-		}
-		else if (index == 0) {
-			response = [self _appendService:message.service];
 		}
     }
     return response;

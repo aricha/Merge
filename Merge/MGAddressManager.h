@@ -10,6 +10,8 @@
 
 @class ABContact, UIView;
 
+typedef void(^DifferentiationSheetCompletionBlock)(NSString *selectedAddresss, BOOL *performOriginalAction);
+
 @interface MGAddressManager : NSObject
 
 + (MGAddressManager *)sharedAddressManager;
@@ -18,6 +20,6 @@
 									   inView:(UIView *)view
 									asPopover:(BOOL)showAsPopover
 						   availableAddresses:(NSArray *)addresses
-								   completion:(void (^)(NSString *address))completionBlock;
+								   completion:(DifferentiationSheetCompletionBlock)completionBlock;
 
 @end
