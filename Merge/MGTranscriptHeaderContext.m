@@ -293,7 +293,7 @@ NSString *const CKContentEntryViewDidEndEditingNotification = @"CKContentEntryVi
         }
         
 //        if (!directionValid)
-//            NSLog(@"direction not valid, target offset: %f, scroll direction: %d, new offset: %f", self.deceleratingTargetOffset, self.decelerationDirection, newOffset);
+//            DLog(@"direction not valid, target offset: %f, scroll direction: %d, new offset: %f", self.deceleratingTargetOffset, self.decelerationDirection, newOffset);
     }
     
     if (directionValid) {

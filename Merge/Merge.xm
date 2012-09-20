@@ -513,7 +513,7 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
         else {
             hash = %orig;
         }
-//        NSLog(@"hash: %u for record %p with entity %@", hash, record, self);
+//        DLog(@"hash: %u for record %p with entity %@", hash, record, self);
     }
     return hash;
 }
@@ -795,7 +795,7 @@ extern NSString *const CKBubbleDataMessage;
 	NSUInteger lastIndex = [data _lastIndexExcludingTypingIndicator] - 1;
 	CKService *lastService = [data serviceAtIndex:lastIndex];
 	
-//	NSLog(@"last index: %d, lastService: %@", lastIndex, lastService);
+//	DLog(@"last index: %d, lastService: %@", lastIndex, lastService);
 	
 	NSIndexPath *scrollIndex = nil;
 	
@@ -807,7 +807,7 @@ extern NSString *const CKBubbleDataMessage;
 		[data _appendService:recipient.service];
 		
 		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
-//		NSLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
+//		DLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
 		[tableView insertRowsAtIndexPaths:@[newIndex]
 						 withRowAnimation:UITableViewRowAnimationAutomatic];
 		[tableView endUpdates];
@@ -880,20 +880,20 @@ extern "C" void CKShowError(NSError *error);
 																				NSError *error = nil;
 																				CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:NO canSend:&canSend error:&error];
 																				
-																				NSLog(@"canSend?? : %d, error: %@", canSend, error);
+																				DLog(@"canSend?? : %d, error: %@", canSend, error);
 																				
 																				if (canSend) {
 																					CKEntity *recipient = [preferredService copyEntityForAddressString:selectedAddress];
 																					CKSubConversation *convo = [[[[CKConversationList sharedConversationList] conversationForRecipients:@[recipient] create:YES service:preferredService] retain] autorelease];
 																					
-																					NSLog(@"convo: %@ for recipient: %@ with aggregate: %@", convo, recipient, convo.aggregateConversation);
+																					DLog(@"convo: %@ for recipient: %@ with aggregate: %@", convo, recipient, convo.aggregateConversation);
 																					
 																					if ([self.conversation containsConversation:convo]) {
 																						self.conversation.selectedRecipient = recipient;
 																						[self showPendingDividerIfNecessaryForRecipient:recipient];
 																					}
 																					else {
-																						NSLog(@"Error: conversation %@ NOT in current aggregate %@, its aggregate is %@", convo, self.conversation, convo.aggregateConversation);
+																						ULog(@"Error: conversation %@ NOT in current aggregate %@, its aggregate is %@", convo, self.conversation, convo.aggregateConversation);
 																						
 																						[[CKConversationList sharedConversationList] removeConversation:convo];
 																						[convo deleteAllMessagesAndRemoveGroup];
@@ -904,7 +904,9 @@ extern "C" void CKShowError(NSError *error);
 																					[recipient release];
 																				}
 																				else {
-//																					CKShowError(error);
+#ifdef DEBUG
+																					CKShowError(error);
+#endif
 																					*performOriginalAction = YES;
 																				}
 																			}
@@ -968,7 +970,7 @@ extern "C" void CKShowError(NSError *error);
 		}
 		
         if (!entity) {
-            NSLog(@"error: could not find entity for CKServiceView at indexPath %@", indexPath);
+            NSLog(@"Error: could not find entity for CKServiceView at indexPath %@", indexPath);
         }
         
         [cell setEntity:entity];
@@ -1080,7 +1082,7 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 			CKMessage *prevMessage = [self lastMessageFromIndex:searchIndex];
 			BOOL shouldAppendService = NO;
 			
-//			NSLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
+//			DLog(@"appending service for message \"%@\" with recipients: %@ groupID: %@, conversation: %@, aggregate: %@, placeholder: %d \n prevMessage \"%@\" recipients: %@ groupID: %@, conversation: %@, aggregate: %@", [message text], [message.conversation recipients], [message.conversation groupID], message.conversation, message.conversation.aggregateConversation, [message isPlaceholder], [prevMessage text], [prevMessage.conversation recipients], [prevMessage.conversation groupID], prevMessage.conversation, prevMessage.conversation.aggregateConversation);
 			
 			if ([prevMessage conversation]) {
 				BOOL sameAddress = ([[message.conversation recipients] isEqual:[prevMessage.conversation recipients]]);
@@ -1106,7 +1108,7 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 -(CKAggregateConversation *)aggregateConversationForRecipients:(NSArray *)recipients create:(BOOL)create
 {
     CKAggregateConversation *conversation = %orig;
-//    NSLog(@"aggregate for recipients: %@ is %@; shouldCreate: %d", recipients, conversation, create);
+//    DLog(@"aggregate for recipients: %@ is %@; shouldCreate: %d", recipients, conversation, create);
     
     if (recipients.count == 1) {
         conversation.selectedRecipient = [recipients objectAtIndex:0];
@@ -1119,7 +1121,7 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 {
     CKSubConversation *conversation = %orig;
     if (conversation && conversation.recipients.count == 1) {
-//        NSLog(@"conversation: %@, aggregate: %@", conversation, conversation.aggregateConversation);
+//        DLog(@"conversation: %@, aggregate: %@", conversation, conversation.aggregateConversation);
         conversation.aggregateConversation.selectedRecipient = [conversation.recipients objectAtIndex:0];
     }
     return conversation;
@@ -1184,7 +1186,7 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
     if (!conversation) {
         conversation = %orig;
     }
-//    NSLog(@"found subConversation %@ for service %@, shouldCreate: %d, aggregate: %@", conversation, service, create, self);
+//    DLog(@"found subConversation %@ for service %@, shouldCreate: %d, aggregate: %@", conversation, service, create, self);
     return conversation;
 }
 
@@ -1194,7 +1196,7 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
     if (!conversation) {
         conversation = %orig;
     }
-//    NSLog(@"found bestExistingConversation %@ for aggregate %@", conversation, self);
+//    DLog(@"found bestExistingConversation %@ for aggregate %@", conversation, self);
     return conversation;
 }
 
@@ -1224,26 +1226,26 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
             
             if (service && ![conversation.service isEqual:service]) {
                 // ignore conversations that don't match
-//                NSLog(@"conversation %@ does not match service %@, ignoring!", conversation, service);
+//                DLog(@"conversation %@ does not match service %@, ignoring!", conversation, service);
                 continue;
             }
             
             if ([[conversation recipients] containsObject:selectedRecipient]) {
-//                NSLog(@"found selectedRecipient %@ in subConversation %@", selectedRecipient, conversation);
+//                DLog(@"found selectedRecipient %@ in subConversation %@", selectedRecipient, conversation);
                 selectedConversation = conversation;
                 break;
             }
             
             if (!sequenceNum) {
                 // placeholder (pending) message
-//                NSLog(@"found conversation %@ with latestMessage %@ with no sequence number!", conversation, latestMessage);
+//                DLog(@"found conversation %@ with latestMessage %@ with no sequence number!", conversation, latestMessage);
                 
                 if (!selectedConversation) {
                     selectedConversation = conversation;
                 }
                 else {
                     NSArray *pendingMessages = conversation.pendingMessages;
-                    NSLog(@"ERROR: found multiple outgoing messages for aggregate %@! They are: %@ and %@", self, [selectedConversation pendingMessages], pendingMessages);
+                    NSLog(@"Error: found multiple outgoing messages for aggregate %@! They are: %@ and %@", self, [selectedConversation pendingMessages], pendingMessages);
                     break;
                 }
             }
@@ -1253,7 +1255,7 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
             }
         }
         
-//        NSLog(@"found mostRecentConversation %@, selectedConversation %@, pending messages: %@", mostRecentConversation, selectedConversation, mostRecentConversation.aggregateConversation.pendingMessages);
+//        DLog(@"found mostRecentConversation %@, selectedConversation %@, pending messages: %@", mostRecentConversation, selectedConversation, mostRecentConversation.aggregateConversation.pendingMessages);
         
         return (selectedConversation ? selectedConversation : mostRecentConversation);
     }
@@ -1283,7 +1285,7 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
         return 0;
     }
     
-//    NSLog(@"adding message %@ placeholder: %d, with conversation %@, recipients: %@, outgoing: %d, containsMessage: %d", message, [message isPlaceholder], message.conversation, message.conversation.recipients, [message isOutgoing], containsMessage);
+//    DLog(@"adding message %@ placeholder: %d, with conversation %@, recipients: %@, outgoing: %d, containsMessage: %d", message, [message isPlaceholder], message.conversation, message.conversation.recipients, [message isOutgoing], containsMessage);
 //    self.pendingMessage = message;
     int result = %orig;
     
@@ -1294,7 +1296,7 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
 //            [self didAddMessageBlock](message, self);
 //        }
     }
-//    NSLog(@"result: %d for message %@ with conversation %@", result, message, message.conversation);
+//    DLog(@"result: %d for message %@ with conversation %@", result, message, message.conversation);
     return result;
 }
 

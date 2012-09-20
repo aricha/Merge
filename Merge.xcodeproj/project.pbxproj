@@ -69,6 +69,7 @@
 		0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSPDFKitImproveRecursiveDescription.m; sourceTree = "<group>"; };
 		0DD6F09415F6A713000B9998 /* MGAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGAddressManager.h; sourceTree = "<group>"; };
 		0DD6F09515F6A713000B9998 /* MGAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGAddressManager.m; sourceTree = "<group>"; };
+		0DDAA25F160AA32E003BF03B /* Merge.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Merge.bundle; sourceTree = "<group>"; };
 		0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		0DDCB76415F709850051D085 /* AppSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppSupport.framework; path = System/Library/PrivateFrameworks/AppSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -192,6 +193,7 @@
 		0DA1605015BCD1D1002A4315 /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				0DDAA25D160AA32E003BF03B /* Application Support */,
 				0DA1605115BCD1D1002A4315 /* MobileSubstrate */,
 			);
 			name = Library;
@@ -219,6 +221,23 @@
 				0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */,
 			);
 			path = PSPDFKitImproveRecursiveDescription;
+			sourceTree = "<group>";
+		};
+		0DDAA25D160AA32E003BF03B /* Application Support */ = {
+			isa = PBXGroup;
+			children = (
+				0DDAA25E160AA32E003BF03B /* Merge */,
+			);
+			name = "Application Support";
+			path = "Package/Library/Application Support";
+			sourceTree = "<group>";
+		};
+		0DDAA25E160AA32E003BF03B /* Merge */ = {
+			isa = PBXGroup;
+			children = (
+				0DDAA25F160AA32E003BF03B /* Merge.bundle */,
+			);
+			path = Merge;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

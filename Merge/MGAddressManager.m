@@ -42,15 +42,12 @@ extern NSBundle *ABAddressBookUIBundle();
 
 @end
 
-NSBundle *MGBundle(void);
-
-NSBundle *MGBundle(void)
+static NSBundle *MGBundle(void)
 {
 	static NSBundle *mergeBundle = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		// TODO: use an actual bundle
-		mergeBundle = [ABAddressBookUIBundle() retain];
+		mergeBundle = [NSBundle bundleWithPath:@"/Library/Application Support/Merge/Merge.bundle"];
 	});
 	return mergeBundle;
 }
