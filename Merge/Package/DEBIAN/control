@@ -1,15 +1,15 @@
 Package: com.arichardson.Merge
 Name: Merge
-Version: 0.1-1
-Description: 
+Version: 1.0
+Description: Unify your Messages conversations!
 Section: System
 Depends: firmware (>= 5.0), mobilesubstrate
 Conflicts: 
 Replaces: 
 Priority: optional
 Architecture: iphoneos-arm
-Author: Andrew Richardson
-dev: 
+Author: Andrew Richardson and Joshua Tucker
+dev: Andrew Richardson
 Homepage: 
 Depiction: 
 Maintainer: 

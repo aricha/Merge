@@ -26,6 +26,7 @@
 #import <ChatKit/CKDashedLineView.h>
 #import <ChatKit/CKUIBehavior.h>
 #import <ChatKit/CKPreferredServiceManager.h>
+#import <ChatKit/CKMessagesAppPreferredServiceManager.h>
 
 #import <UIKit/UIKit.h>
 #import <UIKit/UIGraphics.h>
@@ -37,6 +38,10 @@
 #import "MGTranscriptHeaderContext.h"
 #import "MGAddressManager.h"
 #import "ABContactHelper/ABContactsHelper.h"
+
+#warning TODO: see if these are useful
+extern NSString *const CKAggregateConversationPreferredServiceChangedNotification;
+extern NSString *const CKPreferredServiceChangedNotification;
 
 @interface UIScrollView ()
 - (NSTimeInterval)_contentOffsetAnimationDuration;
@@ -56,7 +61,7 @@
 
 @interface CKAggregateConversation ()
 @property (nonatomic, retain) CKEntity *selectedRecipient;
-@property (nonatomic, retain) CKMessage * pendingMessage;
+@property (nonatomic, retain) CKMessage *pendingMessage;
 - (CKSubConversation *)_bestExistingConversationWithService:(CKService *)service;
 - (NSArray *)allAddresses;
 @end
@@ -76,6 +81,7 @@
 @property (nonatomic, retain) CKService *pendingService;
 - (CKMessage *)lastMessageFromIndex:(NSInteger)index;
 - (CKMessage *)nextMessageFromIndex:(NSInteger)index;
+- (NSInteger)_indexOfPendingService;
 @end
 
 @interface CKServiceView ()
@@ -86,6 +92,10 @@
 - (void)updateTitleLabel;
 - (CKService *)service;
 - (UILabel *)textLabel;
+@end
+
+@interface CKPreferredServiceManager ()
+- (CKService *)preferredServiceForSelectedRecipient:(CKEntity *)recipient withAggregateConversation:(CKAggregateConversation *)conversation canSend:(BOOL *)canSend error:(NSError **)error;
 @end
 
 @interface NSObject (MFComposeRecipientAtomDelegate)
@@ -570,12 +580,9 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
 - (void)setService:(CKService *)service
 {
     if ([self service] != service) {
-        if (!service || [service isKindOfClass:%c(CKService)]) {
+//        if (!service || [service isKindOfClass:%c(CKService)]) {
             %orig;
-        }
-        else if ([service isKindOfClass:%c(CKEntity)]) {
-            [self setEntity:(CKEntity *)service];
-        }
+//        }
         
         [self updateTitleLabel];
     }
@@ -769,18 +776,39 @@ extern NSString *const CKBubbleDataMessage;
 	NSInteger count = [data count];
 	
 	if (!lastService && count > 0) {
-//		CKService *pendingService = data.pendingService;
-//		if (pendingService) {
-//			[data _appendService:pendingService];
-//		}
-//		else {
-			CKEntity *selectedRecipient = self.conversation.selectedRecipient;
-			CKMessage *lastMessage = [data lastMessageFromIndex:count];
+		CKEntity *selectedRecipient = self.conversation.selectedRecipient;
+		CKMessage *lastMessage = [data lastMessageFromIndex:count];
+		
+		if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
+			CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] preferredServiceForSelectedRecipient:selectedRecipient
+																												withAggregateConversation:[self conversation]
+																																  canSend:NULL
+																																	error:NULL];
 			
-			if (selectedRecipient && (lastMessage && lastMessage.conversation.recipient != selectedRecipient)) {
-				[data _appendService:selectedRecipient.service];
-			}
-//		}
+			data.pendingService = preferredService;
+//			if (preferredService) {
+//				[data _appendService:preferredService];
+//			}
+		}
+	}
+}
+
+- (void)_handlePreferredServiceChangedNotification:(NSNotification *)notification
+{
+	%orig;
+	
+	CKTranscriptBubbleData *bubbleData = [self bubbleData];
+	
+	CKAggregateConversation *conversation = [self conversation];
+	CKEntity *selectedRecipient = conversation.selectedRecipient;
+	
+	if (selectedRecipient) {
+		CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] preferredServiceForSelectedRecipient:selectedRecipient
+																											withAggregateConversation:conversation
+																															  canSend:NULL
+																																error:NULL];
+		
+		bubbleData.pendingService = preferredService;
 	}
 }
 
@@ -792,10 +820,18 @@ extern NSString *const CKBubbleDataMessage;
 	
 	// _lastIndexExcludingTypingIndicator is actually an insertion index, so subtract 1 to get
 	// actual last index
-	NSUInteger lastIndex = [data _lastIndexExcludingTypingIndicator] - 1;
-	CKService *lastService = [data serviceAtIndex:lastIndex];
+	NSUInteger lastIndex = [data _indexOfPendingService]; //[data _lastIndexExcludingTypingIndicator] - 1;
+//	CKService *lastService = [data serviceAtIndex:lastIndex];
+	CKService *lastService = [data pendingService];
 	
 //	DLog(@"last index: %d, lastService: %@", lastIndex, lastService);
+	
+	CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] preferredServiceForSelectedRecipient:recipient
+																										withAggregateConversation:[self conversation]
+																												 canSend:NULL
+																												   error:NULL];
+	
+	DLog(@"preferredService: %@", preferredService);
 	
 	NSIndexPath *scrollIndex = nil;
 	
@@ -803,8 +839,9 @@ extern NSString *const CKBubbleDataMessage;
 	{
 		// add pending divider to indicate new address
 		[tableView beginUpdates];
-//		data.pendingService = recipient.service;
-		[data _appendService:recipient.service];
+		
+//		[data _appendService:preferredService];
+		data.pendingService = preferredService;
 		
 		NSIndexPath *newIndex = [NSIndexPath indexPathForRow:(lastIndex + 1) inSection:0];
 //		DLog(@"newIndex: %@, numRows: %d", newIndex, numRows);
@@ -822,11 +859,19 @@ extern NSString *const CKBubbleDataMessage;
 		if (lastCell) {
 			// pending divider already showing, update information if needed
 			[lastCell setEntity:recipient];
-			[lastCell setService:recipient.service];
+			DLog(@"cell %@ exists! setting service to %@", lastCell, preferredService);
+			[lastCell setService:preferredService];
 		}
 		else {
 			scrollIndex = lastServiceIndex;
+			
+//			data.pendingService = preferredService;
+//			NSMutableDictionary *serviceData = (NSMutableDictionary *)[[self bubbleData] bubbleDataForIndex:lastIndex];
+//			DLog(@"serviceData: %@", serviceData);
+//			[serviceData setObject:preferredService forKey:CKBubbleDataService];
 		}
+		
+		data.pendingService = preferredService;
 	}
 	
 	if (scrollIndex) {
@@ -841,6 +886,8 @@ extern NSString *const CKBubbleDataMessage;
 		// no need to wait for animation if pending divider is already visible
 		[self _makeContentEntryViewActive];
 	}
+	
+	[self updateEntryView];
 }
 
 extern "C" void CKShowError(NSError *error);
@@ -878,11 +925,11 @@ extern "C" void CKShowError(NSError *error);
 																				CKPreferredServiceManager *manager = [CKPreferredServiceManager sharedPreferredServiceManager];
 																				BOOL canSend = YES;
 																				NSError *error = nil;
-																				CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:NO canSend:&canSend error:&error];
+																				CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:YES canSend:&canSend error:&error];
 																				
 																				DLog(@"canSend?? : %d, error: %@", canSend, error);
 																				
-																				if (canSend) {
+																				if (canSend && preferredService) {
 																					CKEntity *recipient = [preferredService copyEntityForAddressString:selectedAddress];
 																					CKSubConversation *convo = [[[[CKConversationList sharedConversationList] conversationForRecipients:@[recipient] create:YES service:preferredService] retain] autorelease];
 																					
@@ -982,15 +1029,25 @@ extern "C" void CKShowError(NSError *error);
 
 %end
 
+extern NSString *const CKBubbleDataService;
+
 %hook CKTranscriptBubbleData
 
 static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServiceKey";
+
+%new(d@:)
+- (NSInteger)_indexOfPendingService
+{
+	// _lastIndexExcludingTypingIndicator is actually an insertion index, so subtract 1 to get
+	// actual last index
+	return ([self _lastIndexExcludingTypingIndicator] - 1);
+}
 
 %new(@@:)
 - (CKService *)pendingService
 {
 //    return objc_getAssociatedObject(self, MGBubbleDataPendingServiceKey);
-	return [self serviceAtIndex:([self _lastIndexExcludingTypingIndicator] - 1)];
+	return [self serviceAtIndex:[self _indexOfPendingService]];
 }
 
 %new(v@:@)
@@ -1004,7 +1061,8 @@ static NSString *const MGBubbleDataPendingServiceKey = @"MGBubbleDataPendingServ
 			[self _appendService:pendingService];
 		}
 		else {
-			ULog(@"Error: changed existing pending service! Prev service: %@, new service: %@", prevPendingService, pendingService);
+			NSMutableDictionary *serviceData = (NSMutableDictionary *)[self bubbleDataForIndex:[self _indexOfPendingService]];
+			[serviceData setObject:pendingService forKey:CKBubbleDataService];
 		}
 	}
 }
@@ -1390,6 +1448,76 @@ typedef enum {
 			[self.delegate selectComposeRecipientAtom:self];
 		}
 	}
+}
+
+%end
+
+typedef enum {
+	// ????????? (there are obviously more)
+	CKPreferredServiceManagerOptionsNewComposition = 1 << 7,
+} CKPreferredServiceManagerOptions;
+
+%hook CKPreferredServiceManager
+
+%new(@:@@pp)
+- (CKService *)preferredServiceForSelectedRecipient:(CKEntity *)recipient withAggregateConversation:(CKAggregateConversation *)conversation canSend:(BOOL *)canSend error:(NSError **)error
+{
+	NSLog(@"Error: %@ called on %@; should only be called on CKMessagesAppPreferredServiceManager!", NSStringFromSelector(_cmd), self);
+	
+	// this method gets it wrong sometimes, so don't use it normally!
+	return (recipient.service ? recipient.service : [self _preferredServiceForEntities:@[recipient] newComposition:YES checkWithServer:NO canSend:canSend error:(id *)error]);
+}
+
+%end
+
+%hook CKMessagesAppPreferredServiceManager
+
+- (CKService *)preferredServiceForSelectedRecipient:(CKEntity *)recipient withAggregateConversation:(CKAggregateConversation *)conversation canSend:(BOOL *)canSend error:(NSError **)error
+{
+	CKService *preferredService = nil;
+	
+	if (recipient) {
+		NSArray *recipients = @[recipient];
+		NSError *actualError = nil;
+		
+		unsigned options = [self __optionsForConversation:conversation];
+		options |= CKPreferredServiceManagerOptionsNewComposition;
+		
+		preferredService = [self _preferredServiceForEntities:recipients
+							//											  newComposition:NO // apparently needs to always be YES to work properly
+							//											 checkWithServer:checkWithServer
+													  options:options
+													  canSend:canSend
+														error:&actualError];
+		
+		if (error) {
+			*error = actualError;
+		}
+		
+		DLog(@"found preferred service %@ \naggregate %@\nselectedRecipient %@\nerror: %@", preferredService, conversation, recipient, actualError);
+		
+		if (!preferredService) {
+			preferredService = recipient.service;
+		}
+	}
+	
+	return preferredService;
+}
+
+- (id)preferredServiceForAggregateConversation:(CKAggregateConversation *)aggregateConversation newComposition:(BOOL)newComposition checkWithServer:(BOOL)checkWithServer canSend:(BOOL *)canSend error:(id *)error
+{
+	CKService *preferredService = nil;
+	if (aggregateConversation.selectedRecipient) {
+		preferredService = [self preferredServiceForSelectedRecipient:aggregateConversation.selectedRecipient
+											withAggregateConversation:aggregateConversation
+															  canSend:canSend
+																error:(NSError **)error];
+	}
+	else {
+		preferredService = %orig;
+	}
+	
+	return preferredService;
 }
 
 %end

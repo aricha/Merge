@@ -32,9 +32,23 @@
 		0DA1CAD215FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DA1CAD115FD63DB001A36DA /* PSPDFKitImproveRecursiveDescription.m */; };
 		0DD6F09615F6A713000B9998 /* MGAddressManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DD6F09415F6A713000B9998 /* MGAddressManager.h */; };
 		0DD6F09715F6A713000B9998 /* MGAddressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6F09515F6A713000B9998 /* MGAddressManager.m */; };
+		0DDAA279160AAEE8003BF03B /* Localizable.strings in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0DDAA26A160AA68B003BF03B /* Localizable.strings */; };
 		0DDCB76215F6FEB10051D085 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */; };
 		0DDCB76515F709850051D085 /* AppSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDCB76415F709850051D085 /* AppSupport.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0DDAA278160AAEDF003BF03B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "${SOURCE_ROOT}/Merge/Package/Library/Application Support/Merge/Merge.bundle";
+			dstSubfolderSpec = 0;
+			files = (
+				0DDAA279160AAEE8003BF03B /* Localizable.strings in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0D031D4715F5788100B24F3C /* ABContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABContact.h; path = ABContactHelper/ABContact.h; sourceTree = "<group>"; };
@@ -57,7 +71,6 @@
 		0D9C2E6215DB7A2B0009AB0A /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		0DA1604015BCD1D0002A4315 /* Merge.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Merge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA1604315BCD1D1002A4315 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		0DA1604815BCD1D1002A4315 /* control.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = control.txt; path = Package/DEBIAN/control.txt; sourceTree = "<group>"; };
 		0DA1604915BCD1D1002A4315 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Merge-Prefix.pch"; sourceTree = "<group>"; };
@@ -70,6 +83,15 @@
 		0DD6F09415F6A713000B9998 /* MGAddressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGAddressManager.h; sourceTree = "<group>"; };
 		0DD6F09515F6A713000B9998 /* MGAddressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGAddressManager.m; sourceTree = "<group>"; };
 		0DDAA25F160AA32E003BF03B /* Merge.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Merge.bundle; sourceTree = "<group>"; };
+		0DDAA269160AA68B003BF03B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA26B160AA8D9003BF03B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA26C160AA8DF003BF03B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA26D160AA8E4003BF03B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA26E160AA8EC003BF03B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		0DDAA26F160AA8F0003BF03B /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		0DDAA270160AA917003BF03B /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA271160AAA94003BF03B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0DDAA272160AAA99003BF03B /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0DDCB76115F6FEB00051D085 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		0DDCB76415F709850051D085 /* AppSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppSupport.framework; path = System/Library/PrivateFrameworks/AppSupport.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -110,6 +132,7 @@
 		0DA1603315BCD1D0002A4315 = {
 			isa = PBXGroup;
 			children = (
+				0DDAA26A160AA68B003BF03B /* Localizable.strings */,
 				0DA1604515BCD1D1002A4315 /* Merge */,
 				0DA1604215BCD1D0002A4315 /* Frameworks */,
 				0DA1604115BCD1D0002A4315 /* Products */,
@@ -167,7 +190,6 @@
 		0DA1604715BCD1D1002A4315 /* DEBIAN */ = {
 			isa = PBXGroup;
 			children = (
-				0DA1604815BCD1D1002A4315 /* control.txt */,
 				0DA1604915BCD1D1002A4315 /* control */,
 			);
 			name = DEBIAN;
@@ -269,6 +291,7 @@
 				0DA1603B15BCD1D0002A4315 /* Sources */,
 				0DA1603C15BCD1D0002A4315 /* Frameworks */,
 				0DA1603D15BCD1D0002A4315 /* Headers */,
+				0DDAA278160AAEDF003BF03B /* CopyFiles */,
 				0DA1603E15BCD1D0002A4315 /* ShellScript */,
 			);
 			buildRules = (
@@ -294,6 +317,14 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				fr,
+				es,
+				ru,
+				"zh-Hans",
+				"zh-Hant",
+				ar,
+				de,
+				it,
 			);
 			mainGroup = 0DA1603315BCD1D0002A4315;
 			productRefGroup = 0DA1604115BCD1D0002A4315 /* Products */;
@@ -353,6 +384,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		0DDAA26A160AA68B003BF03B /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0DDAA269160AA68B003BF03B /* en */,
+				0DDAA26B160AA8D9003BF03B /* fr */,
+				0DDAA26C160AA8DF003BF03B /* es */,
+				0DDAA26D160AA8E4003BF03B /* ru */,
+				0DDAA26E160AA8EC003BF03B /* zh-Hans */,
+				0DDAA26F160AA8F0003BF03B /* zh-Hant */,
+				0DDAA270160AA917003BF03B /* ar */,
+				0DDAA271160AAA94003BF03B /* de */,
+				0DDAA272160AAA99003BF03B /* it */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0D94C8DB15F929A300B2D2A5 /* Debug - UBC iPhone */ = {
