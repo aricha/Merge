@@ -1,7 +1,7 @@
 Package: com.arichardson.Merge
 Name: Merge
 Version: 1.0
-Description: Unify your Messages conversations!
+Description: Combines messages by contact in Messages.
 Section: System
 Depends: firmware (>= 5.0), mobilesubstrate
 Conflicts: 

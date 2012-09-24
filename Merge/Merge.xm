@@ -795,6 +795,10 @@ extern NSString *const CKBubbleDataMessage;
 
 - (void)_handlePreferredServiceChangedNotification:(NSNotification *)notification
 {
+#ifdef DEBUG
+	%log;
+#endif
+	
 	%orig;
 	
 	CKTranscriptBubbleData *bubbleData = [self bubbleData];
@@ -808,7 +812,11 @@ extern NSString *const CKBubbleDataMessage;
 																															  canSend:NULL
 																																error:NULL];
 		
-		bubbleData.pendingService = preferredService;
+		// only update pendingService if necessary (don't need to append service if
+		// user hasn't manually changed addresses to send to)
+		if (bubbleData.pendingService) {
+			bubbleData.pendingService = preferredService;
+		}
 	}
 }
 
