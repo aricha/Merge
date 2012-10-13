@@ -1,6 +1,6 @@
 Package: com.arichardson.Merge
 Name: Merge
-Version: 1.0
+Version: 1.1
 Description: Combines messages by contact in Messages.
 Section: System
 Depends: firmware (>= 5.0), mobilesubstrate
@@ -8,8 +8,8 @@ Conflicts:
 Replaces: 
 Priority: optional
 Architecture: iphoneos-arm
-Author: Andrew Richardson and Joshua Tucker
-dev: Andrew Richardson
+Author: Andrew Richardson & Joshua Tucker <andrewr114@gmail.com>
+dev: Andrew Richardson <andrewr114@gmail.com>
 Homepage: 
 Depiction: 
 Maintainer: 

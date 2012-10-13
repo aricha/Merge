@@ -74,7 +74,7 @@
 		0DA1604915BCD1D1002A4315 /* control */ = {isa = PBXFileReference; lastKnownFileType = text; name = control; path = Package/DEBIAN/control; sourceTree = "<group>"; };
 		0DA1604B15BCD1D1002A4315 /* PackageVersion.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PackageVersion.plist; sourceTree = "<group>"; };
 		0DA1604C15BCD1D1002A4315 /* Merge-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Merge-Prefix.pch"; sourceTree = "<group>"; };
-		0DA1604D15BCD1D1002A4315 /* Merge.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0DA1604D15BCD1D1002A4315 /* Merge.xm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.xm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objclogos; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0DA1604E15BCD1D1002A4315 /* Merge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Merge.mm; sourceTree = "<group>"; };
 		0DA1605315BCD1D1002A4315 /* Merge.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Merge.plist; path = Package/Library/MobileSubstrate/DynamicLibraries/Merge.plist; sourceTree = "<group>"; };
 		0DA1605F15BCD414002A4315 /* libsubstrate.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsubstrate.dylib; path = /opt/iOSOpenDev/lib/libsubstrate.dylib; sourceTree = "<absolute>"; };
@@ -455,7 +455,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos5.1;
 				iOSOpenDevCopyOnBuild = NO;
-				iOSOpenDevDevice = 128.189.197.156;
+				iOSOpenDevDevice = 128.189.85.79;
 				iOSOpenDevInstallOnAnyBuild = YES;
 				iOSOpenDevInstallOnProfiling = NO;
 				iOSOpenDevRespringOnInstall = NO;
@@ -532,6 +532,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos5.1;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = all;
 				iOSOpenDevCopyOnBuild = NO;
 				iOSOpenDevDevice = "";
 				iOSOpenDevInstallOnAnyBuild = YES;
@@ -669,6 +671,8 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos5.1;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = all;
 				iOSOpenDevCopyOnBuild = NO;
 				iOSOpenDevDevice = 192.168.1.127;
 				iOSOpenDevInstallOnAnyBuild = YES;

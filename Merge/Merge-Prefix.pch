@@ -6,3 +6,11 @@
     #import <Foundation/Foundation.h>
 #import "DebugTools.h"
 #endif
+
+#ifdef __cplusplus
+	#define MGExtern extern "C"
+#else
+	#define MGExtern extern
+#endif
+
+MGExtern NSBundle *MGBundle(void);

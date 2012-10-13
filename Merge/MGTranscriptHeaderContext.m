@@ -13,12 +13,14 @@
 
 extern BOOL _CKSMSShouldLogForType(int type);
 
+#ifdef DEBUG
 static BOOL replacedCKShouldLog(int type)
 {
-//    if (type == 18)
-//        return YES;
+    if (type == 0x11) //0x23)
+        return YES;
     return NO;
 }
+#endif
 
 static const NSTimeInterval MGTranscriptHeaderViewAutoHideDelay = 3.0;
 

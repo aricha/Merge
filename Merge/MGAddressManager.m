@@ -42,16 +42,6 @@ extern NSBundle *ABAddressBookUIBundle();
 
 @end
 
-static NSBundle *MGBundle(void)
-{
-	static NSBundle *mergeBundle = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		mergeBundle = [NSBundle bundleWithPath:@"/Library/Application Support/Merge/Merge.bundle"];
-	});
-	return mergeBundle;
-}
-
 @implementation MGAddressManager
 
 + (MGAddressManager *)sharedAddressManager
@@ -182,7 +172,7 @@ static NSBundle *MGBundle(void)
 	NSBundle *mgBundle = MGBundle();
 	
 	// PHONE_ACTION_TEXT_SHEET_TITLE in AB
-	NSString *sheetTitle = [mgBundle localizedStringForKey:@"ADDRESS_SWITCH_TITLE" value:@"Select an address to send to." table:@"AB"];
+	NSString *sheetTitle = [mgBundle localizedStringForKey:@"ADDRESS_SWITCH_TITLE" value:@"SELECT an address to send to." table:nil];
 	
 	NSString *cancelTitle = [abBundle localizedStringForKey:@"CANCEL" value:@"Cancel" table:@"AB"];
 	
@@ -223,7 +213,7 @@ static NSBundle *MGBundle(void)
 		CFArrayAppendValue(properties, &kABPersonPhoneProperty);
 		CFArrayAppendValue(properties, &kABPersonEmailProperty);
 		
-		action.properties = properties; //(CFArrayRef)@[(id)&kABPersonPhoneProperty, (id)&kABPersonEmailProperty];
+		action.properties = properties;
 		CFRelease(properties);
 		
 		actionSheet.ab_context = action;

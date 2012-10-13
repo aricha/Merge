@@ -4,9 +4,12 @@
 <dict>
 	<key>Filter</key>
 	<dict>
+		<key>Mode</key>
+		<string>Any</string>
 		<key>Bundles</key>
 		<array>
 			<string>com.apple.MobileSMS</string>
+			<string>com.apple.chatkit</string>
 		</array>
 	</dict>
 </dict>

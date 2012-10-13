@@ -47,6 +47,10 @@ extern NSString *const CKPreferredServiceChangedNotification;
 - (NSTimeInterval)_contentOffsetAnimationDuration;
 @end
 
+@interface CKTranscriptHeaderView (BiteSMSFix)
+@property (nonatomic, retain) UIPlacardButton *copyToClipboardButton;
+@end
+
 @interface CKTranscriptTableView (FloatingHeader)
 @property (nonatomic, copy) void (^updateBlock)(CKTranscriptTableView *);
 @end
@@ -57,6 +61,7 @@ extern NSString *const CKPreferredServiceChangedNotification;
 - (MGTranscriptHeaderContext *)headerContext;
 - (void)updateTranscriptHeaderInset;
 - (UIView *)backPlacardView;
+- (CKServiceView *)pendingServiceViewIfVisible;
 @end
 
 @interface CKAggregateConversation ()
@@ -64,6 +69,7 @@ extern NSString *const CKPreferredServiceChangedNotification;
 @property (nonatomic, retain) CKMessage *pendingMessage;
 - (CKSubConversation *)_bestExistingConversationWithService:(CKService *)service;
 - (NSArray *)allAddresses;
+- (BOOL)isCombinedConversation;
 @end
 
 @interface CKTranscriptController ()
@@ -102,6 +108,22 @@ extern NSString *const CKPreferredServiceChangedNotification;
 - (void)recipientSelectionView:(CKRecipientSelectionView *)selectionView selectAddressForAtom:(MFComposeRecipientAtom *)atom;
 @end
 
+@interface UIImage ()
++ (UIImage *)imageNamed:(NSString *)name inBundle:(NSBundle *)bundle;
+@end
+
+extern "C" BOOL CKIsRunningInSpringBoard(void);
+
+extern "C" NSBundle *MGBundle(void)
+{
+	static NSBundle *mergeBundle = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		mergeBundle = [NSBundle bundleWithPath:@"/Library/Application Support/Merge/Merge.bundle"];
+	});
+	return mergeBundle;
+}
+
 static BOOL ShouldMergeServiceAndDateLabels()
 {
 	return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
@@ -110,10 +132,31 @@ static BOOL ShouldMergeServiceAndDateLabels()
 %group FloatingHeader
 %hook CKTranscriptHeaderView
 
+static const int MGHeaderBackgroundImageViewTag = 17;
+
 - (id)initWithFrame:(CGRect)frame isPhoneTranscript:(BOOL)transcript displayLoadPrevious:(BOOL)previous isGroupMessage:(BOOL)message
 {
     self = %orig;
     
+	CGFloat width = frame.size.width;
+	BOOL isLandscape = (width - 320.0 >= (480.0 - 320.0) / 2); // just an approximation to cover all cases
+	NSString *bgName = (isLandscape ? @"header_bg_landscape" : @"header_bg");
+	UIImage *bgImg = [UIImage imageNamed:bgName inBundle:MGBundle()];
+	if (bgImg) {
+		UIImageView *bg = [[[UIImageView alloc] initWithImage:bgImg] autorelease];
+		bg.frame = self.bounds;
+		bg.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		bg.tag = MGHeaderBackgroundImageViewTag;
+		[self addSubview:bg];
+		[self sendSubviewToBack:bg];
+		
+		for (UIView *view in self.subviews) {
+			if ([view isKindOfClass:[UIThreePartButton class]]) {
+				[(UIThreePartButton *)view setBackgroundColor:[UIColor clearColor]];
+			}
+		}
+	}
+	
     self.backgroundColor = [CKTranscriptController tableColor];
     self.layer.shadowColor = [UIColor blackColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0.0, 1.0);
@@ -136,15 +179,57 @@ static BOOL ShouldMergeServiceAndDateLabels()
     return self;
 }
 
+- (void)addSubview:(UIView *)subview
+{
+	// Fix for BiteSMS. This is so hacky...
+	if ([subview isKindOfClass:[UIPlacardButton class]] &&
+		[[(UIPlacardButton *)subview actionsForTarget:self forControlEvent:UIControlEventTouchUpInside] containsObject:@"_clipboardButtonClicked:"])
+	{
+		self.copyToClipboardButton = (UIPlacardButton *)subview;
+	}
+	else {
+		%orig;
+	}
+}
+
 - (void)layoutSubviews
 {
     %orig;
     
-    CGRect bounds = self.frame;
-    bounds.size.height = [CKTranscriptHeaderView defaultHeight];
-    self.frame = bounds;
+    CGRect frame = self.frame;
+    frame.size.height = [CKTranscriptHeaderView defaultHeight];
+    self.frame = frame;
     
-    self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;
+	static const CGFloat curveHeight = 8.0;
+	
+	CGFloat height = frame.size.height - 3.0f;
+	
+	UIBezierPath *path = [UIBezierPath bezierPath];
+	[path moveToPoint:CGPointZero];
+	[path addLineToPoint:CGPointMake(frame.size.width, 0)];
+	[path addLineToPoint:CGPointMake(frame.size.width, height)];
+	[path addQuadCurveToPoint:CGPointMake(0, height) controlPoint:CGPointMake(frame.size.width / 2, height + curveHeight)];
+	[path closePath];
+	
+    self.layer.shadowPath = path.CGPath; //[UIBezierPath bezierPathWithRect:self.bounds].CGPath;
+	
+	if ([CKTranscriptController tableColor]) {
+		self.backgroundColor = [CKTranscriptController tableColor];
+	}
+}
+
+static NSString *const MGBiteSMSCopyToClipboardButtonKey = @"MGBiteSMSCopyToClipboardButtonKey";
+
+%new(@@:)
+- (UIPlacardButton *)copyToClipboardButton
+{
+    return objc_getAssociatedObject(self, MGBiteSMSCopyToClipboardButtonKey);
+}
+
+%new(v@:@)
+- (void)setCopyToClipboardButton:(UIPlacardButton *)copyToClipboardButton
+{
+    objc_setAssociatedObject(self, MGBiteSMSCopyToClipboardButtonKey, copyToClipboardButton, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 %end
@@ -231,6 +316,14 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
     __block CKTranscriptController *blockSelf = self;
     void (^updateBlock)(CKTranscriptTableView *) = ^(CKTranscriptTableView *tableView) {
         [blockSelf updateHeaderView];
+		
+		CKTranscriptHeaderView *header = [blockSelf headerContext].headerView;
+		UIView *tableHeaderView = [blockSelf headerContext].tableHeaderView;
+		UIPlacardButton *copyToClipboardButton = header.copyToClipboardButton;
+		
+		if (copyToClipboardButton && copyToClipboardButton.superview != tableHeaderView) {
+			[tableHeaderView addSubview:header.copyToClipboardButton];
+		}
     };
     self.transcriptTable.updateBlock = updateBlock;
     
@@ -315,27 +408,21 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
         MGTranscriptHeaderContext *context = [self headerContext];
         context.headerView = header;
         
-//        self.transcriptTable.tableHeaderView = nil;
-//        CGFloat tableHeaderHeight = (header.hasMoreMessages ? 2 : 1) * [CKTranscriptHeaderView defaultHeight];
-//        CGFloat tableHeaderWidth = self.transcriptTable.frame.size.width;
         CGFloat tableWidth = self.transcriptTable.frame.size.width;
         CGSize tableHeaderSize = [header sizeThatFits:CGSizeMake(tableWidth, 2*[CKTranscriptHeaderView defaultHeight])];
         CGRect tableHeaderFrame = (CGRect){CGPointZero, tableHeaderSize};
         
         UIView *tableHeaderView = [[[UIView alloc] initWithFrame:tableHeaderFrame] autorelease];
         tableHeaderView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//        tableHeaderView.backgroundColor = [CKTranscriptTableView tableColor];
         
         UIPlacardButton *button = MSHookIvar<id>(header, "_loadMoreButton");
         if (button && header.hasMoreMessages) {
-//            [self.transcriptTable addSubview:button];
-//            self.transcriptTable.tableHeaderView = button;
             
             [tableHeaderView addSubview:button];
             
             CGPoint center = button.center;
             center.y = [CKTranscriptHeaderView defaultHeight] * (3 / 2);
-            center.x = self.transcriptTable.frame.size.width / 2;
+//            center.x = self.transcriptTable.frame.size.width / 2;
             button.center = center;
         }
 		
@@ -344,6 +431,19 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
 		{
 			UILongPressGestureRecognizer *gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(didSelectContactButton:)] autorelease];
 			[contactButton addGestureRecognizer:gesture];
+		}
+		
+		if (![CKTranscriptController tableColor] && CKIsRunningInSpringBoard()) {
+			// may be in IntelliScreenX, which uses UIImageView for background, so
+			// attempt to use that for header background
+			
+			for (UIView *subview in self.view.subviews) {
+				if ([subview isKindOfClass:[UIImageView class]] && subview.frame.size.width == self.view.frame.size.width) {
+					UIColor *bgColor = [[UIColor colorWithPatternImage:[(UIImageView *)subview image]] colorWithAlphaComponent:subview.alpha];
+					header.backgroundColor = bgColor;
+					break;
+				}
+			}
 		}
         
         context.tableHeaderView = tableHeaderView;
@@ -580,9 +680,7 @@ static NSString *const MGTranscriptTableViewLayoutBlockKey = @"MGTranscriptTable
 - (void)setService:(CKService *)service
 {
     if ([self service] != service) {
-//        if (!service || [service isKindOfClass:%c(CKService)]) {
-            %orig;
-//        }
+		%orig;
         
         [self updateTitleLabel];
     }
@@ -816,8 +914,23 @@ extern NSString *const CKBubbleDataMessage;
 		// user hasn't manually changed addresses to send to)
 		if (bubbleData.pendingService) {
 			bubbleData.pendingService = preferredService;
+			
+			CKServiceView *pendingServiceView = [self pendingServiceViewIfVisible];
+			if (pendingServiceView) {
+				pendingServiceView.service = preferredService;
+			}
 		}
 	}
+}
+
+%new(@@:)
+- (CKServiceView *)pendingServiceViewIfVisible
+{
+	NSUInteger lastIndex = [[self bubbleData] _indexOfPendingService];
+	NSIndexPath *lastServiceIndex = [NSIndexPath indexPathForRow:lastIndex inSection:0];
+	CKServiceView *serviceView = (CKServiceView *)[[self transcriptTable] cellForRowAtIndexPath:lastServiceIndex];
+	
+	return serviceView;
 }
 
 %new(v@:@)
@@ -834,10 +947,11 @@ extern NSString *const CKBubbleDataMessage;
 	
 //	DLog(@"last index: %d, lastService: %@", lastIndex, lastService);
 	
-	CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] preferredServiceForSelectedRecipient:recipient
-																										withAggregateConversation:[self conversation]
-																												 canSend:NULL
-																												   error:NULL];
+//	CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] preferredServiceForSelectedRecipient:recipient
+//																										withAggregateConversation:[self conversation]
+//																												 canSend:NULL
+//																												   error:NULL];
+	CKService *preferredService = [[CKPreferredServiceManager sharedPreferredServiceManager] _preferredServiceForEntities:@[recipient] newComposition:YES checkWithServer:YES canSend:NULL error:NULL];
 	
 	DLog(@"preferredService: %@", preferredService);
 	
@@ -862,7 +976,8 @@ extern NSString *const CKBubbleDataMessage;
 	else
 	{
 		NSIndexPath *lastServiceIndex = [NSIndexPath indexPathForRow:lastIndex inSection:0];
-		CKServiceView *lastCell = (CKServiceView *)[tableView cellForRowAtIndexPath:lastServiceIndex];
+//		CKServiceView *lastCell = (CKServiceView *)[tableView cellForRowAtIndexPath:lastServiceIndex];
+		CKServiceView *lastCell = [self pendingServiceViewIfVisible];
 		
 		if (lastCell) {
 			// pending divider already showing, update information if needed
@@ -917,55 +1032,57 @@ extern "C" void CKShowError(NSError *error);
     ABContact *contact = [ABContact contactWithRecord:record];
 //    NSArray *addresses = [self.conversation allAddresses];
     
+	DifferentiationSheetCompletionBlock completion = ^(NSString *selectedAddress, BOOL *performOriginalAction) {
+		CKSubConversation *subConversation = [[CKConversationList sharedConversationList] existingConversationForAddresses:@[selectedAddress]];
+		if (subConversation) {
+			CKEntity *selectedRecipient = [subConversation.recipients objectAtIndex:0];
+			self.conversation.selectedRecipient = selectedRecipient;
+			
+			[self showPendingDividerIfNecessaryForRecipient:selectedRecipient];
+		}
+		else {
+			CKPreferredServiceManager *manager = [CKPreferredServiceManager sharedPreferredServiceManager];
+			BOOL canSend = YES;
+			NSError *error = nil;
+			CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:YES canSend:&canSend error:&error];
+			
+			DLog(@"canSend?? : %d, error: %@", canSend, error);
+			
+			if (canSend && preferredService) {
+				CKEntity *recipient = [preferredService copyEntityForAddressString:selectedAddress];
+				CKSubConversation *convo = [[[[CKConversationList sharedConversationList] conversationForRecipients:@[recipient] create:YES service:preferredService] retain] autorelease];
+				
+				DLog(@"convo: %@ for recipient: %@ with aggregate: %@", convo, recipient, convo.aggregateConversation);
+				
+				if ([self.conversation containsConversation:convo]) {
+					self.conversation.selectedRecipient = recipient;
+					[self showPendingDividerIfNecessaryForRecipient:recipient];
+				}
+				else {
+					DLog(@"Error: conversation %@ NOT in current aggregate %@, its aggregate is %@", convo, self.conversation, convo.aggregateConversation);
+					
+					[[CKConversationList sharedConversationList] removeConversation:convo];
+					[convo deleteAllMessagesAndRemoveGroup];
+					
+					*performOriginalAction = YES;
+				}
+				
+				[recipient release];
+			}
+			else {
+#ifdef DEBUG
+				CKShowError(error);
+#endif
+				*performOriginalAction = YES;
+			}
+		}
+	};
+	
     [[MGAddressManager sharedAddressManager] presentDifferentiationSheetForContact:contact
                                                                             inView:view
 																		 asPopover:popover
                                                                 availableAddresses:nil
-                                                                        completion:^(NSString *selectedAddress, BOOL *performOriginalAction) {
-                                                                            CKSubConversation *subConversation = [[CKConversationList sharedConversationList] existingConversationForAddresses:@[selectedAddress]];
-                                                                            if (subConversation) {
-																				CKEntity *selectedRecipient = [subConversation.recipients objectAtIndex:0];
-                                                                                self.conversation.selectedRecipient = selectedRecipient;
-																				
-																				[self showPendingDividerIfNecessaryForRecipient:selectedRecipient];
-                                                                            }
-																			else {
-																				CKPreferredServiceManager *manager = [CKPreferredServiceManager sharedPreferredServiceManager];
-																				BOOL canSend = YES;
-																				NSError *error = nil;
-																				CKService *preferredService = [manager preferredServiceForAddressString:selectedAddress newComposition:YES checkWithServer:YES canSend:&canSend error:&error];
-																				
-																				DLog(@"canSend?? : %d, error: %@", canSend, error);
-																				
-																				if (canSend && preferredService) {
-																					CKEntity *recipient = [preferredService copyEntityForAddressString:selectedAddress];
-																					CKSubConversation *convo = [[[[CKConversationList sharedConversationList] conversationForRecipients:@[recipient] create:YES service:preferredService] retain] autorelease];
-																					
-																					DLog(@"convo: %@ for recipient: %@ with aggregate: %@", convo, recipient, convo.aggregateConversation);
-																					
-																					if ([self.conversation containsConversation:convo]) {
-																						self.conversation.selectedRecipient = recipient;
-																						[self showPendingDividerIfNecessaryForRecipient:recipient];
-																					}
-																					else {
-																						ULog(@"Error: conversation %@ NOT in current aggregate %@, its aggregate is %@", convo, self.conversation, convo.aggregateConversation);
-																						
-																						[[CKConversationList sharedConversationList] removeConversation:convo];
-																						[convo deleteAllMessagesAndRemoveGroup];
-																						
-																						*performOriginalAction = YES;
-																					}
-																					
-																					[recipient release];
-																				}
-																				else {
-#ifdef DEBUG
-																					CKShowError(error);
-#endif
-																					*performOriginalAction = YES;
-																				}
-																			}
-                                                                        }];
+                                                                        completion:completion];
 }
 
 %new(v@:@@)
@@ -1266,22 +1383,30 @@ static NSString *const MGPendingMessageKey = @"MGPendingMessageKey";
     return conversation;
 }
 
+%new(d@:)
+- (BOOL)isCombinedConversation
+{
+	BOOL isCombinedConversation = NO;
+    NSString *prevGroupID = nil;
+    for (CKSubConversation *conversation in self.subConversations) {
+		if (conversation.recipients.count == 1) {
+			if (!prevGroupID) {
+				prevGroupID = conversation.groupID;
+			}
+			else if (![prevGroupID isEqualToString:conversation.groupID] /*&& conversation.recipients.count <= 1*/) {
+				isCombinedConversation = YES;
+				break;
+			}
+		}
+    }
+	
+	return isCombinedConversation;
+}
+
 %new(@@:@)
 -(CKSubConversation *)_bestExistingConversationWithService:(CKService *)service
 {
-    BOOL isCombinedConversation = NO;
-    NSString *prevGroupID = nil;
-    for (CKSubConversation *conversation in self.subConversations) {
-        if (!prevGroupID) {
-            prevGroupID = conversation.groupID;
-        }
-        else if (![prevGroupID isEqualToString:conversation.groupID] && conversation.recipients.count <= 1) {
-            isCombinedConversation = YES;
-            break;
-        }
-    }
-    
-    if (isCombinedConversation) {
+    if ([self isCombinedConversation]) {
         CKEntity *selectedRecipient = self.selectedRecipient;
         CKSubConversation *mostRecentConversation = nil;
         CKSubConversation *selectedConversation = nil;
@@ -1520,6 +1645,18 @@ typedef enum {
 											withAggregateConversation:aggregateConversation
 															  canSend:canSend
 																error:(NSError **)error];
+	}
+	else if ([aggregateConversation isCombinedConversation]) {
+		CKSubConversation *conversation = [aggregateConversation _bestExistingConversation];
+		if (conversation.recipients.count == 1) {
+			preferredService = [self preferredServiceForSelectedRecipient:conversation.recipient
+												withAggregateConversation:aggregateConversation
+																  canSend:canSend
+																	error:(NSError **)error];
+		}
+		else {
+			preferredService = %orig;
+		}
 	}
 	else {
 		preferredService = %orig;
