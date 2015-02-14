@@ -11,5 +11,8 @@ build/*
 profile
 *.xcodeproj/project.xcworkspace
 *.xcodeproj/xcuserdata
+
 Packages
 LatestBuild
+*.dylib
+*.mm
